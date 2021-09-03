@@ -835,7 +835,7 @@ class ARCReaction(object):
                                 self.get_species_count(species=p_spc, well=1))
         return reactants, products
 
-    def get_single_mapped_product_xyz(self):
+    def get_single_mapped_product_xyz(self) -> Optional[ARCSpecies]:
         """
         Get a copy of the product species with mapped cartesian coordinates of a reaction with a single product.
 
