@@ -1837,8 +1837,7 @@ Cl      2.38846685    0.24054066    0.55443324
 
     def test_determine_chirality(self):
         """Test determining R/S/E/Z chirality of atom centers and double bonds"""
-
-        # one chiral C center
+        # One chiral C center.
         confs = [{'xyz': {'symbols': ('O', 'C', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
                           'isotopes': (16, 12, 12, 12, 12, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                           'coords': ((-1.3836321615294294, -1.3053014308406108, -0.9378250622062406),
@@ -1884,7 +1883,7 @@ Cl      2.38846685    0.24054066    0.55443324
         self.assertEqual(confs[0]['chirality'], {(1,): 'R'})
         self.assertEqual(confs[1]['chirality'], {(1,): 'S'})
 
-        # one chiral N center
+        # One chiral N center.
         confs = [{'xyz': {'symbols': ('S', 'O', 'N', 'C', 'H', 'H', 'H', 'H', 'H'),
                           'isotopes': (32, 16, 14, 12, 1, 1, 1, 1, 1),
                           'coords': ((0.6642693414954796, 1.2877501906584146, -1.012730946867456),
@@ -1918,7 +1917,7 @@ Cl      2.38846685    0.24054066    0.55443324
         self.assertEqual(confs[0]['chirality'], {(2,): 'NS'})
         self.assertEqual(confs[1]['chirality'], {(2,): 'NR'})
 
-        # one chiral N center
+        # One chiral N center.
         confs = [{'xyz': {'symbols': ('O', 'N', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
                           'isotopes': (16, 14, 12, 12, 12, 1, 1, 1, 1, 1, 1, 1, 1, 1), 'coords': (
             (-1.1260113581472435, 1.3761961818488566, 0.09344599103558728),
@@ -1962,7 +1961,7 @@ Cl      2.38846685    0.24054066    0.55443324
         self.assertEqual(confs[0]['chirality'], {(1,): 'NR'})
         self.assertEqual(confs[1]['chirality'], {(1,): 'NS'})
 
-        # one chiral N center
+        # One chiral N center.
         confs = [{'xyz': {'symbols': ('N', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
                           'isotopes': (14, 12, 12, 12, 1, 1, 1, 1, 1, 1, 1, 1, 1),
                           'coords': ((-0.7073511380114899, 0.8197164661073145, 0.24999885684842907),
@@ -2004,7 +2003,7 @@ Cl      2.38846685    0.24054066    0.55443324
         self.assertEqual(confs[0]['chirality'], {(0,): 'NS'})
         self.assertEqual(confs[1]['chirality'], {(0,): 'NR'})
 
-        # one chiral double bond
+        # One chiral double bond.
         confs = [{'xyz': {'symbols': ('N', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
                           'isotopes': (14, 12, 12, 12, 1, 1, 1, 1, 1, 1, 1),
                           'coords': ((1.6790693468233917, -0.0528568295658936, -0.45240516692920485),
