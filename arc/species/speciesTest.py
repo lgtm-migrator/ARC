@@ -561,7 +561,8 @@ H      -1.67091600   -1.35164600   -0.93286400"""
         expected_dict = {'number_of_rotors': 0,
                          'multiplicity': 1,
                          'arkane_file': None,
-                         'mol': {'atoms': spc_dict['mol']['atoms'],
+                         'mol': {'atom_order': spc_dict['mol']['atom_order'],
+                                 'atoms': spc_dict['mol']['atoms'],
                                  'multiplicity': 1, 'props': {}},
                          'compute_thermo': True,
                          'label': 'methylamine',
@@ -686,6 +687,7 @@ H      -1.67091600   -1.35164600   -0.93286400"""
             'label': 'C3_2',
             'long_thermo_description': "Bond corrections: {'C-H': 7, 'C-C': 2}",
             'mol': {
+                'atom_order': [-32758, -32757, -32756, -32755, -32754, -32753, -32752, -32751, -32750, -32749],
                 'atoms': [
                     {'charge': 0, 'edges': {-32757: 1.0, -32755: 1.0, -32754: 1.0, -32753: 1.0},
                      'element': {'isotope': -1, 'mass': 0.01201064046472311, 'name': 'carbon', 'number': 6, 'symbol': 'C'},
@@ -753,7 +755,8 @@ H      -1.67091600   -1.35164600   -0.93286400"""
                                        H      -1.48016200    0.42782200    1.10607600
                                        H      -1.51224100   -0.37064400   -0.48297200""",
                         'is_ts': True, 'label': 'TS0', 'long_thermo_description': '', 'force_field': 'MMFF94s',
-                        'mol': {'atoms': [{'charge': 0, 'edges': {-1: 1.0}, 'radical_electrons': 0,
+                        'mol': {'atom_order': [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1],
+                                'atoms': [{'charge': 0, 'edges': {-1: 1.0}, 'radical_electrons': 0,
                                            'element': {'isotope': -1, 'mass': 0.01201064046472311, 'name': 'carbon',
                                                        'number': 6, 'symbol': 'C'},
                                            'id': -1, 'label': '', 'lone_pairs': 0, 'props': {'inRing': False}},
