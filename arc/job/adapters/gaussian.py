@@ -454,7 +454,6 @@ class GaussianAdapter(JobAdapter):
             with SSHClient(self.server) as ssh:
                 self.job_status[0], self.job_id = ssh.submit_job(remote_path=self.remote_path)
         else:
-            # submit to the local queue
             self.job_status[0], self.job_id = submit_job(path=self.local_path)
 
 

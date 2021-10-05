@@ -41,6 +41,7 @@ from arc.species.converter import (check_isomorphism,
                                    check_xyz_dict,
                                    check_zmat_dict,
                                    get_xyz_radius,
+                                   modify_coords,
                                    molecules_from_xyz,
                                    order_atoms_in_mol_list,
                                    rdkit_conf_from_mol,
@@ -54,7 +55,7 @@ from arc.species.converter import (check_isomorphism,
                                    zmat_from_xyz,
                                    zmat_to_xyz,
                                    )
-from arc.species.vectors import calculate_distance
+from arc.species.vectors import calculate_distance, calculate_dihedral_angle
 from arc.species.zmat import get_parameter_from_atom_indices
 
 logger = get_logger()
@@ -352,7 +353,7 @@ class ARCSpecies(object):
                 self.from_dict(species_dict=species_dict)
 
         if species_dict is None or self.yml_path is not None:
-            # Not reading from a dictionary
+            # Not reading from a dictionary.
             self.force_field = force_field
             self.is_ts = is_ts
             self.ts_conf_spawned = False
@@ -947,22 +948,22 @@ class ARCSpecies(object):
             else:
                 self.mol_list = [self.mol]
             success = order_atoms_in_mol_list(ref_mol=self.mol.copy(deep=True), mol_list=self.mol_list)
-            if not success:
-                # Try sorting by IDs, repeat object creation to make sure the original instances remain unchanged.
-                mol_copy = self.mol.copy(deep=True)
-                mol_copy.assign_atom_ids()
-                mol_list = mol_copy.generate_resonance_structures(keep_isomorphic=False,
-                                                                  filter_structures=True,
-                                                                  save_order=True,
-                                                                  )
-                for i in range(len(mol_list)):
-                    mol = mol_list[i]
-                    atoms = list()
-                    for atom1 in mol_copy.atoms:
-                        for atom2 in mol.atoms:
-                            if atom1.id == atom2.id:
-                                atoms.append(atom2)
-                    mol.atoms = atoms
+            # if not success:
+            #     # Try sorting by IDs, repeat object creation to make sure the original instances remain unchanged.
+            #     mol_copy = self.mol.copy(deep=True)
+            #     mol_copy.assign_atom_ids()
+            #     mol_list = mol_copy.generate_resonance_structures(keep_isomorphic=False,
+            #                                                       filter_structures=True,
+            #                                                       save_order=True,
+            #                                                       )
+            #     for i in range(len(mol_list)):
+            #         mol = mol_list[i]
+            #         atoms = list()
+            #         for atom1 in mol_copy.atoms:
+            #             for atom2 in mol.atoms:
+            #                 if atom1.id == atom2.id:
+            #                     atoms.append(atom2)
+            #         mol.atoms = atoms
 
     def generate_conformers(self,
                             n_confs: int = 10,
@@ -1087,6 +1088,8 @@ class ARCSpecies(object):
             # This species was marked to skip rotor scans.
             return
         mol_list = self.mol_list or [self.mol]
+        # for mol in self.mol_list:
+        #     print(mol.copy(deep=True).to_adjacency_list())
         if mol_list is None or not len(mol_list) or all([mol is None for mol in mol_list]):
             if not self.is_ts:
                 logger.error(f'Could not determine rotors for {self.label} without a 2D graph structure')
@@ -1251,8 +1254,13 @@ class ARCSpecies(object):
         if deg_abs is not None and not isinstance(deg_abs, (int, float)):
             raise TypeError(f'deg_abs must be a float, got {deg_abs} which is a {type(deg_abs)}')
         pivots = scan[1:3]
+        torsion = convert_list_index_0_to_1(scan, direction=-1)
         rotor = None
         xyz = xyz or self.final_xyz
+        if xyz is None:
+            raise ValueError('Cannot set dihedral without xyz')
+        if deg_increment is not None:
+            deg_abs = calculate_dihedral_angle(coords=xyz, torsion=torsion) + deg_increment
         mol = self.mol or molecules_from_xyz(xyz, multiplicity=self.multiplicity, charge=self.charge)[1]
         if chk_rotor_list:
             for rotor in self.rotors_dict.values():
@@ -1273,16 +1281,21 @@ class ARCSpecies(object):
         if deg_increment == 0 and deg_abs is None:
             logger.warning(f'set_dihedral was called with zero increment for {self.label} with pivots {pivots}')
         else:
-            torsion_0_indexed = [tor - 1 for tor in scan]
-            if mol is not None:
-                conf, rd_mol = rdkit_conf_from_mol(mol, xyz)
-                new_xyz = set_rdkit_dihedrals(conf,
-                                              rd_mol,
-                                              torsion_0_indexed,
-                                              deg_increment=deg_increment,
-                                              deg_abs=deg_abs,
-                                              )
-                self.initial_xyz = new_xyz
+            new_xyz = modify_coords(coords=xyz,
+                                    indices=torsion,
+                                    new_value=deg_abs,
+                                    modification_type='groups',
+                                    mol=mol,
+                                    )
+            # if mol is not None:
+            #     conf, rd_mol = rdkit_conf_from_mol(mol, xyz)
+            #     new_xyz = set_rdkit_dihedrals(conf,
+            #                                   rd_mol,
+            #                                   torsion,
+            #                                   deg_increment=deg_increment,
+            #                                   deg_abs=deg_abs,
+            #                                   )
+            self.initial_xyz = new_xyz
 
     def determine_symmetry(self) -> None:
         """
@@ -1398,7 +1411,7 @@ class ARCSpecies(object):
                      ) -> None:
         """
         Make sure atom order in self.mol corresponds to xyz.
-        Important for TS discovery and for identifying rotor indices.
+        Important for TS searches and for identifying rotor indices.
         This works by generating a molecule from xyz and using the
         2D structure to confirm that the perceived molecule is correct.
         If ``xyz`` is not given, the species xyz attribute will be used.
@@ -1418,7 +1431,7 @@ class ARCSpecies(object):
             perceived_mols = molecules_from_xyz(xyz=xyz,
                                                 multiplicity=self.multiplicity,
                                                 charge=self.charge)
-            perceived_mol = perceived_mols[1] or perceived_mols[0]
+            perceived_mol = perceived_mols[1] or perceived_mols[0] if perceived_mols is not None else None
             if perceived_mol is not None:
                 allow_nonisomorphic_2d = (self.charge is not None and self.charge) \
                                          or self.mol.has_charge() or perceived_mol.has_charge() \

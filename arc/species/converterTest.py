@@ -486,6 +486,10 @@ H       0.63003260   -0.63003260   -0.63003260
                                       )
                            }
 
+        cls.xyz_dict_13 = {'symbols': ('O', 'N', 'O', 'H'), 'isotopes': (16, 14, 16, 1),
+                           'coords': ((1.082465, -0.311042, 0.517009), (-0.000538, 0.002628, 0.064162),
+                                      (-0.872035, -0.717142, -0.381683), (-0.209893, 1.025557, 0.057233))}
+
         cls.conformer_12 = Conformer(number=ArrayQuantity([9, 6, 6, 6, 6, 6, 6, 9, 1, 1, 1, 1], ''),
                                      mass=ArrayQuantity([18.9984, 12, 12, 12, 12, 12, 12, 18.9984, 1.00783, 1.00783,
                                                          1.00783, 1.00783], 'amu'),
@@ -3107,6 +3111,15 @@ R1=1.0912"""
             self.assertEqual(atom1.symbol, atom2.symbol)
         for atom1, symbol in zip(s_mol.atoms, self.xyz10['dict']['symbols']):
             self.assertEqual(atom1.symbol, symbol)
+
+        s_mol, b_mol = converter.molecules_from_xyz(self.xyz_dict_13, multiplicity=1, charge=0)
+        for atom1, atom2 in zip(s_mol.atoms, b_mol.atoms):
+            self.assertEqual(atom1.symbol, atom2.symbol)
+        for atom1, symbol in zip(s_mol.atoms, self.xyz_dict_13['symbols']):
+            self.assertEqual(atom1.symbol, symbol)
+        self.assertEqual(b_mol.multiplicity, 1)
+        print([atom.radical_electrons for atom in b_mol.atoms])
+        self.assertFalse(any(atom.radical_electrons for atom in b_mol.atoms))
 
     def test_unsorted_xyz_mol_from_xyz(self):
         """Test atom order conservation when xyz isn't sorted with heavy atoms first"""
