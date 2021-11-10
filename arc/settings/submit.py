@@ -219,6 +219,8 @@ export LD_LIBRARY_PATH=/Local/ce_dana/openmpi-2.0.2/lib:$LD_LIBRARY_PATH
 
 SubmitDir=`pwd`
 
+touch initial_time
+
 which orca
 
 mkdir -p $WorkDir
@@ -226,8 +228,13 @@ cd $WorkDir
 
 cp "$SubmitDir/input.in" .
 
-${OrcaDir}/orca input.in > input.log
-cp * "$SubmitDir/"
+${{OrcaDir}}/orca input.in > input.log
+
+cd $SubmitDir
+cp "$WorkDir/input.log" .
+cp "$WorkDir/input_property.txt" .
+
+touch final_time
 
 rm -rf $WorkDir
 
