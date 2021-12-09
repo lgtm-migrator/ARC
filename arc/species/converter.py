@@ -1021,6 +1021,8 @@ def modify_coords(coords: Dict[str, tuple],
     Returns:
         dict: The respective cartesian (xyz) coordinates reflecting the desired modification.
     """
+    if coords is None:
+        raise InputError(f'coords must be given.')
     if modification_type not in ['atom', 'group', 'groups']:
         raise InputError(f'Allowed modification types are atom, group, or groups, got: {modification_type}.')
     if mol is None and 'group' in modification_type:
@@ -1202,18 +1204,38 @@ def molecules_from_xyz(xyz: Optional[Union[dict, str]],
         - The respective Molecule object with only single bonds.
         - The respective Molecule object with perceived bond orders.
     """
+#     pass
+#
+#
+# def get_molecules_from_xyz_using_molgraph(xyz: Optional[Union[dict, str]],
+#                                           multiplicity: Optional[int] = None,
+#                                           charge: int = 0,
+#                                           ) -> Tuple[Optional[Molecule], Optional[Molecule]]:
+    """
+    Creating RMG:Molecule objects from xyz with correct atom labeling.
+    Based on the MolGraph.perceive_smiles method.
+    If `multiplicity` is given, the returned species multiplicity will be set to it.
+
+    Args:
+        xyz (dict): The ARC dict format xyz coordinates of the species.
+        multiplicity (int, optional): The species spin multiplicity.
+        charge (int, optional): The species net charge.
+
+    Returns: Tuple[Optional[Molecule], Optional[Molecule]]
+        - The respective Molecule object with only single bonds.
+        - The respective Molecule object with perceived bond orders.
+    """
     if xyz is None:
         return None, None
     xyz = check_xyz_dict(xyz)
-    mol_bo = None
 
-    # 1. Generate a molecule with no bond order information with atoms ordered as in xyz
+    # 1. Generate a molecule with no bond order information with atoms ordered as in xyz.
     mol_graph = MolGraph(symbols=xyz['symbols'], coords=xyz['coords'])
     inferred_connections = mol_graph.infer_connections()
     if inferred_connections:
-        mol_s1 = mol_graph.to_rmg_mol()  # An RMG Molecule with single bonds, atom order corresponds to xyz
+        mol_s1 = mol_graph.to_rmg_mol()  # An RMG Molecule with single bonds, atom order corresponds to xyz.
     else:
-        mol_s1 = s_bonds_mol_from_xyz(xyz)  # An RMG Molecule with single bonds, atom order corresponds to xyz
+        mol_s1 = s_bonds_mol_from_xyz(xyz)  # An RMG Molecule with single bonds, atom order corresponds to xyz.
     if mol_s1 is None:
         logger.error(f'Could not create a 2D graph representation from xyz:\n{xyz_to_str(xyz)}')
         return None, None
@@ -1222,6 +1244,7 @@ def molecules_from_xyz(xyz: Optional[Union[dict, str]],
     mol_s1_updated = update_molecule(mol_s1, to_single_bonds=True)
 
     # 2. Generate a molecule with bond order information using pybel:
+    mol_bo = None
     pybel_mol = xyz_to_pybel_mol(xyz)
     if pybel_mol is not None:
         inchi = pybel_to_inchi(pybel_mol, has_h=bool(len([atom.is_hydrogen() for atom in mol_s1_updated.atoms])))
@@ -1469,9 +1492,9 @@ def order_atoms(ref_mol, mol):
                 #     ref_mol.copy(deep=True).to_adjacency_list(), mol.copy(deep=True).to_adjacency_list()))
                 raise SanitizationError('Could not map molecules')
         else:
-            # logger.debug('Could not map non isomorphic molecules {0}, {1}:\n\n{2}\n\n{3}'.format(
-            #     ref_mol.copy(deep=True).to_smiles(), mol.copy(deep=True).to_smiles(),
-            #     ref_mol.copy(deep=True).to_adjacency_list(), mol.copy(deep=True).to_adjacency_list()))
+            print('Could not map non isomorphic molecules {0}, {1}:\n\n{2}\n\n{3}'.format(
+                ref_mol.copy(deep=True).to_smiles(), mol.copy(deep=True).to_smiles(),
+                ref_mol.copy(deep=True).to_adjacency_list(), mol.copy(deep=True).to_adjacency_list()))
             raise SanitizationError('Could not map non isomorphic molecules')
 
 
