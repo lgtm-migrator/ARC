@@ -94,7 +94,7 @@ class ARCSpecies(object):
 
     Args:
         label (str, optional): The species label.
-        is_ts (bool, optional): Whether or not the species represents a transition state.
+        is_ts (bool, optional): Whether the species represents a transition state.
         rmg_species (Species, optional): An RMG Species object to be converted to an ARCSpecies object.
         mol (Molecule, optional): An ``RMG Molecule`` object used for BAC determination.
                                   Atom order corresponds to the order in .initial_xyz
@@ -1174,6 +1174,7 @@ class ARCSpecies(object):
                                  'success': None,
                                  'invalidation_reason': '',
                                  'times_dihedral_set': 0,
+                                 'trsh_counter': 0,
                                  'trsh_methods': list(),
                                  'scan_path': '',
                                  'directed_scan_type': key,
