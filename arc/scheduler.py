@@ -1094,11 +1094,13 @@ class Scheduler(object):
 
         Args:
             label (str): The species label.
-            fine (bool): Whether or not a fine grid should be used during optimization
+            fine (bool): Whether a fine grid should be used during optimization.
         """
-        if 'opt' not in self.job_dict[label]:  # Check whether or not opt jobs have been spawned yet
+        if 'opt' not in self.job_dict[label]:  # Check whether opt jobs have been spawned yet.
             # we're spawning the first opt job for this species
             self.job_dict[label]['opt'] = dict()
+        self.species_dict[label].initial_xyz = self.species_dict[label].initial_xyz \
+                                               or self.species_dict[label].get_xyz(generate=False)
         if self.species_dict[label].initial_xyz is None:
             raise SpeciesError(f'Cannot execute opt job for {label} without xyz (got None for Species.initial_xyz)')
         self.run_job(label=label, xyz=self.species_dict[label].initial_xyz, level_of_theory=self.opt_level,
