@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -196,7 +196,7 @@
 A wrapper for ARCReaction.determine_family().
 This wrapper is useful because it makes a new instance of the rmgdb if needed.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>reaction</strong> (<em>'ARCReaction'</em>) – An ARCReaction object instance.</p></li>
 <li><p><strong>db</strong> (<em>RMGDatabase</em><em>, </em><em>optional</em>) – The RMG database instance.</p></li>
@@ -211,7 +211,7 @@ This wrapper is useful because it makes a new instance of the rmgdb if needed.</
 <dd><p>Determine the RMG kinetic family for a given <code class="docutils literal notranslate"><span class="pre">ARCReaction</span></code> object instance.
 Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if no family found or more than one family found.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rmgdb</strong> (<em>RMGDatabase</em>) – The RMG database instance.</p></li>
 <li><p><strong>reaction</strong> (<em>Reaction</em>) – The RMG Reaction object.</p></li>
@@ -234,7 +234,7 @@ Returns <code class="docutils literal notranslate"><span class="pre">None</span>
 <dd><p>Determine kinetics for <cite>reaction</cite> (an RMG Reaction object) from RMG’s database, if possible.
 Assigns a list of all matching entries from both libraries and families.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rmgdb</strong> (<em>RMGDatabase</em>) – The RMG database instance.</p></li>
 <li><p><strong>reaction</strong> (<em>Reaction</em>) – The RMG Reaction object.</p></li>
@@ -253,16 +253,16 @@ Assigns a list of all matching entries from both libraries and families.</p>
 <code class="sig-prename descclassname">arc.rmgdb.</code><code class="sig-name descname">get_family</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rmgdb</span><span class="p">:</span> <span class="n">rmgpy.data.rmg.RMGDatabase</span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>KineticsFamily<span class="p">]</span><a class="reference internal" href="../_modules/arc/rmgdb.html#get_family"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.rmgdb.get_family" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a KineticsFamily object instance corresponding to the input family <code class="docutils literal notranslate"><span class="pre">label</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rmgdb</strong> (<em>RMGDatabase</em>) – The RMG database instance.</p></li>
 <li><p><strong>label</strong> (<em>str</em>) – The label of the desired family.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The desired family object instance.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Optional[‘KineticsFamily’]</p>
 </dd>
 </dl>
@@ -273,7 +273,7 @@ Assigns a list of all matching entries from both libraries and families.</p>
 <code class="sig-prename descclassname">arc.rmgdb.</code><code class="sig-name descname">load_families_only</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rmgdb</span><span class="p">:</span> <span class="n">rmgpy.data.rmg.RMGDatabase</span></em>, <em class="sig-param"><span class="n">kinetics_families</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'default'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/rmgdb.html#load_families_only"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.rmgdb.load_families_only" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading kinetic families from RMG’s database.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rmgdb</strong> (<em>RMGDatabase</em>) – The RMG database instance.</p></li>
 <li><p><strong>kinetics_families</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>list</em><em>]</em><em>, </em><em>optional</em>) – Specific kinetics families to load.</p></li>
@@ -287,7 +287,7 @@ Assigns a list of all matching entries from both libraries and families.</p>
 <code class="sig-prename descclassname">arc.rmgdb.</code><code class="sig-name descname">load_rmg_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rmgdb</span><span class="p">:</span> <span class="n">rmgpy.data.rmg.RMGDatabase</span></em>, <em class="sig-param"><span class="n">thermo_libraries</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">reaction_libraries</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">kinetics_families</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>str<span class="p">, </span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">'default'</span></em>, <em class="sig-param"><span class="n">load_thermo_libs</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">load_kinetic_libs</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">include_nist</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/rmgdb.html#load_rmg_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.rmgdb.load_rmg_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading the RMG database.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rmgdb</strong> (<em>RMGDatabase</em>) – The RMG database instance.</p></li>
 <li><p><strong>thermo_libraries</strong> (<em>list</em><em>, </em><em>optional</em>) – Specific thermodynamic libraries to load (<code class="docutils literal notranslate"><span class="pre">None</span></code> will load all).</p></li>
@@ -309,7 +309,7 @@ Assigns a list of all matching entries from both libraries and families.</p>
 <dd><p>Loop through kinetic families and return a list of tuples of (family, degenerate_reactions)
 corresponding to <code class="docutils literal notranslate"><span class="pre">reaction</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rmgdb</strong> (<em>RMGDatabase</em>) – The RMG database instance.</p></li>
 <li><p><strong>reaction</strong> (<em>Reaction</em>) – The RMG Reaction object instance.</p></li>

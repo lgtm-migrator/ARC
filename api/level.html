@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -195,7 +195,7 @@
 <dd><p>Uniquely defines the settings used for a quantum calculation level of theory.
 Either <code class="docutils literal notranslate"><span class="pre">repr</span></code> or <code class="docutils literal notranslate"><span class="pre">method</span></code> must be specified.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>repr</strong> (<em>str</em><em>, </em><em>dict</em><em>, </em><em>Level optional</em>) – A dictionary or a simple string representation of the level of theory,
 e.g. “wb97xd/def2-tzvp”, or {‘method’: ‘b3lyp’, ‘basis’: ‘6-31g’}.
@@ -238,10 +238,10 @@ Useful for ARC restart files.</p>
 <code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/level.html#Level.copy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.level.Level.copy" title="Permalink to this definition">¶</a></dt>
 <dd><p>A method to create a copy of the object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A copy of the object.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p><a class="reference internal" href="#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -260,7 +260,7 @@ DFT, wavefunction, force field, semi-empirical, or composite</p>
 <dd><p>Deduce the ESS to be used for a given level of theory.
 Populates the .software attribute.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>job_type</strong> (<em>str</em><em>, </em><em>optional</em>) – An ARC job type, assists in determining the software.</p>
 </dd>
 </dl>
@@ -283,10 +283,10 @@ Populates the .software attribute.</p>
 <code class="sig-name descname">simple</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/level.html#Level.simple"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.level.Level.simple" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a simple humane-readable string representation of the object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The simple level of theory string representation.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>str</p>
 </dd>
 </dl>
@@ -297,7 +297,7 @@ Populates the .software attribute.</p>
 <code class="sig-name descname">to_arkane_level_of_theory</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">variant</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bac_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'p'</span></em>, <em class="sig-param"><span class="n">comprehensive</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">raise_error</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">warn</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>arkane.modelchem.LevelOfTheory<span class="p">]</span><a class="reference internal" href="../_modules/arc/level.html#Level.to_arkane_level_of_theory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.level.Level.to_arkane_level_of_theory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert <code class="docutils literal notranslate"><span class="pre">Level</span></code> to an Arkane <code class="docutils literal notranslate"><span class="pre">LevelOfTheory</span></code> instance.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>variant</strong> (<em>str</em><em>, </em><em>optional</em>) – Return a variant of the Arkane <code class="docutils literal notranslate"><span class="pre">LevelOfTheory</span></code> that matches an Arkane query.
 Allowed values are <code class="docutils literal notranslate"><span class="pre">'freq'</span></code>, <code class="docutils literal notranslate"><span class="pre">'AEC'</span></code>, <code class="docutils literal notranslate"><span class="pre">'BEC'</span></code>. Returns <code class="docutils literal notranslate"><span class="pre">None</span></code> if no
@@ -309,10 +309,10 @@ for BAC.</p></li>
 <li><p><strong>warn</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to output a warning if an AEC variant could not be found.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The respective Arkane <code class="docutils literal notranslate"><span class="pre">LevelOfTheory</span></code> object</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>LevelOfTheory</p>
 </dd>
 </dl>

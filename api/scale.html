@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -209,17 +209,17 @@ DOI: 10.1016/j.cpc.2016.09.004</p></li>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>zpe_dict</strong> (<em>dict</em>) – The calculated vibrational zero-point energies at the requested level of theory.
 Keys are species labels, values are floats representing the ZPE in J/mol.</p></li>
 <li><p><strong>level</strong> (<em>str</em>) – A string representation of the frequencies level of theory.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The scale factor for the vibrational zero-point energy (lambda ZPE) as defined in reference [2].</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -231,7 +231,7 @@ Keys are species labels, values are floats representing the ZPE in J/mol.</p></l
 <dd><p>Determine the zero-point energy, harmonic frequencies, and fundamental frequencies scaling factors
 for a given frequencies level of theory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>levels</strong> (<em>list</em>) – A list of frequencies levels of theory for which scaling factors are determined.
 Entries are either Level instances, dictionaries, or simple string representations.
@@ -241,10 +241,10 @@ If a single entry is given, it will be converted to a list.</p></li>
 Should be <code class="docutils literal notranslate"><span class="pre">True</span></code> when called as a standalone, but <code class="docutils literal notranslate"><span class="pre">False</span></code> when called within ARC.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The determined frequency scaling factors.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -255,10 +255,10 @@ Should be <code class="docutils literal notranslate"><span class="pre">True</spa
 <code class="sig-prename descclassname">arc.utils.scale.</code><code class="sig-name descname">get_species_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/utils/scale.html#get_species_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.utils.scale.get_species_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates the standardized species list.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The standardized species list initialized with xyz.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>list</p>
 </dd>
 </dl>
@@ -269,13 +269,13 @@ Should be <code class="docutils literal notranslate"><span class="pre">True</spa
 <code class="sig-prename descclassname">arc.utils.scale.</code><code class="sig-name descname">rename_level</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="../_modules/arc/utils/scale.html#rename_level"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.utils.scale.rename_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename the level of theory so it can be used for folder names.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>level</strong> (<em>str</em>) – The level of theory to be renamed.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The renamed level of theory</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -286,7 +286,7 @@ Should be <code class="docutils literal notranslate"><span class="pre">True</spa
 <code class="sig-prename descclassname">arc.utils.scale.</code><code class="sig-name descname">summarize_results</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">lambda_zpes</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">levels</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">zpe_dicts</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">times</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">overall_time</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">base_path</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/utils/scale.html#summarize_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.utils.scale.summarize_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print and save the results to file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>lambda_zpes</strong> (<em>list</em>) – The scale factors for the vibrational zero-point energy, entries are floats.</p></li>
 <li><p><strong>levels</strong> (<em>list</em>) – Entries are string representations of the frequency levels of theory.</p></li>

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -239,9 +239,9 @@ Each species in <cite>species_list</cite> has to have a unique label.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The rotor scan dicts are located under Species.rotors_dict</p>
-</div>
+</aside>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>project</strong> (<em>str</em>) – The project’s name. Used for naming the working directory.</p></li>
 <li><p><strong>ess_settings</strong> (<em>dict</em>) – A dictionary of available ESS and a corresponding server list.</p></li>
@@ -285,7 +285,7 @@ force field conformers are considered.</p></li>
 <code class="sig-name descname">project</code><a class="headerlink" href="#arc.scheduler.Scheduler.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>The project’s name. Used for naming the working directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -296,7 +296,7 @@ force field conformers are considered.</p></li>
 <code class="sig-name descname">servers</code><a class="headerlink" href="#arc.scheduler.Scheduler.servers" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of servers used for the present project.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -307,7 +307,7 @@ force field conformers are considered.</p></li>
 <code class="sig-name descname">species_list</code><a class="headerlink" href="#arc.scheduler.Scheduler.species_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains input <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects (both species and TSs).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -318,7 +318,7 @@ force field conformers are considered.</p></li>
 <code class="sig-name descname">species_dict</code><a class="headerlink" href="#arc.scheduler.Scheduler.species_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keys are labels, values are <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -329,7 +329,7 @@ force field conformers are considered.</p></li>
 <code class="sig-name descname">rxn_list</code><a class="headerlink" href="#arc.scheduler.Scheduler.rxn_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Contains input <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -340,7 +340,7 @@ force field conformers are considered.</p></li>
 <code class="sig-name descname">unique_species_labels</code><a class="headerlink" href="#arc.scheduler.Scheduler.unique_species_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of species labels (checked for duplicates).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -353,7 +353,7 @@ force field conformers are considered.</p></li>
 values are dictionaries where keys are job names (corresponding to
 ‘running_jobs’ if job is running) and values are the Job objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -365,7 +365,7 @@ values are dictionaries where keys are job names (corresponding to
 <dd><p>A dictionary of currently running jobs (a subset of <cite>job_dict</cite>).
 Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’, ‘opt_a123’).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -376,7 +376,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">servers_jobs_ids</code><a class="headerlink" href="#arc.scheduler.Scheduler.servers_jobs_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of relevant job IDs currently running on the server.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -387,7 +387,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">output</code><a class="headerlink" href="#arc.scheduler.Scheduler.output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Output dictionary with status per job type and final QM file paths for all species.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -398,7 +398,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">ess_settings</code><a class="headerlink" href="#arc.scheduler.Scheduler.ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of available ESS and a corresponding server list.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -409,7 +409,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">restart_dict</code><a class="headerlink" href="#arc.scheduler.Scheduler.restart_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A restart dictionary parsed from a YAML restart file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -420,7 +420,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">project_directory</code><a class="headerlink" href="#arc.scheduler.Scheduler.project_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Folder path for the project: the input file path or ARC/Projects/project-name.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -432,7 +432,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <dd><p>Whether to start saving a restart file. <code class="docutils literal notranslate"><span class="pre">True</span></code> only after all species are loaded
 (otherwise saves a partial file and may cause loss of information).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -443,7 +443,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">restart_path</code><a class="headerlink" href="#arc.scheduler.Scheduler.restart_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Path to the <cite>restart.yml</cite> file to be saved.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -454,7 +454,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">max_job_time</code><a class="headerlink" href="#arc.scheduler.Scheduler.max_job_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximal allowed job time on the server in hours (can be fractional).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -465,7 +465,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">testing</code><a class="headerlink" href="#arc.scheduler.Scheduler.testing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used for internal ARC testing (generating the object w/o executing it).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -476,7 +476,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <code class="sig-name descname">rmg_database</code><a class="headerlink" href="#arc.scheduler.Scheduler.rmg_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>The RMG database object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>RMGDatabase</p>
 </dd>
 </dl>
@@ -488,7 +488,7 @@ Keys are species/TS label, values are lists of job names (e.g. ‘conformer3’,
 <dd><p>Whether to optimize species even if they do not have a 3D conformer that is
 isomorphic to the 2D graph representation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -500,7 +500,7 @@ isomorphic to the 2D graph representation.</p>
 <dd><p>A list of species labels for which conformer jobs were loaded from a restart file,
 or user-requested. Additional conformer generation should be avoided for them.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -511,7 +511,7 @@ or user-requested. Additional conformer generation should be avoided for them.</
 <code class="sig-name descname">memory</code><a class="headerlink" href="#arc.scheduler.Scheduler.memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The total allocated job memory in GB (14 by default).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -522,7 +522,7 @@ or user-requested. Additional conformer generation should be avoided for them.</
 <code class="sig-name descname">n_confs</code><a class="headerlink" href="#arc.scheduler.Scheduler.n_confs" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of lowest force field conformers to consider.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -534,7 +534,7 @@ or user-requested. Additional conformer generation should be avoided for them.</
 <dd><p>The energy threshold in kJ/mol above the lowest energy conformer below which
 force field conformers are considered.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -545,7 +545,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">job_types</code><a class="headerlink" href="#arc.scheduler.Scheduler.job_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of job types to execute. Keys are job types, values are boolean.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -557,7 +557,7 @@ force field conformers are considered.</p>
 <dd><p>A bath gas. Currently used in OneDMin to calc L-J parameters.
 Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -568,7 +568,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">composite_method</code><a class="headerlink" href="#arc.scheduler.Scheduler.composite_method" title="Permalink to this definition">¶</a></dt>
 <dd><p>A composite method to use.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -579,7 +579,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">conformer_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.conformer_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for conformer comparisons.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -590,7 +590,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">opt_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.opt_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for geometry optimizations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -601,7 +601,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">freq_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.freq_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for frequency calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -612,7 +612,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">sp_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.sp_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for single point energy calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -623,7 +623,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">scan_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.scan_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for torsion scans.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -634,7 +634,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">ts_guess_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.ts_guess_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for TS guess comparisons.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -645,7 +645,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">irc_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.irc_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for IRC calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -656,7 +656,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">orbitals_level</code><a class="headerlink" href="#arc.scheduler.Scheduler.orbitals_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for calculating MOs (for plotting).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -671,7 +671,7 @@ values are dictionaries with job type tuples as keys and levels of theory
 as values. ‘inf’ is accepted an max_num_atoms rmg_database
 (RMGDatabase, optional): The RMG database object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -682,7 +682,7 @@ as values. ‘inf’ is accepted an max_num_atoms rmg_database
 <code class="sig-name descname">fine_only</code><a class="headerlink" href="#arc.scheduler.Scheduler.fine_only" title="Permalink to this definition">¶</a></dt>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code> ARC will not run optimization jobs without fine=True</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -693,7 +693,7 @@ as values. ‘inf’ is accepted an max_num_atoms rmg_database
 <code class="sig-name descname">check_all_done</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_all_done"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_all_done" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that we have all required data for the species/TS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -707,7 +707,7 @@ and whether the optimized geometry indeed represents the minimum energy conforme
 Recommends whether or not to use this rotor using the ‘successful_rotors’ and ‘unsuccessful_rotors’ attributes.
 This method differs from check_directed_scan_job(), since here we consider the entire scan.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>pivots</strong> (<em>list</em>) – The rotor pivots.</p></li>
@@ -745,7 +745,7 @@ This method differs from check_directed_scan_job(), since here we consider the e
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The rotor scan job object.</p></li>
@@ -760,7 +760,7 @@ This method differs from check_directed_scan_job(), since here we consider the e
 <dd><p>Check that a freq job converged successfully. Also checks (QA) that no imaginary frequencies were assigned for
 stable species, and that exactly one imaginary frequency was assigned for a TS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The frequency job object.</p></li>
@@ -774,7 +774,7 @@ stable species, and that exactly one imaginary frequency was assigned for a TS.<
 <code class="sig-name descname">check_irc_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_irc_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_irc_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check an IRC job and perform post-job tasks.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The single point job object.</p></li>
@@ -789,7 +789,7 @@ stable species, and that exactly one imaginary frequency was assigned for a TS.<
 <dd><p>A helper function for determining the number of negative frequencies. Also logs appropriate errors.
 Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the number of negative frequencies is as excepted, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The optimization job object.</p></li>
@@ -829,7 +829,7 @@ rotors_dict structure (attribute of ARCSpecies):</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The rotor scan job object.</p></li>
@@ -843,7 +843,7 @@ rotors_dict structure (attribute of ARCSpecies):</p>
 <code class="sig-name descname">check_sp_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_sp_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_sp_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a single point job converged successfully.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The single point job object.</p></li>
@@ -857,7 +857,7 @@ rotors_dict structure (attribute of ARCSpecies):</p>
 <code class="sig-name descname">delete_all_species_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.delete_all_species_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.delete_all_species_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Delete all jobs of a species/TS.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -871,7 +871,7 @@ self.adaptive_levels is a dictionary of levels of theory for ranges of the numbe
 species. Keys are tuples of (min_num_atoms, max_num_atoms), values are dictionaries with job type tuples
 as keys and levels of theory as values. ‘inf’ is accepted an max_num_atoms.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>original_level_of_theory</strong> (<a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level"><em>Level</em></a>) – The level of theory for non-sp/opt/freq job types.</p></li>
 <li><p><strong>job_type</strong> (<em>str</em>) – The job type for which the level of theory is determined.</p></li>
@@ -887,7 +887,7 @@ as keys and levels of theory as values. ‘inf’ is accepted an max_num_atoms.<
 <dd><p>Determine the most likely TS conformer.
 Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The TS species label.</p>
 </dd>
 </dl>
@@ -900,7 +900,7 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 Also run an isomorphism check.
 Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -911,17 +911,17 @@ Save the resulting xyz as <cite>initial_xyz</cite>.</p>
 <code class="sig-name descname">end_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">job</span></em>, <em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">job_name</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.end_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.end_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for checking job status, saving in csv file, and downloading output files.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The job object.</p></li>
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job_name</strong> (<em>str</em>) – The job name from the running_jobs dict.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><cite>True</cite> if job terminated successfully on the server, <cite>False</cite> otherwise.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -941,7 +941,7 @@ Do not initialize keys that will contain paths (‘geo’, ‘freq’, ‘sp’,
 their existence indicate the job was terminated for restarting purposes.
 If <code class="docutils literal notranslate"><span class="pre">label</span></code> is not <code class="docutils literal notranslate"><span class="pre">None</span></code>, will initialize for a specific species, otherwise will initialize for all species.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – A species label.</p>
 </dd>
 </dl>
@@ -961,7 +961,7 @@ Also checks (QA) that no imaginary frequencies were assigned for stable species,
 and that exactly one imaginary frequency was assigned for a TS.
 Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the job converged successfully, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise and troubleshoots.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The composite job object.</p></li>
@@ -977,7 +977,7 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 For species, save it in the Species.conformer_energies attribute.
 Fot TSs, save it in the TSGuess.energy attribute, and also parse the geometry.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The conformer job object.</p></li>
 <li><p><strong>label</strong> (<em>str</em>) – The TS species label.</p></li>
@@ -995,7 +995,7 @@ If the job is ‘optfreq’, also checks (QA) that no imaginary frequencies were
 and that exactly one imaginary frequency was assigned for a TS.
 Returns <code class="docutils literal notranslate"><span class="pre">True</span></code> if the job (or both jobs) converged successfully, <code class="docutils literal notranslate"><span class="pre">False</span></code> otherwise and troubleshoots opt.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The optimization job object.</p></li>
@@ -1009,7 +1009,7 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 <code class="sig-name descname">post_sp_actions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">sp_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.post_sp_actions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.post_sp_actions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Perform post-sp actions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>sp_path</strong> (<em>str</em>) – The path to ‘output.out’ for the single point job.</p></li>
@@ -1025,7 +1025,7 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 <dd><p>Process the generated conformers and spawn DFT jobs at the conformer_level.
 If more than one conformer is available, they will be optimized at the DFT conformer_level.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -1058,7 +1058,7 @@ If more than one conformer is available, they will be optimized at the DFT confo
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>pivots</strong> (<em>list</em>) – The rotor pivots.</p></li>
@@ -1079,7 +1079,7 @@ Important for the restart feature so long jobs won’t be ran twice.</p>
 <code class="sig-name descname">run_composite_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_composite_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_composite_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a composite job (e.g., CBS-QB3) using ‘final_xyz’ for species ot TS ‘label’.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -1092,7 +1092,7 @@ Important for the restart feature so long jobs won’t be ran twice.</p>
 spawning opt jobs at the conformer level of theory, usually a reasonable yet cheap DFT, e.g., b97d3/6-31+g(d,p).
 The resulting conformer is saved in a string format xyz in the Species initial_xyz attribute.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>labels</strong> (<em>list</em>) – Labels of specific species to run conformer jobs for.
 If <code class="docutils literal notranslate"><span class="pre">None</span></code>, conformer jobs will be spawned for all species corresponding to labels in
 self.unique_species_labels.</p>
@@ -1106,7 +1106,7 @@ self.unique_species_labels.</p>
 <dd><p>Spawn a freq job using ‘final_xyz’ for species ot TS ‘label’.
 If this was originally a composite job, run an appropriate separate freq job outputting the Hessian.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -1117,7 +1117,7 @@ If this was originally a composite job, run an appropriate separate freq job out
 <code class="sig-name descname">run_irc_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">irc_direction</span><span class="o">=</span><span class="default_value">'forward'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_irc_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_irc_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn an IRC job.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>irc_direction</strong> (<em>str</em>) – The IRC job direction, either ‘forward’ or ‘reverse’.</p></li>
@@ -1131,7 +1131,7 @@ If this was originally a composite job, run an appropriate separate freq job out
 <code class="sig-name descname">run_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">level_of_theory</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>dict<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">job_type</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">xyz</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">fine</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">software</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">shift</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">trsh</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">memory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">conformer</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">- 1</span></em>, <em class="sig-param"><span class="n">ess_trsh_methods</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scan</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">pivots</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">occ</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scan_trsh</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">scan_res</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">max_job_time</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">radius</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed_scan_type</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed_scans</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">directed_dihedrals</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>list<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">rotor_index</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">cpu_cores</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">irc_direction</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for running (all) jobs.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>xyz</strong> (<em>dict</em>) – The 3D coordinates for the species.</p></li>
@@ -1170,7 +1170,7 @@ to <code class="docutils literal notranslate"><span class="pre">directed_scans</
 <code class="sig-name descname">run_onedmin_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_onedmin_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_onedmin_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a lennard-jones calculation using OneDMin.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -1181,7 +1181,7 @@ to <code class="docutils literal notranslate"><span class="pre">directed_scans</
 <code class="sig-name descname">run_opt_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">fine</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_opt_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_opt_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn a geometry optimization job. The initial guess is taken from the <cite>initial_xyz</cite> attribute.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>fine</strong> (<em>bool</em>) – Whether or not a fine grid should be used during optimization</p></li>
@@ -1196,7 +1196,7 @@ to <code class="docutils literal notranslate"><span class="pre">directed_scans</
 <dd><p>Spawn orbitals job used for molecular orbital visualization.
 Currently supporting QChem for printing the orbitals, the output could be visualized using IQMol.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -1207,7 +1207,7 @@ Currently supporting QChem for printing the orbitals, the output could be visual
 <code class="sig-name descname">run_scan_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_scan_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_scan_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn rotor scan jobs using ‘final_xyz’ for species (or TS).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -1219,7 +1219,7 @@ Currently supporting QChem for printing the orbitals, the output could be visual
 <dd><p>Spawn a single point job using ‘final_xyz’ for species ot TS ‘label’.
 If the method is MRCI, first spawn a simple CCSD job, and use orbital determination to run the MRCI job.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>level</strong> (<a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level"><em>Level</em></a>) – An alternative level of theory to run at. If <code class="docutils literal notranslate"><span class="pre">None</span></code>, self.sp_level will be used.</p></li>
@@ -1233,7 +1233,7 @@ If the method is MRCI, first spawn a simple CCSD job, and use orbital determinat
 <code class="sig-name descname">run_ts_conformer_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.run_ts_conformer_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.run_ts_conformer_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn opt jobs at the ts_guesses level of theory for the TS guesses.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The TS species label.</p>
 </dd>
 </dl>
@@ -1260,14 +1260,14 @@ Directed scan types could be one of the following: ‘brute_force_sp’, ‘brut
 Here we treat <code class="docutils literal notranslate"><span class="pre">cont</span></code> and <code class="docutils literal notranslate"><span class="pre">brute_force</span></code> separately, and also consider the <code class="docutils literal notranslate"><span class="pre">diagonal</span></code> keyword.
 The differentiation between <code class="docutils literal notranslate"><span class="pre">sp</span></code> and <code class="docutils literal notranslate"><span class="pre">opt</span></code> is done in the Job module.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>rotor_index</strong> (<em>int</em>) – The 0-indexed rotor number (key) in the species.rotors_dict dictionary.</p></li>
 <li><p><strong>xyz</strong> (<em>str</em><em>, </em><em>optional</em>) – The 3D coordinates for a continuous directed scan.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>InputError</strong> – If the species directed scan type has an unexpected value,
     or if <code class="docutils literal notranslate"><span class="pre">xyz</span></code> wasn’t given for a cont_opt job.</p></li>
@@ -1282,7 +1282,7 @@ The differentiation between <code class="docutils literal notranslate"><span cla
 <code class="sig-name descname">spawn_post_opt_jobs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">job_name</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_post_opt_jobs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_post_opt_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Spawn additional jobs after opt has converged.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job_name</strong> (<em>str</em>) – The opt job name (used for differentiating between <code class="docutils literal notranslate"><span class="pre">opt</span></code> and <code class="docutils literal notranslate"><span class="pre">optfreq</span></code> jobs).</p></li>
@@ -1297,7 +1297,7 @@ The differentiation between <code class="docutils literal notranslate"><span cla
 <dd><p>Troubleshoot conformer optimization for a species that failed isomorphic test in
 <code class="docutils literal notranslate"><span class="pre">determine_most_stable_conformer</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -1308,7 +1308,7 @@ The differentiation between <code class="docutils literal notranslate"><span cla
 <code class="sig-name descname">troubleshoot_ess</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">job</span><span class="p">:</span> <span class="n"><a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job">arc.job.job.Job</a></span></em>, <em class="sig-param"><span class="n">level_of_theory</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>dict<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">conformer</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">- 1</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.troubleshoot_ess"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.Scheduler.troubleshoot_ess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshoot issues related to the electronic structure software, such as conversion.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The job object to troubleshoot.</p></li>
@@ -1325,7 +1325,7 @@ The differentiation between <code class="docutils literal notranslate"><span cla
 <dd><p>Troubleshooting cases where non-TS species have negative frequencies.
 Run newly generated conformers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The frequency job object.</p></li>
@@ -1341,7 +1341,7 @@ Run newly generated conformers.</p>
 First check for server status and troubleshoot if needed. Then check for ESS status and troubleshoot
 if needed. Finally, check whether or not the last job had fine=True, add if it didn’t run with fine.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The species label.</p>
 </dd>
 </dl>
@@ -1356,7 +1356,7 @@ Using the following methods:
 2. inc_res: increasing the scan resolution.
 3. change conformer: changing to a conformer with a lower energy</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>job</strong> (<a class="reference internal" href="job.html#arc.job.job.Job" title="arc.job.job.Job"><em>Job</em></a>) – The scan Job object.</p></li>
 <li><p><strong>methods</strong> (<em>dict</em>) – <p>The troubleshooting method/s to try:</p>
@@ -1385,13 +1385,13 @@ Using the following methods:
 <code class="sig-prename descclassname">arc.scheduler.</code><code class="sig-name descname">sum_time_delta</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">timedelta_list</span><span class="p">:</span> <span class="n">List<span class="p">[</span>datetime.timedelta<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; datetime.timedelta<a class="reference internal" href="../_modules/arc/scheduler.html#sum_time_delta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.scheduler.sum_time_delta" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for summing datetime.timedelta objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>timedelta_list</strong> (<em>list</em>) – Time delta’s to sum.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The timedelta sum.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>datetime.timedelta</p>
 </dd>
 </dl>

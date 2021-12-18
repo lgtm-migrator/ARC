@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -196,13 +196,13 @@
 Either <code class="docutils literal notranslate"><span class="pre">xyz</span></code> or <code class="docutils literal notranslate"><span class="pre">species</span></code> must be given. If both are given, <code class="docutils literal notranslate"><span class="pre">xyz</span></code> gets precedence.
 If <code class="docutils literal notranslate"><span class="pre">species</span></code> is given, xys will be taken from it or cheaply generated for it.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em><em>, </em><em>optional</em>) – The 3D coordinates in any form.</p></li>
 <li><p><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>, </em><em>optional</em>) – A species to take the coordinates from.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>InputError</strong> – If neither <code class="docutils literal notranslate"><span class="pre">xyz</span></code> nor <code class="docutils literal notranslate"><span class="pre">species</span></code> are given.</p></li>
 <li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">species</span></code> is of wrong type.</p></li>
@@ -222,13 +222,13 @@ If <code class="docutils literal notranslate"><span class="pre">species</span></
 results in values which are significantly lower. Useful for scanning methods which occasionally give
 extremely high energies by mistake.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>results</strong> (<em>dict</em>) – The directed snan results dictionary. Keys are dihedral tuples, values are energies.</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A filtered results dictionary.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -240,7 +240,7 @@ extremely high energies by mistake.</p>
 <dd><p>Draws the molecule in a “3D-balls” style.
 Saves an image if a species and <code class="docutils literal notranslate"><span class="pre">project_directory</span></code> are provided.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xyz</strong> (<em>str</em><em>, </em><em>dict</em><em>, </em><em>optional</em>) – The coordinates to display.</p></li>
 <li><p><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>, </em><em>optional</em>) – xyz coordinates will be taken from the species.</p></li>
@@ -257,7 +257,7 @@ Saves an image if a species and <code class="docutils literal notranslate"><span
 <dd><p>Draws plots of calculated rate coefficients and RMG’s estimates.
 <cite>rxn_list</cite> has a .kinetics attribute calculated by ARC and an .rmg_reactions list with RMG rates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rxn_list</strong> (<em>list</em>) – Reactions with a .kinetics attribute calculated by ARC
 and an .rmg_reactions list with RMG rates.</p></li>
@@ -275,7 +275,7 @@ and an .rmg_reactions list with RMG rates.</p></li>
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_parity_plot</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">var_arc</span></em>, <em class="sig-param"><span class="n">var_rmg</span></em>, <em class="sig-param"><span class="n">labels</span></em>, <em class="sig-param"><span class="n">var_label</span></em>, <em class="sig-param"><span class="n">var_units</span></em>, <em class="sig-param"><span class="n">pp</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_parity_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_parity_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw a parity plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>var_arc</strong> (<em>list</em>) – The variable calculated by ARC.</p></li>
 <li><p><strong>var_rmg</strong> (<em>list</em>) – The variable estimated by RMG.</p></li>
@@ -293,7 +293,7 @@ and an .rmg_reactions list with RMG rates.</p></li>
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">draw_structure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">species</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">method</span><span class="o">=</span><span class="default_value">'show_sticks'</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#draw_structure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.draw_structure" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for drawing a molecular structure using either show_sticks or draw_3d.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xyz</strong> (<em>str</em><em>, </em><em>optional</em>) – The xyz coordinates to plot in string format.</p></li>
 <li><p><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>, </em><em>optional</em>) – A species from which to extract the xyz coordinates to plot.</p></li>
@@ -310,7 +310,7 @@ and an .rmg_reactions list with RMG rates.</p></li>
 <dd><p>Draws parity plots of calculated thermo and RMG’s estimates.
 Saves a thermo.info file if a <code class="docutils literal notranslate"><span class="pre">path</span></code> is specified.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>species_list</strong> (<em>list</em>) – Species to compare.</p></li>
 <li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to the project’s output folder.</p></li>
@@ -331,7 +331,7 @@ Source: <a class="reference external" href="https://stackoverflow.com/questions/
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_bde_report</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span></em>, <em class="sig-param"><span class="n">bde_report</span></em>, <em class="sig-param"><span class="n">spc_dict</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_bde_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_bde_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>Prettify the report for bond dissociation energies. Log and save to file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>str</em>) – The file path.</p></li>
 <li><p><strong>bde_report</strong> (<em>dict</em>) – The BDE report dictionary. Keys are species labels, values are species BDE dictionaries.
@@ -347,7 +347,7 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_kinetics</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_kinetics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_kinetics" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logging kinetics from an Arkane output file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – The path to the folder containing the relevant Arkane output file.</p></li>
@@ -361,7 +361,7 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">log_thermo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#log_thermo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.log_thermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logging thermodata from an Arkane output file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – The path to the folder containing the relevant Arkane output file.</p></li>
@@ -375,7 +375,7 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_1d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angles</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">energies</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">results</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scan</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">comment</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">units</span><span class="o">=</span><span class="default_value">'degrees'</span></em>, <em class="sig-param"><span class="n">original_dihedral</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_1d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_1d_rotor_scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots a 1D rotor PES for energy vs. angles. Either <code class="docutils literal notranslate"><span class="pre">angles</span></code> and <code class="docutils literal notranslate"><span class="pre">energies</span></code> or <code class="docutils literal notranslate"><span class="pre">results</span></code> must be given.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>angles</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em><em>, </em><em>optional</em>) – Dihedral angles.</p></li>
 <li><p><strong>energies</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>np.array</em><em>, </em><em>optional</em>) – The energies in kJ/mol.</p></li>
@@ -388,7 +388,7 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 <li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The species label.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>InputError</strong> – If neither <cite>angles`</cite> and <code class="docutils literal notranslate"><span class="pre">energies</span></code> nor <code class="docutils literal notranslate"><span class="pre">results</span></code> were given.</p>
 </dd>
 </dl>
@@ -399,7 +399,7 @@ In the second level dict, keys are pivot tuples, values are energies in kJ/mol.<
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_2d_rotor_scan</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">cmap</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Blues'</span></em>, <em class="sig-param"><span class="n">resolution</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">90</span></em>, <em class="sig-param"><span class="n">mark_lowest_conformations</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">original_dihedrals</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>float<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_2d_rotor_scan"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_2d_rotor_scan" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a 2D rotor scan.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>results</strong> (<em>dict</em>) – <p>The results dictionary, dihedrals are assumed to be in degrees (not radians).
 This dictionary has the following structure:</p>
@@ -425,7 +425,7 @@ This dictionary has the following structure:</p>
 If given, the conformer will be marked on the plot with a red dot.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">results</span></code> if of wrong type.</p></li>
 <li><p><strong>InputError</strong> – If <code class="docutils literal notranslate"><span class="pre">results</span></code> does not represent a 2D rotor.</p></li>
@@ -455,7 +455,7 @@ If given, the conformer will be marked on the plot with a red dot.</p></li>
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_3d_mol_as_scatter</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span></em>, <em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">plot_h</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">show_plot</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">name</span><span class="o">=</span><span class="default_value">''</span></em>, <em class="sig-param"><span class="n">index</span><span class="o">=</span><span class="default_value">0</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_3d_mol_as_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_3d_mol_as_scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draws the molecule as scattered balls in space according to the supplied xyz coordinates.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em>) – The xyz coordinates.</p></li>
 <li><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – A directory path to save the generated figure in.</p></li>
@@ -473,7 +473,7 @@ If given, the conformer will be marked on the plot with a red dot.</p></li>
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">plot_torsion_angles</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">torsion_angles</span></em>, <em class="sig-param"><span class="n">torsions_sampling_points</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">wells_dict</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e_conformers</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">de_threshold</span><span class="o">=</span><span class="default_value">5.0</span></em>, <em class="sig-param"><span class="n">plot_path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#plot_torsion_angles"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.plot_torsion_angles" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the torsion angles of the generated conformers.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>torsion_angles</strong> (<em>dict</em>) – Keys are torsions, values are lists of corresponding angles.</p></li>
 <li><p><strong>torsions_sampling_points</strong> (<em>dict</em><em>, </em><em>optional</em>) – Keys are torsions, values are sampling points.</p></li>
@@ -494,7 +494,7 @@ Each entry in such a list is a well dictionary with the following keys:
 <dd><p>Save the conformers before or after optimization.
 If energies are given, the conformers are considered to be optimized.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>project_directory</strong> (<em>str</em>) – The path to the project’s directory.</p></li>
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
@@ -519,7 +519,7 @@ If <code class="docutils literal notranslate"><span class="pre">species</span></
 If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is given, it gets precedence over <code class="docutils literal notranslate"><span class="pre">species</span></code>.
 Either <code class="docutils literal notranslate"><span class="pre">species</span></code> or <code class="docutils literal notranslate"><span class="pre">xyz</span></code> must be specified. Either <code class="docutils literal notranslate"><span class="pre">project_directory</span></code> or <code class="docutils literal notranslate"><span class="pre">path</span></code> must be specified.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a>) – The species with the geometry attributes.</p></li>
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The xyz coordinates to save in a string format.</p></li>
@@ -530,7 +530,7 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 <li><p><strong>comment</strong> (<em>str</em><em>, </em><em>optional</em>) – A comment to be stored in the XYZ file after the number of atoms line.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>InputError</strong> – If neither species nor xyz were given. Or if neither project_directory nor path were given.</p>
 </dd>
 </dl>
@@ -541,7 +541,7 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_irc_traj_animation</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">irc_f_path</span></em>, <em class="sig-param"><span class="n">irc_r_path</span></em>, <em class="sig-param"><span class="n">out_path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_irc_traj_animation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_irc_traj_animation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an IRC trajectory animation file showing the entire reaction coordinate.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>irc_f_path</strong> (<em>str</em>) – The forward IRC computation.</p></li>
 <li><p><strong>irc_r_path</strong> (<em>str</em>) – The reverse IRC computation.</p></li>
@@ -565,7 +565,7 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_nd_rotor_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">results</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_nd_rotor_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_nd_rotor_yaml" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a text file summarizing a rotor scan, useful for brute force scans.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>results</strong> (<em>dict</em>) – The respective scan dictionary to save.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – The path of the file to be saved.</p></li>
@@ -579,14 +579,14 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_rotor_text_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angles</span></em>, <em class="sig-param"><span class="n">energies</span></em>, <em class="sig-param"><span class="n">path</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/plotter.html#save_rotor_text_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_rotor_text_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save a text file summarizing a rotor scan, useful for brute force scans.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>angles</strong> (<em>list</em>) – The dihedral angles in degrees.</p></li>
 <li><p><strong>energies</strong> (<em>list</em>) – The respective scan energies in kJ/mol.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – The path of the file to be saved.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>InputError</strong> – If energies and angles are not the same length.</p>
 </dd>
 </dl>
@@ -597,7 +597,7 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 <code class="sig-prename descclassname">arc.plotter.</code><code class="sig-name descname">save_thermo_lib</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species_list</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">lib_long_desc</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/plotter.html#save_thermo_lib"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.plotter.save_thermo_lib" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save an RMG thermo library of all species</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>species_list</strong> (<em>list</em>) – Entries are ARCSpecies objects to be saved in the library.</p></li>
 <li><p><strong>path</strong> (<em>str</em>) – The file path where the library should be created.</p></li>
@@ -623,7 +623,7 @@ Either <code class="docutils literal notranslate"><span class="pre">species</spa
 Returns whether successful of not. If successful, saves the image using draw_3d.
 Either <code class="docutils literal notranslate"><span class="pre">xyz</span></code> or <code class="docutils literal notranslate"><span class="pre">species</span></code> must be specified.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>xyz</strong> (<em>str</em><em>, </em><em>dict</em><em>, </em><em>optional</em>) – The coordinates to display.</p></li>
 <li><p><strong>species</strong> (<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>, </em><em>optional</em>) – xyz coordinates will be taken from the species.</p></li>

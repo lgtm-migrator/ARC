@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -200,7 +200,7 @@ To run ARC through its API, first make an instance of the ARC class, then call t
 <em class="property">class </em><code class="sig-prename descclassname">arc.main.</code><code class="sig-name descname">ARC</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">adaptive_levels</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">allow_nonisomorphic_2d</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">arkane_level_of_theory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">bac_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'p'</span></em>, <em class="sig-param"><span class="n">bath_gas</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">calc_freq_factor</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">compare_to_rmg</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">composite_method</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">compute_rates</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">compute_thermo</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">compute_transport</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">conformer_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">dont_gen_confs</span><span class="p">:</span> <span class="n">List<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">e_confs</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">5.0</span></em>, <em class="sig-param"><span class="n">ess_settings</span><span class="p">:</span> <span class="n">Dict<span class="p">[</span>str<span class="p">, </span>Union<span class="p">[</span>str<span class="p">, </span>List<span class="p">[</span>str<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq_scale_factor</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">irc_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">keep_checks</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">kinetics_adapter</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Arkane'</span></em>, <em class="sig-param"><span class="n">job_memory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">job_types</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Dict<span class="p">[</span>str<span class="p">, </span>bool<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">level_of_theory</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">max_job_time</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_confs</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">10</span></em>, <em class="sig-param"><span class="n">opt_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">orbitals_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">output</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">reactions</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span><a class="reference internal" href="reaction.html#arc.reaction.ARCReaction" title="arc.reaction.ARCReaction">arc.reaction.ARCReaction</a><span class="p">, </span>rmgpy.reaction.Reaction<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">running_jobs</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">scan_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sp_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">species</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>List<span class="p">[</span>Union<span class="p">[</span><a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies">arc.species.species.ARCSpecies</a><span class="p">, </span>rmgpy.species.Species<span class="p">]</span><span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">specific_job_type</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">T_min</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_max</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Tuple<span class="p">[</span>float<span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_count</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em>, <em class="sig-param"><span class="n">thermo_adapter</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'Arkane'</span></em>, <em class="sig-param"><span class="n">three_params</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">ts_guess_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>Union<span class="p">[</span>dict<span class="p">, </span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>str<span class="p">]</span><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="o">=</span><span class="default_value">20</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC" title="Permalink to this definition">¶</a></dt>
 <dd><p>The main ARC class.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>project</strong> (<em>str</em><em>, </em><em>optional</em>) – The project’s name. Used for naming the working directory.</p></li>
 <li><p><strong>species</strong> (<em>list</em><em>, </em><em>optional</em>) – Entries are <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p></li>
@@ -228,7 +228,7 @@ Default: ‘p’. <code class="docutils literal notranslate"><span class="pre">N
 <p class="admonition-title">Note</p>
 <p>This argument is a <code class="docutils literal notranslate"><span class="pre">Level</span></code> type, not a <code class="docutils literal notranslate"><span class="pre">LevelOfTheory</span></code> type.
 This argument will only affect AEC/BAC, not the frequency scaling factor.</p>
-</div>
+</aside>
 </p></li>
 <li><p><strong>T_min</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The minimum temperature for kinetics computations, e.g., <code class="docutils literal notranslate"><span class="pre">(500,</span> <span class="pre">'K')</span></code>.</p></li>
 <li><p><strong>T_max</strong> (<em>tuple</em><em>, </em><em>optional</em>) – The maximum temperature for kinetics computations, e.g., <code class="docutils literal notranslate"><span class="pre">(3000,</span> <span class="pre">'K')</span></code>.</p></li>
@@ -295,7 +295,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">project</code><a class="headerlink" href="#arc.main.ARC.project" title="Permalink to this definition">¶</a></dt>
 <dd><p>The project’s name. Used for naming the working directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -306,7 +306,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">project_directory</code><a class="headerlink" href="#arc.main.ARC.project_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The path to the project directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -317,7 +317,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">species</code><a class="headerlink" href="#arc.main.ARC.species" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -328,7 +328,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">reactions</code><a class="headerlink" href="#arc.main.ARC.reactions" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> objects.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -339,7 +339,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">level_of_theory</code><a class="headerlink" href="#arc.main.ARC.level_of_theory" title="Permalink to this definition">¶</a></dt>
 <dd><p>A shortcut representing either sp//geometry levels or a composite method.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -350,7 +350,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">composite_method</code><a class="headerlink" href="#arc.main.ARC.composite_method" title="Permalink to this definition">¶</a></dt>
 <dd><p>Composite method.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -361,7 +361,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">conformer_level</code><a class="headerlink" href="#arc.main.ARC.conformer_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for conformer searches.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -372,7 +372,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">opt_level</code><a class="headerlink" href="#arc.main.ARC.opt_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for geometry optimization.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -383,7 +383,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">freq_level</code><a class="headerlink" href="#arc.main.ARC.freq_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for frequency calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -394,7 +394,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">sp_level</code><a class="headerlink" href="#arc.main.ARC.sp_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for single point calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -405,7 +405,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">scan_level</code><a class="headerlink" href="#arc.main.ARC.scan_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for rotor scans.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -416,7 +416,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">ts_guess_level</code><a class="headerlink" href="#arc.main.ARC.ts_guess_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for comparisons of TS guesses between different methods.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -427,7 +427,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">irc_level</code><a class="headerlink" href="#arc.main.ARC.irc_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>The level of theory to use for IRC calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -438,7 +438,7 @@ Only used for restarting.</p></li>
 <code class="sig-name descname">orbitals_level</code><a class="headerlink" href="#arc.main.ARC.orbitals_level" title="Permalink to this definition">¶</a></dt>
 <dd><p>Level of theory for molecular orbitals calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -452,7 +452,7 @@ the molecule. Keys are tuples of (min_num_atoms, max_num_atoms), values are dict
 sub-dictionaries are tuples of job types, values are levels of theory (str, dict or Level).
 Job types not defined in adaptive levels will have non-adaptive (regular) levels.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -464,7 +464,7 @@ Job types not defined in adaptive levels will have non-adaptive (regular) levels
 <dd><p>Output dictionary with status and final QM file paths for all species. Only used for restarting,
 the actual object used is in the Scheduler class.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -476,7 +476,7 @@ the actual object used is in the Scheduler class.</p>
 <dd><p>The bond additivity correction type. ‘p’ for Petersson- or ‘m’ for Melius-type BAC.
 <code class="docutils literal notranslate"><span class="pre">None</span></code> to not use BAC.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -487,7 +487,7 @@ the actual object used is in the Scheduler class.</p>
 <code class="sig-name descname">arkane_level_of_theory</code><a class="headerlink" href="#arc.main.ARC.arkane_level_of_theory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The Arkane level of theory to use for AEC and BAC.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">Level</a></p>
 </dd>
 </dl>
@@ -499,7 +499,7 @@ the actual object used is in the Scheduler class.</p>
 <dd><p>The harmonic frequencies scaling factor. Could be automatically determined if not
 available in Arkane and not provided by the user.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -512,7 +512,7 @@ available in Arkane and not provided by the user.</p>
 not given by the user and could not be determined by Arkane. True to calculate, False
 to use user input / Arkane’s value / Arkane’s default.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -523,7 +523,7 @@ to use user input / Arkane’s value / Arkane’s default.</p>
 <code class="sig-name descname">ess_settings</code><a class="headerlink" href="#arc.main.ARC.ess_settings" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of available ESS (keys) and a corresponding server list (values).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -534,7 +534,7 @@ to use user input / Arkane’s value / Arkane’s default.</p>
 <code class="sig-name descname">t0</code><a class="headerlink" href="#arc.main.ARC.t0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initial time when the project was spawned.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -545,7 +545,7 @@ to use user input / Arkane’s value / Arkane’s default.</p>
 <code class="sig-name descname">n_confs</code><a class="headerlink" href="#arc.main.ARC.n_confs" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of lowest force field conformers to consider.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -557,7 +557,7 @@ to use user input / Arkane’s value / Arkane’s default.</p>
 <dd><p>The energy threshold in kJ/mol above the lowest energy conformer below which
 force field conformers are considered.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -568,7 +568,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">execution_time</code><a class="headerlink" href="#arc.main.ARC.execution_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Overall execution time.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -579,7 +579,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">lib_long_desc</code><a class="headerlink" href="#arc.main.ARC.lib_long_desc" title="Permalink to this definition">¶</a></dt>
 <dd><p>A multiline description of levels of theory for the outputted RMG libraries.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -590,7 +590,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">running_jobs</code><a class="headerlink" href="#arc.main.ARC.running_jobs" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of jobs submitted in a precious ARC instance, used for restarting.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -601,7 +601,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">T_min</code><a class="headerlink" href="#arc.main.ARC.T_min" title="Permalink to this definition">¶</a></dt>
 <dd><p>The minimum temperature for kinetics computations, e.g., (500, ‘K’).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
@@ -612,7 +612,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">T_max</code><a class="headerlink" href="#arc.main.ARC.T_max" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximum temperature for kinetics computations, e.g., (3000, ‘K’).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
@@ -623,7 +623,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">T_count</code><a class="headerlink" href="#arc.main.ARC.T_count" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of temperature points between <code class="docutils literal notranslate"><span class="pre">T_min</span></code> and <code class="docutils literal notranslate"><span class="pre">T_max</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -634,7 +634,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">max_job_time</code><a class="headerlink" href="#arc.main.ARC.max_job_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>The maximal allowed job time on the server in hours (can be fractional).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>float</p>
 </dd>
 </dl>
@@ -645,7 +645,7 @@ force field conformers are considered.</p>
 <code class="sig-name descname">rmg_database</code><a class="headerlink" href="#arc.main.ARC.rmg_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>The RMG database object.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>RMGDatabase</p>
 </dd>
 </dl>
@@ -657,7 +657,7 @@ force field conformers are considered.</p>
 <dd><p>Whether to optimize species even if they do not have a 3D conformer that is
 isomorphic to the 2D graph representation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -668,7 +668,7 @@ isomorphic to the 2D graph representation.</p>
 <code class="sig-name descname">memory</code><a class="headerlink" href="#arc.main.ARC.memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>The total allocated job memory in GB (14 by default to be lower than 90% * 16 GB).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>int</p>
 </dd>
 </dl>
@@ -679,7 +679,7 @@ isomorphic to the 2D graph representation.</p>
 <code class="sig-name descname">job_types</code><a class="headerlink" href="#arc.main.ARC.job_types" title="Permalink to this definition">¶</a></dt>
 <dd><p>A dictionary of job types to execute. Keys are job types, values are boolean.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -690,7 +690,7 @@ isomorphic to the 2D graph representation.</p>
 <code class="sig-name descname">specific_job_type</code><a class="headerlink" href="#arc.main.ARC.specific_job_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>A specific job type to execute. Legal strings are job types (keys of job_types dict).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -702,7 +702,7 @@ isomorphic to the 2D graph representation.</p>
 <dd><p>A bath gas. Currently used in OneDMin to calc L-J parameters.
 Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -713,7 +713,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <code class="sig-name descname">keep_checks</code><a class="headerlink" href="#arc.main.ARC.keep_checks" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to keep all Gaussian checkfiles when ARC terminates. True to keep, default is False.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -725,7 +725,7 @@ Allowed values are He, Ne, Ar, Kr, H2, N2, O2.</p>
 <dd><p>A list of species labels for which conformer generation should be avoided
 if xyz is given.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>list</p>
 </dd>
 </dl>
@@ -737,7 +737,7 @@ if xyz is given.</p>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code> data calculated from the RMG-database will be calculated and included on the
 parity plot.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -748,7 +748,7 @@ parity plot.</p>
 <code class="sig-name descname">compute_thermo</code><a class="headerlink" href="#arc.main.ARC.compute_thermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to compute thermodynamic properties for converged species.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -759,7 +759,7 @@ parity plot.</p>
 <code class="sig-name descname">compute_rates</code><a class="headerlink" href="#arc.main.ARC.compute_rates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to compute rate coefficients for converged reactions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -770,7 +770,7 @@ parity plot.</p>
 <code class="sig-name descname">compute_transport</code><a class="headerlink" href="#arc.main.ARC.compute_transport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether to compute transport properties for converged species.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -781,7 +781,7 @@ parity plot.</p>
 <code class="sig-name descname">thermo_adapter</code><a class="headerlink" href="#arc.main.ARC.thermo_adapter" title="Permalink to this definition">¶</a></dt>
 <dd><p>The statmech software to use for thermodynamic property calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -792,7 +792,7 @@ parity plot.</p>
 <code class="sig-name descname">kinetics_adapter</code><a class="headerlink" href="#arc.main.ARC.kinetics_adapter" title="Permalink to this definition">¶</a></dt>
 <dd><p>The statmech software to use for kinetic rate coefficient calculations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
@@ -804,7 +804,7 @@ parity plot.</p>
 <dd><p>If <code class="docutils literal notranslate"><span class="pre">self.job_types['fine']</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">self.job_types['opt']</span></code> ARC will not run optimization
 jobs without fine=True</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -816,7 +816,7 @@ jobs without fine=True</p>
 <dd><p>Compute rate coefficients using the modified three-parameter Arrhenius equation
 format (<code class="docutils literal notranslate"><span class="pre">True</span></code>) or classical two-parameter Arrhenius equation format (<code class="docutils literal notranslate"><span class="pre">False</span></code>).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Type</dt>
+<dt class="field-odd">Type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
@@ -879,7 +879,7 @@ if <cite>diagnostics</cite> is True, this method will not raise errors, and will
 <code class="sig-name descname">determine_unique_species_labels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.determine_unique_species_labels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.determine_unique_species_labels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine unique species labels.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>ValueError</strong> – If a non-unique species is found.</p>
 </dd>
 </dl>
@@ -934,7 +934,7 @@ if <cite>diagnostics</cite> is True, this method will not raise errors, and will
 <code class="sig-name descname">write_input_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/main.html#ARC.write_input_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.ARC.write_input_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the current attributes as an ARC input file.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> (<em>str</em><em>, </em><em>optional</em>) – The full path for the generated input file.</p>
 </dd>
 </dl>
@@ -954,7 +954,7 @@ The available adapters are a finite set.</p>
 <code class="sig-prename descclassname">arc.main.</code><code class="sig-name descname">process_adaptive_levels</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">adaptive_levels</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; Optional<span class="p">[</span>dict<span class="p">]</span><a class="reference internal" href="../_modules/arc/main.html#process_adaptive_levels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.main.process_adaptive_levels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process the <code class="docutils literal notranslate"><span class="pre">adaptive_levels</span></code> argument.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>adaptive_levels</strong> (<em>dict</em>) – The adaptive levels dictionary.</p>
 </dd>
 </dl>

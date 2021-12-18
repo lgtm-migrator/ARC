@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -194,7 +194,7 @@
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">calculate_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coords</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>list<span class="p">, </span>tuple<span class="p">, </span>dict<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">atoms</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">units</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'degs'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/species/vectors.html#calculate_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.calculate_angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an angle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coords</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>dict</em>) – The array-format or tuple-format coordinates, or the xyz dict.</p></li>
 <li><p><strong>atoms</strong> (<em>list</em>) – The 3 atoms defining the angle.</p></li>
@@ -202,7 +202,7 @@
 <li><p><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The desired units, either ‘rads’ for radians, or ‘degs’ for degrees.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>VectorsError</strong> – If <code class="docutils literal notranslate"><span class="pre">index</span></code> is out of range, or <code class="docutils literal notranslate"><span class="pre">atoms</span></code> is of wrong length or has repeating indices.</p></li>
 <li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">coords</span></code> is of wrong type.</p></li>
@@ -220,7 +220,7 @@
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">calculate_dihedral_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coords</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>list<span class="p">, </span>tuple<span class="p">, </span>dict<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">torsion</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em>, <em class="sig-param"><span class="n">units</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'degs'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/species/vectors.html#calculate_dihedral_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.calculate_dihedral_angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a dihedral angle.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coords</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>dict</em>) – The array-format or tuple-format coordinates, or the xyz dict.</p></li>
 <li><p><strong>torsion</strong> (<em>list</em>) – The 4 atoms defining the dihedral angle.</p></li>
@@ -228,7 +228,7 @@
 <li><p><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The desired units, either ‘rads’ for radians, or ‘degs’ for degrees.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>VectorsError</strong> – If <code class="docutils literal notranslate"><span class="pre">index</span></code> is out of range, or <code class="docutils literal notranslate"><span class="pre">torsion</span></code> is of wrong length or has repeating indices.</p></li>
 <li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">coords</span></code> is of wrong type.</p></li>
@@ -246,14 +246,14 @@
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">calculate_distance</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coords</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>list<span class="p">, </span>tuple<span class="p">, </span>dict<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">atoms</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">index</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">0</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/species/vectors.html#calculate_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.calculate_distance" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a distance.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>coords</strong> (<em>list</em><em>, </em><em>tuple</em><em>, </em><em>dict</em>) – The array-format or tuple-format coordinates, or the xyz dict.</p></li>
 <li><p><strong>atoms</strong> (<em>list</em>) – The 2 atoms to calculate defining the vector for which the length will be calculated.</p></li>
 <li><p><strong>index</strong> (<em>int</em><em>, </em><em>optional</em>) – Whether <code class="docutils literal notranslate"><span class="pre">atoms</span></code> is 0-indexed or 1-indexed (values are 0 or 1).</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>VectorsError</strong> – If <code class="docutils literal notranslate"><span class="pre">index</span></code> is out of range, or <code class="docutils literal notranslate"><span class="pre">atoms</span></code> is of wrong length or has repeating indices.</p></li>
 <li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">coords</span></code> is of wrong type.</p></li>
@@ -271,14 +271,14 @@
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">get_angle</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v1</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">v2</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">units</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'rads'</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/species/vectors.html#get_angle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.get_angle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the angle between two vectors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>v1</strong> (<em>list</em>) – Vector 1.</p></li>
 <li><p><strong>v2</strong> (<em>list</em>) – Vector 2.</p></li>
 <li><p><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The desired units, either ‘rads’ for radians, or ‘degs’ for degrees.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>VectorsError</strong> – If <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v2</span></code> are of different lengths.</p>
 </dd>
 </dl>
@@ -299,7 +299,7 @@
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>a1</strong> (<em>float</em>) – Angle 1 in degrees.</p></li>
 <li><p><strong>a2</strong> (<em>float</em>) – Angle 2 in degrees.</p></li>
@@ -319,7 +319,7 @@
 <code class="docutils literal notranslate"><span class="pre">v2</span></code> connects between <code class="docutils literal notranslate"><span class="pre">v1</span></code> and <code class="docutils literal notranslate"><span class="pre">v3</span></code>.
 Inspired by ASE Atoms.get_dihedral().</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>v1</strong> (<em>list</em>) – Vector 1.</p></li>
 <li><p><strong>v2</strong> (<em>list</em>) – Vector 2.</p></li>
@@ -327,7 +327,7 @@ Inspired by ASE Atoms.get_dihedral().</p>
 <li><p><strong>units</strong> (<em>str</em><em>, </em><em>optional</em>) – The desired units, either ‘rads’ for radians, or ‘degs’ for degrees.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>VectorsError</strong> – If either <code class="docutils literal notranslate"><span class="pre">v1</span></code> or <code class="docutils literal notranslate"><span class="pre">v2</span></code> have lengths different than three.</p>
 </dd>
 </dl>
@@ -343,7 +343,7 @@ Inspired by ASE Atoms.get_dihedral().</p>
 <dd><p>Get a vector from the pivotal atom in the molecule towards its lone electron pair (lp).
 The approach is to reverse the average of the three unit vectors between the pivotal atom and its neighbors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species’ label.</p></li>
 <li><p><strong>mol</strong> (<em>Molecule</em>) – The 2D graph representation of the molecule.</p></li>
@@ -351,7 +351,7 @@ The approach is to reverse the average of the three unit vectors between the piv
 <li><p><strong>pivot</strong> (<em>int</em>) – The 0-index of the pivotal atom of interest.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>VectorsError</strong> – If the lp vector cannot be attained.</p>
 </dd>
 </dl>
@@ -366,7 +366,7 @@ The approach is to reverse the average of the three unit vectors between the piv
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">get_normal</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v1</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">v2</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>float<span class="p">]</span><a class="reference internal" href="../_modules/arc/species/vectors.html#get_normal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.get_normal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a normal vector using cross multiplication.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>v1</strong> (<em>list</em>) – Vector 1.</p></li>
 <li><p><strong>v2</strong> (<em>list</em>) – Vector 2.</p></li>
@@ -384,7 +384,7 @@ The approach is to reverse the average of the three unit vectors between the piv
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">get_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">pivot</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">anchor</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">xyz</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/species/vectors.html#get_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.get_vector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a vector between two atoms in the molecule (pointing from pivot to anchor).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pivot</strong> (<em>int</em>) – The 0-index of the pivotal atom around which groups are to be translated.</p></li>
 <li><p><strong>anchor</strong> (<em>int</em>) – The 0-index of an additional atom in the molecule.</p></li>
@@ -403,7 +403,7 @@ The approach is to reverse the average of the three unit vectors between the piv
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">get_vector_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">v</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/species/vectors.html#get_vector_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.get_vector_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the length of an ND vector</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>v</strong> (<em>list</em>) – The vector.</p>
 </dd>
 </dl>
@@ -419,7 +419,7 @@ The approach is to reverse the average of the three unit vectors between the piv
 <dd><p>Rotate a vector in 3D space around a given axis by a certain angle.</p>
 <p>Inspired by <a class="reference external" href="https://stackoverflow.com/questions/6802577/rotation-of-3d-vector">https://stackoverflow.com/questions/6802577/rotation-of-3d-vector</a></p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>point_a</strong> (<em>list</em>) – The 3D coordinates of the starting point (point A) of the vector to be rotated.</p></li>
 <li><p><strong>point_b</strong> (<em>list</em>) – The 3D coordinates of the ending point (point B) of the vector to be rotated.</p></li>
@@ -439,7 +439,7 @@ The approach is to reverse the average of the three unit vectors between the piv
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">set_vector_length</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vector</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">length</span><span class="p">:</span> <span class="n">float</span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>float<span class="p">]</span><a class="reference internal" href="../_modules/arc/species/vectors.html#set_vector_length"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.set_vector_length" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the length of a 3D vector.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vector</strong> (<em>list</em>) – The vector to process.</p></li>
 <li><p><strong>length</strong> (<em>float</em>) – The desired length to set.</p></li>
@@ -457,7 +457,7 @@ The approach is to reverse the average of the three unit vectors between the piv
 <code class="sig-prename descclassname">arc.species.vectors.</code><code class="sig-name descname">unit_vector</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">vector</span><span class="p">:</span> <span class="n">List<span class="p">[</span>float<span class="p">]</span></span></em><span class="sig-paren">)</span> &#x2192; List<span class="p">[</span>float<span class="p">]</span><a class="reference internal" href="../_modules/arc/species/vectors.html#unit_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.vectors.unit_vector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a unit vector in the same direction as the input vector.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>vector</strong> (<em>list</em>) – The input vector.</p>
 </dd>
 </dl>

@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -194,7 +194,7 @@
 <code class="sig-prename descclassname">arc.job.trsh.</code><code class="sig-name descname">determine_ess_status</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">output_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">species_label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">job_type</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">software</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/trsh.html#determine_ess_status"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.trsh.determine_ess_status" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the reason that caused an ESS job to crash, assign error keywords for troubleshooting.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>output_path</strong> (<em>str</em>) – The path to the ESS output file.</p></li>
 <li><p><strong>species_label</strong> (<em>str</em>) – The species label.</p></li>
@@ -244,7 +244,7 @@
 </li>
 </ol>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>pivots</strong> (<em>list</em>) – The rotor pivots.</p></li>
@@ -278,13 +278,13 @@ must be preserved throughout the scan to a tolerance.</p></li>
 <dd><p>Troubleshoot conformer optimization for a species that failed isomorphic test in
 <cite>determine_most_stable_conformer</cite> by specifying a “good” level of theory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>software</strong> (<em>str</em>) – The ESS used.</p></li>
 <li><p><strong>ess_trsh_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – The troubleshooting methods tried for this job.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><p><strong>TrshError</strong> – If the requested <code class="docutils literal notranslate"><span class="pre">ess_trsh_methods</span></code> is not supported.</p>
 </dd>
 </dl>
@@ -299,7 +299,7 @@ must be preserved throughout the scan to a tolerance.</p></li>
 <code class="sig-prename descclassname">arc.job.trsh.</code><code class="sig-name descname">trsh_ess_job</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">level_of_theory</span><span class="p">:</span> <span class="n">Union<span class="p">[</span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">, </span>dict<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">server</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">job_status</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">job_type</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">software</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">fine</span><span class="p">:</span> <span class="n">bool</span></em>, <em class="sig-param"><span class="n">memory_gb</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">num_heavy_atoms</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">cpu_cores</span><span class="p">:</span> <span class="n">int</span></em>, <em class="sig-param"><span class="n">ess_trsh_methods</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">available_ess</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">is_h</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; tuple<a class="reference internal" href="../_modules/arc/job/trsh.html#trsh_ess_job"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.trsh.trsh_ess_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshoot issues related to the electronic structure software, such as convergence.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>level_of_theory</strong> (<em>Union</em><em>[</em><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level"><em>Level</em></a><em>, </em><em>dict</em><em>, </em><em>str</em><em>]</em>) – The original level of theory dictionary of the problematic job.</p></li>
@@ -342,7 +342,7 @@ as generated using the <cite>determine_ess_status</cite> function.</p></li>
 <code class="sig-prename descclassname">arc.job.trsh.</code><code class="sig-name descname">trsh_job_on_server</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">server</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">job_name</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">job_id</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>int<span class="p">, </span>str<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">job_server_status</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">remote_path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">server_nodes</span><span class="p">:</span> <span class="n">list</span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/job/trsh.html#trsh_job_on_server"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.job.trsh.trsh_job_on_server" title="Permalink to this definition">¶</a></dt>
 <dd><p>Troubleshoot server errors.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>server</strong> (<em>str</em>) – The server name.</p></li>
 <li><p><strong>job_name</strong> (<em>str</em>) – The job’s name (e.g., ‘opt_a103’).</p></li>
@@ -368,7 +368,7 @@ as generated using the <cite>determine_ess_status</cite> function.</p></li>
 <dd><p>Troubleshooting cases where non-TS species have negative frequencies.
 We take +/-1.1 displacements, generating several new initial geometries.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>log_file</strong> (<em>str</em>) – The frequency job log file.</p></li>
@@ -387,7 +387,7 @@ We take +/-1.1 displacements, generating several new initial geometries.</p>
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Raises</dt>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>TrshError</strong> – If a negative frequency could not be determined.</p>
 </dd>
 </dl>
@@ -404,7 +404,7 @@ Using the following methods:</p>
 <li><p>increasing the scan resolution</p></li>
 </ol>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>scan_res</strong> (<em>int</em><em>, </em><em>float</em>) – The scan resolution in degrees.</p></li>
@@ -420,7 +420,7 @@ Using the following methods:</p>
 <li><p><strong>log_file</strong> (<em>str</em><em>, </em><em>optional</em>) – The related output file path.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Raises</dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>TrshError</strong> – <ol class="arabic simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">scan</span></code> is not included in the <code class="docutils literal notranslate"><span class="pre">scan_list</span></code>
@@ -451,7 +451,7 @@ problematic. However, we cannot simply freeze [1, 2, 3, 5] which definitely make
 the scan failed. <cite>trsh_special_rotor()</cite> helps figure out the internal coordinates
 we need to actually freeze to troubleshoot the scan.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>special_rotor</strong> (<em>list</em>) – A list of four atoms indicating the special torsion</p></li>
 <li><p><strong>problematic_ic</strong> (<em>list</em>) – A list of torsions identified as problematic by

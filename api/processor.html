@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -201,7 +201,7 @@
 </dd>
 </dl>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>project_directory</strong> (<em>str</em>) – The path to the ARC project directory.</p>
 </dd>
 </dl>
@@ -212,7 +212,7 @@
 <code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_rates</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rxns_for_kinetics_lib</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">output_directory</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">T_min</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_max</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_count</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_rates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_rates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the calculates thermo with RMG’s estimations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rxns_for_kinetics_lib</strong> (<em>list</em>) – Reactions for which rate coefficients were computed.</p></li>
 <li><p><strong>rmg_database</strong> (<em>RMGDatabase</em><em>, </em><em>optional</em>) – The RMG database object.</p></li>
@@ -230,7 +230,7 @@
 <code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_thermo</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species_for_thermo_lib</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">output_directory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_thermo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_thermo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the calculates thermo with RMG’s estimations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>species_for_thermo_lib</strong> (<em>list</em>) – Species for which thermochemical properties were computed.</p></li>
 <li><p><strong>rmg_database</strong> (<em>RMGDatabase</em><em>, </em><em>optional</em>) – The RMG database object.</p></li>
@@ -245,7 +245,7 @@
 <code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">compare_transport</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species_for_transport_lib</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">output_directory</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#compare_transport"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.compare_transport" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compare the calculates transport data with RMG’s estimations.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>species_for_transport_lib</strong> (<em>list</em>) – Species for which thermochemical properties were computed.</p></li>
 <li><p><strong>rmg_database</strong> (<em>RMGDatabase</em><em>, </em><em>optional</em>) – The RMG database object.</p></li>
@@ -260,7 +260,7 @@
 <code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">load_rmg_database</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Type<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">species_dict</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">output_dict</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#load_rmg_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.load_rmg_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load the RMG database.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>rmg_database</strong> (<em>RMGDatabase</em><em>, </em><em>optional</em>) – The RMG database object.</p></li>
 <li><p><strong>species_dict</strong> (<em>dict</em>) – Keys are labels, values are ARCSpecies objects.</p></li>
@@ -276,7 +276,7 @@ See Scheduler for a description of this dictionary.</p></li>
 <code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">process_arc_project</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">thermo_adapter</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">kinetics_adapter</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">project_directory</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">species_dict</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">reactions</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">output_dict</span><span class="p">:</span> <span class="n">dict</span></em>, <em class="sig-param"><span class="n">bac_type</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sp_level</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span><a class="reference internal" href="level.html#arc.level.Level" title="arc.level.Level">arc.level.Level</a><span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">freq_scale_factor</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">1.0</span></em>, <em class="sig-param"><span class="n">compute_thermo</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">compute_rates</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">compute_transport</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">T_min</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_max</span><span class="p">:</span> <span class="n">tuple</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">T_count</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">50</span></em>, <em class="sig-param"><span class="n">lib_long_desc</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">''</span></em>, <em class="sig-param"><span class="n">rmg_database</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>rmgpy.data.rmg.RMGDatabase<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">compare_to_rmg</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em>, <em class="sig-param"><span class="n">three_params</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#process_arc_project"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.process_arc_project" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process an ARC project, generate thermo and rate coefficients using statistical mechanics (statmech).</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>thermo_adapter</strong> (<em>str</em>) – The software to use for calculating thermodynamic data.</p></li>
 <li><p><strong>kinetics_adapter</strong> (<em>str</em>) – The software to use for calculating rate coefficients.</p></li>
@@ -313,16 +313,16 @@ format (<code class="docutils literal notranslate"><span class="pre">True</span>
 <code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">process_bdes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">species_dict</span><span class="p">:</span> <span class="n">dict</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/processor.html#process_bdes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.process_bdes" title="Permalink to this definition">¶</a></dt>
 <dd><p>Process bond dissociation energies for a single parent species represented by <cite>label</cite>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
 <li><p><strong>species_dict</strong> (<em>dict</em>) – Keys are labels, values are ARCSpecies objects.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>The BDE report for a single species. Keys are pivots, values are energies in kJ/mol.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
@@ -333,7 +333,7 @@ format (<code class="docutils literal notranslate"><span class="pre">True</span>
 <code class="sig-prename descclassname">arc.processor.</code><code class="sig-name descname">write_unconverged_log</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">unconverged_species</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">unconverged_rxns</span><span class="p">:</span> <span class="n">list</span></em>, <em class="sig-param"><span class="n">log_file_path</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/processor.html#write_unconverged_log"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.processor.write_unconverged_log" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write a log file of unconverged species and reactions.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>unconverged_species</strong> (<em>list</em>) – List of unconverged species to report.</p></li>
 <li><p><strong>unconverged_rxns</strong> (<em>list</em>) – List of unconverged reactions to report.</p></li>
