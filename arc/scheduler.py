@@ -463,7 +463,7 @@ class Scheduler(object):
                                 (self.job_types['fine'] and 'opt' not in list(self.job_dict[species.label].keys())
                                  and 'fine' not in list(self.job_dict[species.label].keys())):
                             # opt/fine isn't running
-                            if not self.output[species.label]['paths']['geo']:
+                            if not self.output[species.label]['paths']['geo'] and self.job_types['opt']:
                                 # opt/fine hasn't finished (and isn't running), so run it
                                 self.run_opt_job(species.label, fine=self.fine_only)
                             else:
@@ -2163,7 +2163,8 @@ class Scheduler(object):
                 self.species_dict[label].opt_level = self.composite_method.simple()
             rxn_str = ''
             if self.species_dict[label].is_ts:
-                rxn_str = f' of reaction {self.species_dict[label].rxn_label}'
+                rxn_str = f' of reaction {self.species_dict[label].rxn_label}' \
+                    if self.species_dict[label].rxn_label is not None else ''
             logger.info(f'\nOptimized geometry for {label}{rxn_str} at {job.level.simple()}:\n'
                         f'{xyz_to_str(xyz_dict=self.species_dict[label].final_xyz)}\n')
             plotter.save_geo(species=self.species_dict[label], project_directory=self.project_directory)
@@ -2238,7 +2239,8 @@ class Scheduler(object):
                 self.species_dict[label].opt_level = self.opt_level.simple()
                 plotter.save_geo(species=self.species_dict[label], project_directory=self.project_directory)
                 if self.species_dict[label].is_ts:
-                    rxn_str = f' of reaction {self.species_dict[label].rxn_label}'
+                    rxn_str = f' of reaction {self.species_dict[label].rxn_label}' \
+                        if self.species_dict[label].rxn_label is not None else ''
                 else:
                     rxn_str = ''
                 logger.info(f'\nOptimized geometry for {label}{rxn_str} at {job.level.simple()}:\n'
@@ -2304,7 +2306,8 @@ class Scheduler(object):
                         self.species_dict[label].transport_data.comment = \
                             str(f'Polarizability calculated at the {self.freq_level.simple()} level of theory')
                 if self.species_dict[label].is_ts:
-                    check_ts(reaction=self.rxn_dict[self.species_dict[label].rxn_index], job=job)
+                    if self.species_dict[label].rxn_index in self.rxn_dict.keys():
+                        check_ts(reaction=self.rxn_dict[self.species_dict[label].rxn_index], job=job)
                     if self.species_dict[label].ts_checks['normal_mode_displacement'] is False:
                         logger.info(f'TS {label} did not pass the normal mode displacement check. '
                                     f'Status is:\n{self.species_dict[label].ts_checks}\n'
