@@ -356,6 +356,8 @@
 <span class="sd">        - The corresponding RMG reaction&#39;s family. ``None`` if no family was found or more than one family were found.</span>
 <span class="sd">        - Whether the family is its own reverse. ``True`` if it is.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">rmg_spc</span> <span class="ow">in</span> <span class="n">reaction</span><span class="o">.</span><span class="n">reactants</span> <span class="o">+</span> <span class="n">reaction</span><span class="o">.</span><span class="n">products</span><span class="p">:</span>
+        <span class="n">rmg_spc</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_order</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">fam_list</span> <span class="o">=</span> <span class="n">loop_families</span><span class="p">(</span><span class="n">rmgdb</span><span class="o">=</span><span class="n">rmgdb</span><span class="p">,</span> <span class="n">reaction</span><span class="o">=</span><span class="n">reaction</span><span class="p">)</span>
     <span class="n">families</span> <span class="o">=</span> <span class="p">[</span><span class="n">fam_l</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">fam_l</span> <span class="ow">in</span> <span class="n">fam_list</span><span class="p">]</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">families</span><span class="p">))</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
@@ -546,7 +548,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2021, Alon Grinberg Dana
+        &copy; Copyright 2018-2022, Alon Grinberg Dana
 
     </p>
   </div>

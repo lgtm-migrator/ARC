@@ -442,6 +442,18 @@ where some of the entries might be <code class="docutils literal notranslate"><s
 </dd></dl>
 
 <dl class="py function">
+<dt id="arc.common.from_yaml">
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">from_yaml</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">yaml_str</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span> &#x2192; Union<span class="p">[</span>dict<span class="p">, </span>list<span class="p">]</span><a class="reference internal" href="../_modules/arc/common.html#from_yaml"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.from_yaml" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a YAML string and decode to the respective Python object.
+:param yaml_str: The YAML string content.
+:type yaml_str: str</p>
+<dl class="simple">
+<dt>Returns: Union[dict, list]</dt><dd><p>The respective Python object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt id="arc.common.get_angle_in_180_range">
 <code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">get_angle_in_180_range</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">angle</span><span class="p">:</span> <span class="n">float</span></em>, <em class="sig-param"><span class="n">round_to</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">2</span></em><span class="sig-paren">)</span> &#x2192; float<a class="reference internal" href="../_modules/arc/common.html#get_angle_in_180_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.get_angle_in_180_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the corresponding angle in the -180 to +180 degree range.</p>
@@ -1032,7 +1044,7 @@ This function converts one format to the other.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2021, Alon Grinberg Dana
+        &copy; Copyright 2018-2022, Alon Grinberg Dana
 
     </p>
   </div>

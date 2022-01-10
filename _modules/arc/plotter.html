@@ -174,7 +174,7 @@
 <span class="kn">import</span> <span class="nn">shutil</span>
 <span class="kn">from</span> <span class="nn">matplotlib.backends.backend_pdf</span> <span class="kn">import</span> <span class="n">PdfPages</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span>
 
 <span class="kn">import</span> <span class="nn">py3Dmol</span> <span class="k">as</span> <span class="nn">p3D</span>
 <span class="kn">import</span> <span class="nn">qcelemental</span> <span class="k">as</span> <span class="nn">qcel</span>
@@ -233,7 +233,7 @@
     <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;show_sticks&#39;</span> <span class="ow">and</span> <span class="n">notebook</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">success</span> <span class="o">=</span> <span class="n">show_sticks</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span> <span class="n">project_directory</span><span class="o">=</span><span class="n">project_directory</span><span class="p">)</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">):</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">,</span> <span class="n">InputError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
             <span class="k">pass</span>
     <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;draw_3d&#39;</span> <span class="ow">or</span> <span class="p">(</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;show_sticks&#39;</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="n">success</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">notebook</span><span class="p">)):</span>
         <span class="n">draw_3d</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">species</span><span class="o">=</span><span class="n">species</span><span class="p">,</span> <span class="n">project_directory</span><span class="o">=</span><span class="n">project_directory</span><span class="p">,</span> <span class="n">save_only</span><span class="o">=</span><span class="ow">not</span> <span class="n">notebook</span><span class="p">)</span>
@@ -1397,6 +1397,129 @@
     <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="plot_2d_scan_bond_dihedral"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.plot_2d_scan_bond_dihedral">[docs]</a><span class="k">def</span> <span class="nf">plot_2d_scan_bond_dihedral</span><span class="p">(</span><span class="n">results</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                               <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="n">label</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                               <span class="n">cmap</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;Blues&#39;</span><span class="p">,</span>
+                               <span class="n">resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">90</span><span class="p">,</span>
+                               <span class="n">font_size</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
+                               <span class="n">figsize</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>
+                               <span class="n">original_dihedrals</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                               <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Plot a 2D scan where one coordinate is bond length and another is a dihedral angle.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        results (dict):</span>
+<span class="sd">            The results dictionary, dihedrals are assumed to be in degrees (not radians).</span>
+<span class="sd">            This dictionary has the following structure::</span>
+<span class="sd">                {&#39;directed_scan_type&#39;: &lt;str, used for the fig name&gt;,</span>
+<span class="sd">                 &#39;scans&#39;: &lt;list, entries are lists of torsion indices&gt;,</span>
+<span class="sd">                 &#39;directed_scan&#39;: &lt;dict&gt;, keys are tuples of &#39;{0:.2f}&#39; formatted dihedrals,</span>
+<span class="sd">                                  values are dictionaries with the following keys and values:</span>
+<span class="sd">                                  {&#39;energy&#39;: &lt;float, energy in kJ/mol&gt;,  # only this is used here</span>
+<span class="sd">                                   &#39;xyz&#39;: &lt;dict&gt;,</span>
+<span class="sd">                                   &#39;is_isomorphic&#39;: &lt;bool&gt;,</span>
+<span class="sd">                                   &#39;trsh&#39;: &lt;list, job.ess_trsh_methods&gt;}&gt;,</span>
+<span class="sd">                }</span>
+<span class="sd">        path (str, optional): The folder path to save this 2D image.</span>
+<span class="sd">        label (str, optional): The species label.</span>
+<span class="sd">        cmap (str, optional): The color map to use. See optional arguments below.</span>
+<span class="sd">        resolution (int, optional): The image resolution to produce.</span>
+<span class="sd">        font_size (float, optional): The sfont size for the figure.</span>
+<span class="sd">        figsize (tuple, optional): The size (width, height) of the resulting figure.</span>
+<span class="sd">        original_dihedrals (list, optional): Entries are dihedral degrees of the conformer used for the scan.</span>
+<span class="sd">                                             If given, the conformer will be marked on the plot with a red dot.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        TypeError: If ``results`` if of wrong type.</span>
+<span class="sd">        InputError: If ``results`` does not represent a 2D rotor.</span>
+
+<span class="sd">    Optional arguments for cmap::</span>
+<span class="sd">        Accent, Accent_r, Blues, Blues_r, BrBG, BrBG_r, BuGn, BuGn_r, BuPu, BuPu_r, CMRmap, CMRmap_r, Dark2, Dark2_r,</span>
+<span class="sd">        GnBu, GnBu_r, Greens, Greens_r, Greys, Greys_r, OrRd, OrRd_r, Oranges, Oranges_r, PRGn, PRGn_r, Paired,</span>
+<span class="sd">        Paired_r, Pastel1, Pastel1_r, Pastel2, Pastel2_r, PiYG, PiYG_r, PuBu, PuBuGn, PuBuGn_r, PuBu_r, PuOr, PuOr_r,</span>
+<span class="sd">        PuRd, PuRd_r, Purples, Purples_r, RdBu, RdBu_r, RdGy, RdGy_r, RdPu, RdPu_r, RdYlBu, RdYlBu_r, RdYlGn, RdYlGn_r,</span>
+<span class="sd">        Reds, Reds_r, Set1, Set1_r, Set2, Set2_r, Set3, Set3_r, Spectral, Spectral_r, Wistia, Wistia_r, YlGn, YlGnBu,</span>
+<span class="sd">        YlGnBu_r, YlGn_r, YlOrBr, YlOrBr_r, YlOrRd, YlOrRd_r, afmhot, afmhot_r, autumn, autumn_r, binary, binary_r,</span>
+<span class="sd">        bone, bone_r, brg, brg_r, bwr, bwr_r, cividis, cividis_r, cool, cool_r, coolwarm, coolwarm_r, copper, copper_r,</span>
+<span class="sd">        cubehelix, cubehelix_r, flag, flag_r, gist_earth, gist_earth_r, gist_gray, gist_gray_r, gist_heat, gist_heat_r,</span>
+<span class="sd">        gist_ncar, gist_ncar_r, gist_rainbow, gist_rainbow_r, gist_stern, gist_stern_r, gist_yarg, gist_yarg_r, gnuplot,</span>
+<span class="sd">        gnuplot2, gnuplot2_r, gnuplot_r, gray, gray_r, hot, hot_r, hsv, hsv_r, inferno, inferno_r, jet, jet_r, magma,</span>
+<span class="sd">        magma_r, nipy_spectral, nipy_spectral_r, ocean, ocean_r, pink, pink_r, plasma, plasma_r, prism, prism_r,</span>
+<span class="sd">        rainbow, rainbow_r, seismic, seismic_r, spring, spring_r, summer, summer_r, tab10, tab10_r, tab20, tab20_r,</span>
+<span class="sd">        tab20b, tab20b_r, tab20c, tab20c_r, terrain, terrain_r, viridis, viridis_r, winter, winter_r</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;results must be a dictionary, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;scans&#39;</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;results must represent a 2D rotor, got </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;scans&quot;</span><span class="p">])</span><span class="si">}</span><span class="s1">D&#39;</span><span class="p">)</span>
+
+    <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">clean_scan_results</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">])</span>
+
+    <span class="n">phis0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()]))),</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">phis1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">([</span><span class="nb">float</span><span class="p">(</span><span class="n">key</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()]))),</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">res0</span><span class="p">,</span> <span class="n">res1</span> <span class="o">=</span> <span class="n">phis0</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">phis0</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">phis1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">phis1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">energies</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">phis0</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="n">phis1</span><span class="o">.</span><span class="n">size</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">e_min</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">missing_points</span><span class="p">,</span> <span class="n">max_missing_points</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">phis0</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">phis1</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">phi0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">phis0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">phi1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">phis1</span><span class="p">):</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">phi0</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">phi1</span><span class="p">))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">key</span><span class="p">][</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">new_key</span> <span class="o">=</span> <span class="n">get_close_tuple</span><span class="p">(</span><span class="n">key_1</span><span class="o">=</span><span class="n">key</span><span class="p">,</span> <span class="n">keys</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">new_key</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+                    <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">new_key</span><span class="p">][</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">missing_points</span> <span class="o">+=</span> <span class="mi">1</span>
+                    <span class="k">if</span> <span class="n">missing_points</span> <span class="o">&lt;=</span> <span class="n">max_missing_points</span><span class="p">:</span>
+                        <span class="n">new_key</span> <span class="o">=</span> <span class="n">get_close_tuple</span><span class="p">(</span><span class="n">key_1</span><span class="o">=</span><span class="n">key</span><span class="p">,</span>
+                                                  <span class="n">keys</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">(),</span>
+                                                  <span class="n">tolerance</span><span class="o">=</span><span class="mf">1.1</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">res0</span><span class="p">,</span> <span class="n">res1</span><span class="p">))</span>
+                        <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;directed_scan&#39;</span><span class="p">][</span><span class="n">new_key</span><span class="p">][</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">pass</span>
+                        <span class="c1"># There are too many gaps in the data.</span>
+            <span class="k">if</span> <span class="n">e_min</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">e_min</span><span class="p">:</span>
+                <span class="n">e_min</span> <span class="o">=</span> <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span>
+
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">phi0</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">phis0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">phi1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">phis1</span><span class="p">):</span>
+            <span class="n">energies</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">e_min</span>
+
+    <span class="n">font</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="n">font_size</span><span class="p">}</span>
+    <span class="n">matplotlib</span><span class="o">.</span><span class="n">rc</span><span class="p">(</span><span class="s1">&#39;font&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">font</span><span class="p">)</span>
+
+    <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">num</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">phis1</span><span class="p">,</span> <span class="n">phis0</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span><span class="p">()</span>
+    <span class="n">contours</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">phis1</span><span class="p">,</span> <span class="n">phis0</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">contours</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">font_size</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Dihedral for </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;scans&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">, degrees&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Distance for </span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;scans&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">, Angstrom&#39;</span><span class="p">)</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39; for &#39;</span> <span class="o">+</span> <span class="n">label</span> <span class="k">if</span> <span class="n">label</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;2D scan energies (kJ/mol)</span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">min_x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">180</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span> <span class="o">=</span> <span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">min_x</span> <span class="o">+</span> <span class="mi">360</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">min_x</span><span class="p">,</span> <span class="n">min_x</span> <span class="o">+</span> <span class="mi">361</span><span class="p">,</span> <span class="n">step</span><span class="o">=</span><span class="mi">60</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">original_dihedrals</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">original_dihedrals</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">original_dihedrals</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;directed_scan_type&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">_</span><span class="si">{</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;scans&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">.png&#39;</span>
+        <span class="n">fig_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">fig_name</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_path</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">resolution</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;portrait&#39;</span><span class="p">,</span>
+                    <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;png&#39;</span><span class="p">,</span> <span class="n">transparent</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">bbox_inches</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pad_inches</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">(</span><span class="n">fig</span><span class="o">=</span><span class="n">fig</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="save_rotor_text_file"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.save_rotor_text_file">[docs]</a><span class="k">def</span> <span class="nf">save_rotor_text_file</span><span class="p">(</span><span class="n">angles</span><span class="p">,</span> <span class="n">energies</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Save a text file summarizing a rotor scan, useful for brute force scans.</span>
@@ -1480,7 +1603,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2021, Alon Grinberg Dana
+        &copy; Copyright 2018-2022, Alon Grinberg Dana
 
     </p>
   </div>

@@ -366,14 +366,15 @@
 </dd></dl>
 
 <dl class="py function">
-<dt id="arc.parser.parse_normal_displacement_modes">
-<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_normal_displacement_modes</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">software</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>numpy.ndarray<span class="p">, </span>numpy.ndarray<span class="p">]</span><a class="reference internal" href="../_modules/arc/parser.html#parse_normal_displacement_modes"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_normal_displacement_modes" title="Permalink to this definition">¶</a></dt>
-<dd><p>Parse frequencies and normal displacement modes.</p>
+<dt id="arc.parser.parse_normal_mode_displacement">
+<code class="sig-prename descclassname">arc.parser.</code><code class="sig-name descname">parse_normal_mode_displacement</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">path</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">software</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>str<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">raise_error</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; Tuple<span class="p">[</span>numpy.ndarray<span class="p">, </span>numpy.ndarray<span class="p">]</span><a class="reference internal" href="../_modules/arc/parser.html#parse_normal_mode_displacement"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.parser.parse_normal_mode_displacement" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse frequencies and normal mode displacement.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>path</strong> (<em>str</em>) – The path to the log file.</p></li>
 <li><p><strong>software</strong> (<em>str</em><em>, </em><em>optional</em>) – The software to used to generate the log file.</p></li>
+<li><p><strong>raise_error</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to raise an error if the ESS isn’t implemented.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Raises<span class="colon">:</span></dt>
@@ -591,7 +592,7 @@ a “conformers_after_optimization” file).</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2021, Alon Grinberg Dana
+        &copy; Copyright 2018-2022, Alon Grinberg Dana
 
     </p>
   </div>

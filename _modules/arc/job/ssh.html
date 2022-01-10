@@ -543,22 +543,31 @@
 
     <span class="nd">@check_connections</span>
     <span class="k">def</span> <span class="nf">get_last_modified_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
-                               <span class="n">remote_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                               <span class="n">remote_file_path_1</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                               <span class="n">remote_file_path_2</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span>
                                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get the last modified time of a remote file.</span>
+<span class="sd">        Returns the last modified time of ``remote_file_path_1`` if the file exists,</span>
+<span class="sd">        else returns the last modified time of ``remote_file_path_2`` if the file exists.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            remote_file_path (str): The remote file path to check.</span>
+<span class="sd">            remote_file_path_1 (str): The remote path to file 1.</span>
+<span class="sd">            remote_file_path_2 (str, optional): The remote path to file .</span>
 
 <span class="sd">        Returns: datetime.datetime</span>
 <span class="sd">            The last modified time of the file.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">timestamp</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sftp</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">remote_file_path</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
+            <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sftp</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">remote_file_path_1</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
         <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span>
+            <span class="k">pass</span>
+        <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">remote_file_path_2</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">timestamp</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sftp</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">remote_file_path_2</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
+            <span class="k">except</span> <span class="ne">IOError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">fromtimestamp</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="k">if</span> <span class="n">timestamp</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="SSHClient.list_dir"><a class="viewcode-back" href="../../../api/ssh.html#arc.job.ssh.SSHClient.list_dir">[docs]</a>    <span class="k">def</span> <span class="nf">list_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remote_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -748,7 +757,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2021, Alon Grinberg Dana
+        &copy; Copyright 2018-2022, Alon Grinberg Dana
 
     </p>
   </div>

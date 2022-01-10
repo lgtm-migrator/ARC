@@ -556,6 +556,17 @@
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">yaml_str</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="from_yaml"><a class="viewcode-back" href="../../api/common.html#arc.common.from_yaml">[docs]</a><span class="k">def</span> <span class="nf">from_yaml</span><span class="p">(</span><span class="n">yaml_str</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a YAML string and decode to the respective Python object.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        yaml_str (str): The YAML string content.</span>
+<span class="sd">    Returns: Union[dict, list]</span>
+<span class="sd">        The respective Python object.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">stream</span><span class="o">=</span><span class="n">yaml_str</span><span class="p">,</span> <span class="n">Loader</span><span class="o">=</span><span class="n">yaml</span><span class="o">.</span><span class="n">FullLoader</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="to_yaml"><a class="viewcode-back" href="../../api/common.html#arc.common.to_yaml">[docs]</a><span class="k">def</span> <span class="nf">to_yaml</span><span class="p">(</span><span class="n">py_content</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a Python list or dictionary to a YAML string format.</span>
@@ -753,22 +764,22 @@
 <span class="sd">        - The external symmetry number.</span>
 <span class="sd">        - ``1`` if no chiral centers are present, ``2`` if chiral centers are present.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">atom_numbers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># List of atomic numbers</span>
+    <span class="n">atom_numbers</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]:</span>
         <span class="n">atom_numbers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_element</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
-    <span class="c1"># coords is an N x 3 numpy.ndarray of atomic coordinates in the same order as `atom_numbers`</span>
+    <span class="c1"># Coords is an N x 3 numpy.ndarray of atomic coordinates in the same order as `atom_numbers`.</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="n">unique_id</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>  <span class="c1"># Just some name that the SYMMETRY code gives to one of its jobs</span>
-    <span class="n">scr_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ARC_PATH</span><span class="p">,</span> <span class="s1">&#39;scratch&#39;</span><span class="p">)</span>  <span class="c1"># Scratch directory that the SYMMETRY code writes its files in</span>
+    <span class="n">unique_id</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>  <span class="c1"># Just some name that the SYMMETRY code gives to one of its jobs.</span>
+    <span class="n">scr_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/tmp&#39;</span><span class="p">,</span> <span class="s1">&#39;symmetry_scratch&#39;</span><span class="p">)</span>  <span class="c1"># Scratch directory that the SYMMETRY code writes its files in.</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">scr_dir</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">scr_dir</span><span class="p">)</span>
     <span class="n">symmetry</span> <span class="o">=</span> <span class="n">optical_isomers</span> <span class="o">=</span> <span class="mi">1</span>
     <span class="n">qmdata</span> <span class="o">=</span> <span class="n">QMData</span><span class="p">(</span>
-        <span class="n">groundStateDegeneracy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Only needed to check if valid QMData</span>
+        <span class="n">groundStateDegeneracy</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>  <span class="c1"># Only needed to check if valid QMData.</span>
         <span class="n">numberOfAtoms</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">atom_numbers</span><span class="p">),</span>
         <span class="n">atomicNumbers</span><span class="o">=</span><span class="n">atom_numbers</span><span class="p">,</span>
         <span class="n">atomCoords</span><span class="o">=</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="s1">&#39;angstrom&#39;</span><span class="p">),</span>
-        <span class="n">energy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;kcal/mol&#39;</span><span class="p">)</span>  <span class="c1"># Only needed to avoid error</span>
+        <span class="n">energy</span><span class="o">=</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="s1">&#39;kcal/mol&#39;</span><span class="p">)</span>  <span class="c1"># Dummy</span>
     <span class="p">)</span>
     <span class="n">symmetry_settings</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="p">(),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">symmetryPath</span><span class="o">=</span><span class="s1">&#39;symmetry&#39;</span><span class="p">,</span> <span class="n">scratchDirectory</span><span class="o">=</span><span class="n">scr_dir</span><span class="p">))()</span>
     <span class="n">pgc</span> <span class="o">=</span> <span class="n">PointGroupCalculator</span><span class="p">(</span><span class="n">symmetry_settings</span><span class="p">,</span> <span class="n">unique_id</span><span class="p">,</span> <span class="n">qmdata</span><span class="p">)</span>
@@ -1496,7 +1507,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2018-2021, Alon Grinberg Dana
+        &copy; Copyright 2018-2022, Alon Grinberg Dana
 
     </p>
   </div>
