@@ -902,6 +902,7 @@ class JobAdapter(ABC):
                 logger.error(f'Got an IOError when trying to download output file for job {self.job_name}.')
                 content = self._get_additional_job_info()
                 if content:
+                    self.additional_job_info = content
                     logger.info(f'Got the following information from the server:\n{content}')
                     for line in content.splitlines():
                         # example:
@@ -926,40 +927,38 @@ class JobAdapter(ABC):
         stdout and stderr are named out.txt and err.txt respectively.
         Submission script in submit.py should contain the -o and -e flags.
         """
-        lines1, lines2 = list(), list()
         content = ''
         cluster_soft = servers[self.server]['cluster_soft'].lower()
         if cluster_soft in ['oge', 'sge', 'slurm', 'pbs', 'htcondor']:
-            local_file_path1 = os.path.join(self.local_path, 'out.txt')
-            local_file_path2 = os.path.join(self.local_path, 'err.txt')
-            if self.server != 'local':
-                remote_file_path = os.path.join(self.remote_path, 'out.txt')
+            local_file_path_1 = os.path.join(self.local_path, 'out.txt')
+            local_file_path_2 = os.path.join(self.local_path, 'err.txt')
+            local_file_path_3 = os.path.join(self.local_path, 'job.log')
+            if self.server != 'local' and self.remote_path is not None:
+                remote_file_path_1 = os.path.join(self.remote_path, 'out.txt')
+                remote_file_path_2 = os.path.join(self.remote_path, 'err.txt')
+                remote_file_path_3 = os.path.join(self.remote_path, 'job.log')
                 with SSHClient(self.server) as ssh:
-                    try:
-                        ssh.download_file(remote_file_path=remote_file_path,
-                                          local_file_path=local_file_path1)
-                    except (TypeError, IOError) as e:
-                        logger.warning(f'Got the following error when trying to download out.txt for {self.job_name}.'
-                                       f'Please check that the submission script contains a -o flag '
-                                       f'with stdout named out.txt (e.g., "#SBATCH -o out.txt"). Error message:')
-                        logger.warning(e)
-                    remote_file_path = os.path.join(self.remote_path, 'err.txt')
-                    try:
-                        ssh.download_file(remote_file_path=remote_file_path, local_file_path=local_file_path2)
-                    except (TypeError, IOError) as e:
-                        logger.warning(f'Got the following error when trying to download err.txt for {self.job_name}.'
-                                       f'Please check that the submission script contains a -e flag '
-                                       f'with stdout named err.txt (e.g., "#SBATCH -o err.txt"). Error message:')
-                        logger.warning(e)
-            if os.path.isfile(local_file_path1):
-                with open(local_file_path1, 'r') as f:
-                    lines1 = f.readlines()
-            if os.path.isfile(local_file_path2):
-                with open(local_file_path2, 'r') as f:
-                    lines2 = f.readlines()
-            content += ''.join([line for line in lines1])
-            content += '\n'
-            content += ''.join([line for line in lines2])
+                    for local_file_path, remote_file_path in zip([local_file_path_1,
+                                                                  local_file_path_2,
+                                                                  local_file_path_3],
+                                                                 [remote_file_path_1,
+                                                                  remote_file_path_2,
+                                                                  remote_file_path_3]):
+                        try:
+                            ssh.download_file(remote_file_path=remote_file_path,
+                                              local_file_path=local_file_path)
+                        except (TypeError, IOError) as e:
+                            logger.warning(f'Got the following error when trying to download {remote_file_path} for '
+                                           f'{self.job_name}. Please check that the submission script contains -o and -e '
+                                           f'flags with stdout and stderr of out.txt and err.txt, respectively '
+                                           f'(e.g., "#SBATCH -o out.txt"). Error message:')
+                            logger.warning(e)
+            for local_file_path in [local_file_path_1, local_file_path_2, local_file_path_3]:
+                if os.path.isfile(local_file_path):
+                    with open(local_file_path, 'r') as f:
+                        lines = f.readlines()
+                    content += ''.join([line for line in lines])
+                    content += '\n'
         else:
             raise ValueError(f'Unrecognized cluster software: {cluster_soft}')
         return content
