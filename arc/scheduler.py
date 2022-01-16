@@ -3143,6 +3143,17 @@ class Scheduler(object):
             logger.warning(f'Not troubleshooting failed {label} job {job.job_name}. To enable troubleshooting, set the '
                            f'"trsh_ess_jobs" to "True".')
             return None
+
+        # Troubleshoot not enough memory:
+        if job.additional_job_info is not None:
+            if 'memory exceeded' in job.additional_job_info:
+                job.job_memory_gb *= 5
+                self._run_a_job(job=job,
+                                label=label,
+                                rerun=True,
+                                )
+                return None
+
         level_of_theory = Level(repr=level_of_theory)
         logger.info('\n')
         warning_message = f'Troubleshooting {label} job {job.job_name} which failed'
@@ -3168,9 +3179,10 @@ class Scheduler(object):
         if job.job_adapter == 'gaussian':
             if self.species_dict[label].checkfile is None:
                 self.species_dict[label].checkfile = job.checkfile
-        # determine if the species is a hydrogen (or its isotope) atom
+        # Determine if the species is a hydrogen atom (or its isotope).
         is_h = self.species_dict[label].number_of_atoms == 1 and \
             self.species_dict[label].mol.atoms[0].element.symbol in ['H', 'D', 'T']
+
         output_errors, ess_trsh_methods, remove_checkfile, level_of_theory, \
             software, job_type, fine, trsh_keyword, memory, shift, cpu_cores, couldnt_trsh = \
             trsh_ess_job(label=label,
