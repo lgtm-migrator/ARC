@@ -235,6 +235,7 @@ class TeraChemAdapter(JobAdapter):
             self.checkfile = os.path.join(self.local_path, 'teracheck.chk')
 
         self.restrarted = bool(job_num)  # If job_num was given, this is a restarted job, don't save as initiated jobs.
+        self.additional_job_info = None
 
         check_argument_consistency(self)
 
