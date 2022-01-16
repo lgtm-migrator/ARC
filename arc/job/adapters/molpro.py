@@ -232,6 +232,7 @@ class MolproAdapter(JobAdapter):
         self.set_files()  # Set the actual files (and write them if relevant).
 
         self.restrarted = bool(job_num)  # If job_num was given, this is a restarted job, don't save as initiated jobs.
+        self.additional_job_info = None
 
         check_argument_consistency(self)
 
