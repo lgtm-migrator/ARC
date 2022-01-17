@@ -42,9 +42,9 @@ if TYPE_CHECKING:
 
 logger = get_logger()
 
-default_job_settings, servers, submit_filenames, t_max_format, output_filenames, rotor_scan_resolution, tasks_coeff = \
+default_job_settings, servers, submit_filenames, t_max_format, input_filenames, output_filenames, rotor_scan_resolution, tasks_coeff = \
     settings['default_job_settings'], settings['servers'], settings['submit_filenames'], settings['t_max_format'], \
-    settings['output_filenames'], settings['rotor_scan_resolution'], settings['tasks_coeff']
+    settings['input_filenames'], settings['output_filenames'], settings['rotor_scan_resolution'], settings['tasks_coeff']
 
 constraint_type_dict = {2: 'B', 3: 'A', 4: 'D'}
 
@@ -604,12 +604,39 @@ class JobAdapter(ABC):
                 with SSHClient(self.server) as ssh:
                     for dl_file in self.files_to_download:
                         ssh.download_file(remote_file_path=dl_file['remote'], local_file_path=dl_file['local'])
-                    if dl_file['file_name'] == output_filenames[self.job_adapter]:
-                        self.final_time = ssh.get_last_modified_time(remote_file_path=dl_file['local'])
+                    self.set_initial_and_final_times(initial=False, ssh=ssh)
             elif self.server == 'local':
-                self.final_time = get_last_modified_time(file_path=os.path.join(self.local_path,
-                                                                                output_filenames[self.job_adapter]))
+                self.set_initial_and_final_times(initial=False)
         self.final_time = self.final_time or datetime.datetime.now()
+
+    def set_initial_and_final_times(self, ssh: Optional[SSHClient] = None):
+        """
+        Set the end time of the job.
+
+        Args:
+            ssh (SSHClient, optional): The SSHClient object instance.
+        """
+        # filenames_dict = input_filenames if initial else output_filenames
+        # touched_file_name = 'initial_time' if initial else 'final_time'
+        initial_time, final_time = None, None
+        if ssh is not None:
+            for dl_file in self.files_to_download:
+                initial_time = ssh.get_last_modified_time(remote_file_path_1=os.path.join(self.remote_path,
+                                                                                          'initial_time'))
+                if dl_file['file_name'] == output_filenames[self.job_adapter]:
+                    final_time = ssh.get_last_modified_time(
+                        remote_file_path_1=os.path.join(self.remote_path, 'final_time'),
+                        remote_file_path_2=dl_file['remote'],
+                    )
+                    break
+        elif self.server == 'local':
+            initial_time = get_last_modified_time(file_path_1=os.path.join(self.local_path, 'initial_time'))
+            final_time = get_last_modified_time(
+                file_path_1=os.path.join(self.local_path, 'final_time'),
+                file_path_2=os.path.join(self.local_path, output_filenames[self.job_adapter]),
+            )
+        self.initial_time = initial_time or self.initial_time
+        self.final_time = final_time or datetime.datetime.now()
 
     def determine_run_time(self):
         """
@@ -745,6 +772,9 @@ class JobAdapter(ABC):
         if cluster_software in ['oge', 'sge', 'pbs', 'htcondor']:
             # In SGE, "-l h_vmem=5000M" specifies the amount of maximum memory required for all cores to be 5000 MB.
             self.submit_script_memory = math.ceil(total_submit_script_memory)  # in MB
+        if cluster_software in ['pbs']:
+            # In SGE, "-l h_vmem=5000M" specifies the amount of maximum memory required for all cores to be 5000 MB.
+            self.submit_script_memory = math.ceil(total_submit_script_memory) * 1E3  # in B
         elif cluster_software in ['slurm']:
             # In Slurm, "#SBATCH --mem-per-cpu=2000" specifies the amount of memory required per cpu core to be 2000 MB.
             self.submit_script_memory = math.ceil(total_submit_script_memory / self.cpu_cores)  # in MB
@@ -861,6 +891,7 @@ class JobAdapter(ABC):
                 logger.error(f'Got an IOError when trying to download output file for job {self.job_name}.')
                 content = self._get_additional_job_info()
                 if content:
+                    self.additional_job_info = content.lower()
                     logger.info(f'Got the following information from the server:\n{content}')
                     for line in content.splitlines():
                         # example:
@@ -885,40 +916,38 @@ class JobAdapter(ABC):
         stdout and stderr are named out.txt and err.txt respectively.
         Submission script in submit.py should contain the -o and -e flags.
         """
-        lines1, lines2 = list(), list()
         content = ''
         cluster_soft = servers[self.server]['cluster_soft'].lower()
         if cluster_soft in ['oge', 'sge', 'slurm', 'pbs', 'htcondor']:
-            local_file_path1 = os.path.join(self.local_path, 'out.txt')
-            local_file_path2 = os.path.join(self.local_path, 'err.txt')
-            if self.server != 'local':
-                remote_file_path = os.path.join(self.remote_path, 'out.txt')
+            local_file_path_1 = os.path.join(self.local_path, 'out.txt')
+            local_file_path_2 = os.path.join(self.local_path, 'err.txt')
+            local_file_path_3 = os.path.join(self.local_path, 'job.log')
+            if self.server != 'local' and self.remote_path is not None:
+                remote_file_path_1 = os.path.join(self.remote_path, 'out.txt')
+                remote_file_path_2 = os.path.join(self.remote_path, 'err.txt')
+                remote_file_path_3 = os.path.join(self.remote_path, 'job.log')
                 with SSHClient(self.server) as ssh:
-                    try:
-                        ssh.download_file(remote_file_path=remote_file_path,
-                                          local_file_path=local_file_path1)
-                    except (TypeError, IOError) as e:
-                        logger.warning(f'Got the following error when trying to download out.txt for {self.job_name}.'
-                                       f'Please check that the submission script contains a -o flag '
-                                       f'with stdout named out.txt (e.g., "#SBATCH -o out.txt"). Error message:')
-                        logger.warning(e)
-                    remote_file_path = os.path.join(self.remote_path, 'err.txt')
-                    try:
-                        ssh.download_file(remote_file_path=remote_file_path, local_file_path=local_file_path2)
-                    except (TypeError, IOError) as e:
-                        logger.warning(f'Got the following error when trying to download err.txt for {self.job_name}.'
-                                       f'Please check that the submission script contains a -e flag '
-                                       f'with stdout named err.txt (e.g., "#SBATCH -o err.txt"). Error message:')
-                        logger.warning(e)
-            if os.path.isfile(local_file_path1):
-                with open(local_file_path1, 'r') as f:
-                    lines1 = f.readlines()
-            if os.path.isfile(local_file_path2):
-                with open(local_file_path2, 'r') as f:
-                    lines2 = f.readlines()
-            content += ''.join([line for line in lines1])
-            content += '\n'
-            content += ''.join([line for line in lines2])
+                    for local_file_path, remote_file_path in zip([local_file_path_1,
+                                                                  local_file_path_2,
+                                                                  local_file_path_3],
+                                                                 [remote_file_path_1,
+                                                                  remote_file_path_2,
+                                                                  remote_file_path_3]):
+                        try:
+                            ssh.download_file(remote_file_path=remote_file_path,
+                                              local_file_path=local_file_path)
+                        except (TypeError, IOError) as e:
+                            logger.warning(f'Got the following error when trying to download {remote_file_path} for '
+                                           f'{self.job_name}. Please check that the submission script contains -o and -e '
+                                           f'flags with stdout and stderr of out.txt and err.txt, respectively '
+                                           f'(e.g., "#SBATCH -o out.txt"). Error message:')
+                            logger.warning(e)
+            for local_file_path in [local_file_path_1, local_file_path_2, local_file_path_3]:
+                if os.path.isfile(local_file_path):
+                    with open(local_file_path, 'r') as f:
+                        lines = f.readlines()
+                    content += ''.join([line for line in lines])
+                    content += '\n'
         else:
             raise ValueError(f'Unrecognized cluster software: {cluster_soft}')
         return content
@@ -949,9 +978,12 @@ class JobAdapter(ABC):
         else:
             # If running locally (local queue or incore),
             # just rename the output file to "output.out" for consistency between software.
-            if self.final_time is None:
-                self.final_time = get_last_modified_time(
-                    file_path=os.path.join(self.local_path, output_filenames[self.job_adapter]))
+            if self.final_time is None or self.initial_time is None:
+                if self.server == 'local':
+                    self.set_initial_and_final_times()
+                else:
+                    with SSHClient(self.server) as ssh:
+                        self.set_initial_and_final_times(ssh=ssh)
         rename_output(local_file_path=self.local_path_to_output_file, software=self.job_adapter)
         xyz_path = os.path.join(self.local_path, 'scr', 'optim.xyz')
         if os.path.isfile(xyz_path):
