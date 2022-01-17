@@ -902,7 +902,7 @@ class JobAdapter(ABC):
                 logger.error(f'Got an IOError when trying to download output file for job {self.job_name}.')
                 content = self._get_additional_job_info()
                 if content:
-                    self.additional_job_info = content
+                    self.additional_job_info = content.lower()
                     logger.info(f'Got the following information from the server:\n{content}')
                     for line in content.splitlines():
                         # example:
