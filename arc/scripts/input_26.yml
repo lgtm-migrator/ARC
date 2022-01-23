@@ -1,0 +1,217 @@
+force_field: MMFF94s
+function: openbabel_force_field_on_rdkit_conformers
+label: OHNHOO_15
+mol_dict:
+  atom_order:
+  - -24782
+  - -24781
+  - -24780
+  - -24779
+  - -24778
+  - -24777
+  atoms:
+  - charge: 0
+    edges:
+      -24781: 1.0
+      -24777: 1.0
+    element:
+      isotope: -1
+      mass: 0.01599939912557602
+      name: oxygen
+      number: 8
+      symbol: O
+    id: -24782
+    label: ''
+    lone_pairs: 2
+    props:
+      inRing: false
+    radical_electrons: 0
+  - charge: 0
+    edges:
+      -24782: 1.0
+      -24780: 1.0
+      -24778: 1.0
+    element:
+      isotope: -1
+      mass: 0.014006859622895718
+      name: nitrogen
+      number: 7
+      symbol: N
+    id: -24781
+    label: ''
+    lone_pairs: 1
+    props:
+      inRing: false
+    radical_electrons: 0
+  - charge: 0
+    edges:
+      -24781: 1.0
+      -24779: 1.0
+    element:
+      isotope: -1
+      mass: 0.01599939912557602
+      name: oxygen
+      number: 8
+      symbol: O
+    id: -24780
+    label: ''
+    lone_pairs: 2
+    props:
+      inRing: false
+    radical_electrons: 0
+  - charge: 0
+    edges:
+      -24780: 1.0
+    element:
+      isotope: -1
+      mass: 0.01599939912557602
+      name: oxygen
+      number: 8
+      symbol: O
+    id: -24779
+    label: ''
+    lone_pairs: 2
+    props:
+      inRing: false
+    radical_electrons: 1
+  - charge: 0
+    edges:
+      -24781: 1.0
+    element:
+      isotope: -1
+      mass: 0.0010079710045829415
+      name: hydrogen
+      number: 1
+      symbol: H
+    id: -24778
+    label: ''
+    lone_pairs: 0
+    props:
+      inRing: false
+    radical_electrons: 0
+  - charge: 0
+    edges:
+      -24782: 1.0
+    element:
+      isotope: -1
+      mass: 0.0010079710045829415
+      name: hydrogen
+      number: 1
+      symbol: H
+    id: -24777
+    label: ''
+    lone_pairs: 0
+    props:
+      inRing: false
+    radical_electrons: 0
+  multiplicity: 2
+  props: {}
+num_confs: null
+optimize: true
+xyz:
+  coords: !!python/tuple
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - &id001 !!python/object/apply:numpy.dtype
+        args:
+        - f8
+        - 0
+        - 1
+        state: !!python/tuple
+        - 3
+        - <
+        - null
+        - null
+        - null
+        - -1
+        - -1
+        - 0
+      - !!binary |
+        0MSdso3g378=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        uxpvADOp5j8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        fwyysPHA9T8=
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        LWgwHHg4wz8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        W9ryn8ye4z8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        qLPggk9exj8=
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        LWgwHHg4wz8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        h97UXpRP5r8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        aAaY+uxAxb8=
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        LWgwHHg4wz8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        h97UXpRP5r8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        nZCLoKm4978=
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        dFvtjkNT8j8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        9xRunpgN7D8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        rELig4a71j8=
+  - !!python/tuple
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        joS3dLXXt78=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        WGpOLDrv9z8=
+    - !!python/object/apply:numpy.core.multiarray.scalar
+      - *id001
+      - !!binary |
+        zX9WjwHc/D8=
+  isotopes: !!python/tuple
+  - 16
+  - 14
+  - 16
+  - 16
+  - 1
+  - 1
+  symbols: !!python/tuple
+  - O
+  - N
+  - O
+  - O
+  - H
+  - H

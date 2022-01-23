@@ -74,6 +74,10 @@ class TestARCReaction(unittest.TestCase):
                                                                                  2 N u2 p1 c0 {1,S}
                                                                                  3 H u0 p0 c0 {1,S}
                                                                                  4 H u0 p0 c0 {1,S}""")])
+        cls.rxn8 = ARCReaction(rmg_reaction=Reaction(reactants=[Species(label='HNO', smiles='N=O'),
+                                                                Species(label='NO2', smiles='O=[N+][O-]')],
+                                                     products=[Species(label='HNO2', smiles='[O-][NH+]=O'),
+                                                               Species(label='NO', smiles='[N]=O')]))
         cls.o2_xyz = {'coords': ((0, 0, 0.6487420), (0, 0, -0.6487420)), 'isotopes': (16, 16), 'symbols': ('O', 'O')}
         cls.ho2_xyz = {'coords': ((0.0558910, -0.6204870, 0.0000000),
                                   (0.0558910, 0.7272050, 0.0000000),
@@ -356,6 +360,8 @@ class TestARCReaction(unittest.TestCase):
         self.rxn5.check_attributes()
         self.rxn5.determine_family(rmg_database=self.rmgdb)
         self.assertEqual(self.rxn5.family.label, 'H_Abstraction')
+        self.rxn8.determine_family(rmg_database=self.rmgdb)
+        self.assertEqual(self.rxn8.family.label, 'H_Abstraction')
         rxn_1 = ARCReaction(r_species=[ARCSpecies(label='C2H6', smiles='CC'),
                                        ARCSpecies(label='CCOOj', smiles='CCO[O]')],
                             p_species=[ARCSpecies(label='CCOOH', smiles='CCOO'),

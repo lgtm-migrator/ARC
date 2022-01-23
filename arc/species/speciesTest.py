@@ -15,6 +15,7 @@ from rmgpy.species import Species
 from rmgpy.transport import TransportData
 
 from arc.common import ARC_PATH, almost_equal_coords_lists
+from arc.species.converter import check_xyz_dict
 from arc.exceptions import SpeciesError
 from arc.level import Level
 from arc.plotter import save_conformers_file
@@ -111,6 +112,10 @@ class TestARCSpecies(unittest.TestCase):
         cls.spc11 = ARCSpecies(label='CCCNO', smiles='CCCNO')  # has chiral N
         cls.spc12 = ARCSpecies(label='[CH](CC[CH]c1ccccc1)c1ccccc1', smiles='[CH](CC[CH]c1ccccc1)c1ccccc1')
         cls.spc13 = ARCSpecies(label='CH3CHCH3', smiles='C[CH]C')
+        cls.spc14 = ARCSpecies(label='HNO2', smiles='[O-][NH+]=O',
+                               xyz={'symbols': ('O', 'N', 'O', 'H'), 'isotopes': (16, 14, 16, 1),
+                                    'coords': ((1.082465, -0.311042, 0.517009), (-0.000538, 0.002628, 0.064162),
+                                               (-0.872035, -0.717142, -0.381683), (-0.209893, 1.025557, 0.057233))})
 
     def test_from_yml_file(self):
         """Test that an ARCSpecies object can successfully be loaded from an Arkane YAML file"""
@@ -1301,9 +1306,9 @@ H      -1.67091600   -1.35164600   -0.93286400"""
         """Test the process_xyz() function"""
         # the last four H's in xyz hve a leading TAB character which is removed when processing
         xyz = """
-        
-        
-        
+
+
+
         O   3.1024  0.1216  1.0455
    O    1.4602   -3.3145   -0.2099
 C   -2.2924    0.2555   -0.8205
@@ -1316,7 +1321,7 @@ C   -2.2924    0.2555   -0.8205
        C   -0.1097   -0.9444   -0.2920
    C   -0.2294    1.3920    0.1279
    C    1.0837    1.3976    0.5896
-   
+
 
    C,    1.9403,   -2.2644,    0.1662
     H   -2.6363    1.2898   -0.7367
@@ -1333,12 +1338,12 @@ H    3.8200    2.0502    0.7167
 H,-0.7777,2.3260,0.1202
 	H    1.5203    2.3247    0.9261
 	H    2.9757   -2.2266    0.5368
- 
-     
-   
-   
- 
- 
+
+
+
+
+
+
  """
         expected_xyz2 = """O    3.1024    0.1216    1.0455
 O    1.4602   -3.3145   -0.2099
@@ -1452,9 +1457,9 @@ H      -1.69944700    0.93441600   -0.11271200"""
 
     def test_preserving_multiplicity(self):
         """Test that multiplicity is being preserved, especially when it is guessed differently from xyz"""
-        multiplicity_list = [2, 2, 1, 1, 1, 1, 1, 2, 1]
+        multiplicity_list = [2, 2, 1, 1, 1, 1, 1, 2, 1, 1, 1, 3, 2, 1]
         for i, spc in enumerate([self.spc1, self.spc2, self.spc3, self.spc4, self.spc5, self.spc6, self.spc7,
-                                 self.spc8, self.spc9]):
+                                 self.spc8, self.spc9, self.spc10, self.spc11, self.spc12, self.spc13, self.spc14]):
             self.assertEqual(spc.multiplicity, multiplicity_list[i])
             self.assertEqual(spc.mol.multiplicity, multiplicity_list[i])
             self.assertTrue(all([structure.multiplicity == spc.multiplicity for structure in spc.mol_list]))
@@ -1617,6 +1622,7 @@ H       1.32129900    0.71837500    0.38017700
 
     def test_mol_from_xyz(self):
         """Test the mol_from_xyz() method."""
+        # SO2
         so2_t_xyz = {'coords': ((0.02724478716956233, 0.6093829407458188, 0.0),
                                 (-1.3946381818031768, -0.24294788636871906, 0.0),
                                 (1.3673933946336125, -0.36643505437710233, 0.0)),
@@ -1629,23 +1635,45 @@ H       1.32129900    0.71837500    0.38017700
 
     def test_consistent_atom_order(self):
         """Test that the atom order is preserved whether starting from SMILES or from xyz"""
-        spc1 = ARCSpecies(label='spc1', smiles='CCCO')
-        xyz1 = spc1.get_xyz()
-        for atom, symbol in zip(spc1.mol.atoms, xyz1['symbols']):
-            self.assertEqual(atom.symbol, symbol)
+
+        # xyz9 = """O      -1.17310019   -0.30822930    0.16269772
+        #           N      -0.01862708    0.27606468   -0.23594145
+        #           O       0.88082996    0.08047613    0.75697323
+        #           O       1.92325833   -0.45682027    0.15869847
+        #           H      -1.40804717   -0.92667676   -0.57492397
+        #           H      -0.20145306    1.30427256   -0.27748999"""
+        # spc9 = ARCSpecies(label='S9', smiles='ONO[O]', xyz=xyz9)
+        # for atom, symbol in zip(spc9.mol.atoms, spc9.get_xyz()['symbols']):
+        #     self.assertEqual(atom.symbol, symbol)
+        # for atom, symbol in zip(spc9.mol.atoms, ['O', 'N', 'O', 'O', 'H', 'H']):
+        #     self.assertEqual(atom.symbol, symbol)
+        # h_index = 0
+        # for atom in spc9.mol.atoms:
+        #     if atom.is_hydrogen():
+        #         if not h_index:
+        #             self.assertEqual(list(atom.edges.keys())[0].element.symbol, 'N')
+        #             h_index += 1
+        #         else:
+        #             self.assertEqual(list(atom.edges.keys())[0].element.symbol, 'O')
+        #
+        #
+        # spc1 = ARCSpecies(label='spc1', smiles='CCCO')
+        # xyz1 = spc1.get_xyz()
+        # for atom, symbol in zip(spc1.mol.atoms, xyz1['symbols']):
+        #     self.assertEqual(atom.symbol, symbol)
 
         xyz2 = """C      -0.37147383   -0.54225753    0.07779977
-C       0.99011397    0.11006088   -0.10715587
-H      -0.33990169   -1.22256017    0.93731544
-H      -0.60100180   -1.16814809   -0.79292035
-H       1.26213386    0.70273091    0.77209458
-O       1.96607463   -0.90691160   -0.28642183
-H       0.99631715    0.75813344   -0.98936747
-H      -1.27803075    1.09840370    1.16400304
-C      -1.46891192    0.48768649    0.27579733
-H      -2.43580767   -0.00829320    0.40610628
-H      -1.54270451    1.15356356   -0.58992943
-H       2.82319256   -0.46240839   -0.40178723"""
+                  C       0.99011397    0.11006088   -0.10715587
+                  H      -0.33990169   -1.22256017    0.93731544
+                  H      -0.60100180   -1.16814809   -0.79292035
+                  H       1.26213386    0.70273091    0.77209458
+                  O       1.96607463   -0.90691160   -0.28642183
+                  H       0.99631715    0.75813344   -0.98936747
+                  H      -1.27803075    1.09840370    1.16400304
+                  C      -1.46891192    0.48768649    0.27579733
+                  H      -2.43580767   -0.00829320    0.40610628
+                  H      -1.54270451    1.15356356   -0.58992943
+                  H       2.82319256   -0.46240839   -0.40178723"""
         spc2 = ARCSpecies(label='spc2', xyz=xyz2)
         for i, atom in enumerate(spc2.mol.atoms):
             self.assertEqual(atom.symbol, spc2.get_xyz()['symbols'][i])
@@ -1831,7 +1859,7 @@ H       1.11582953    0.94384729   -0.10134685"""
                   H      -2.87588800   -0.55598400   -0.20545500
                   H       1.15316700   -2.03432300    0.08695500"""
         spc4 = ARCSpecies(label='anilino_radical_BDE_7_12_A', smiles='N=C1[CH]C=C[C]=C1', xyz=xyz4)
-        spc4.final_xyz = xyz4
+        spc4.final_xyz = check_xyz_dict(xyz4)
         is_isomorphic4 = spc4.check_xyz_isomorphism()
         self.assertTrue(is_isomorphic4)
 
