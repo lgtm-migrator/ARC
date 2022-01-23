@@ -1328,10 +1328,10 @@ class ARCSpecies(object):
             electrons -= self.charge
             if electrons % 2 == 1:
                 self.multiplicity = 2
-                logger.warning(f'\nMultiplicity not specified for {self.label}, assuming a value of 2')
+                logger.debug(f'\nMultiplicity not specified for {self.label}, assuming a value of 2')
             else:
                 self.multiplicity = 1
-                logger.warning(f'\nMultiplicity not specified for {self.label}, assuming a value of 1')
+                logger.debug(f'\nMultiplicity not specified for {self.label}, assuming a value of 1')
 
     def make_ts_report(self):
         """A helper function to write content into the .ts_report attribute"""
