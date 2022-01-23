@@ -1252,6 +1252,11 @@ def molecules_from_xyz(xyz: Optional[Union[dict, str]],
             logger.warning(f'Cannot infer 2D graph connectivity, failed to set species multiplicity with the '
                            f'following error:\n{e}')
 
+    for mol in [mol_s1_updated, mol_bo]:
+        if mol.multiplicity == 1:
+            for atom in mol.atoms:
+                atom.radical_electrons = 0
+
     return mol_s1_updated, mol_bo
 
 
