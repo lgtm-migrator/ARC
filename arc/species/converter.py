@@ -1252,9 +1252,12 @@ def molecules_from_xyz(xyz: Optional[Union[dict, str]],
 
     # 3. Generate a molecule with bond order information using xyz_to_smiles.
     if mol_bo is None:
-        smiles_list = xyz_to_smiles(xyz=xyz, charge=charge)
-        if smiles_list is not None:
-            mol_bo = Molecule(smiles=smiles_list[0])
+        try:
+            smiles_list = xyz_to_smiles(xyz=xyz, charge=charge)
+            if smiles_list is not None:
+                mol_bo = Molecule(smiles=smiles_list[0])
+        except:
+            pass
 
     if mol_bo is not None:
         if multiplicity is not None:
@@ -1276,7 +1279,7 @@ def molecules_from_xyz(xyz: Optional[Union[dict, str]],
                            f'following error:\n{e}')
 
     for mol in [mol_s1_updated, mol_bo]:
-        if mol.multiplicity == 1:
+        if mol is not None and mol.multiplicity == 1:
             for atom in mol.atoms:
                 atom.radical_electrons = 0
 

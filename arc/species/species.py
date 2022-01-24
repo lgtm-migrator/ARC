@@ -573,11 +573,23 @@ class ARCSpecies(object):
         Returns:
             ARCSpecies: A copy of this object instance.
         """
-        species_dict = self.as_dict()
+        species_dict = self.as_dict(reset_atom_ids=True)
         return ARCSpecies(species_dict=species_dict)
 
-    def as_dict(self) -> dict:
-        """A helper function for dumping this object as a dictionary in a YAML file for restarting ARC"""
+    def as_dict(self,
+                reset_atom_ids: bool = False,
+                ) -> dict:
+        """
+        A helper function for dumping this object as a dictionary in a YAML file for restarting ARC.
+
+        Args:
+            reset_atom_ids (bool, optional): Whether to reset the atom IDs in the .mol Molecule attribute.
+                                             Useful when copying the object to avoid duplicate atom IDs between
+                                             different object instances.
+
+        Returns:
+            dict: The dictionary representation of the object instance.
+        """
         species_dict = dict()
         species_dict['force_field'] = self.force_field
         species_dict['is_ts'] = self.is_ts
@@ -640,7 +652,7 @@ class ARCSpecies(object):
         if self.bond_corrections is not None:
             species_dict['bond_corrections'] = self.bond_corrections
         if self.mol is not None:
-            species_dict['mol'] = rmg_mol_to_dict_repr(self.mol)
+            species_dict['mol'] = rmg_mol_to_dict_repr(self.mol, reset_atom_ids=reset_atom_ids)
         if self.initial_xyz is not None:
             species_dict['initial_xyz'] = xyz_to_str(self.initial_xyz)
         if self.final_xyz is not None:
@@ -908,6 +920,8 @@ class ARCSpecies(object):
             else:
                 self.mol_list = [self.mol]
             success = order_atoms_in_mol_list(ref_mol=self.mol.copy(deep=True), mol_list=self.mol_list)
+            if not success:
+                self.mol_list = None
             # if not success:
             #     # Try sorting by IDs, repeat object creation to make sure the original instances remain unchanged.
             #     mol_copy = self.mol.copy(deep=True)
