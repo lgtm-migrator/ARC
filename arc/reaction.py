@@ -212,8 +212,8 @@ class ARCReaction(object):
         reaction_dict['charge'] = self.charge
         reaction_dict['reactants'] = self.reactants
         reaction_dict['products'] = self.products
-        reaction_dict['r_species'] = [spc.as_dict() for spc in self.r_species]
-        reaction_dict['p_species'] = [spc.as_dict() for spc in self.p_species]
+        reaction_dict['r_species'] = [spc.as_dict(reset_atom_ids=True) for spc in self.r_species]
+        reaction_dict['p_species'] = [spc.as_dict(reset_atom_ids=True) for spc in self.p_species]
         if self.ts_species is not None:
             reaction_dict['ts_species'] = self.ts_species.as_dict()
         if self._atom_map is not None:
@@ -228,7 +228,6 @@ class ARCReaction(object):
             reaction_dict['family'] = self.family.label
         reaction_dict['family_own_reverse'] = self.family_own_reverse
         reaction_dict['long_kinetic_description'] = self.long_kinetic_description
-        reaction_dict['label'] = self.label
         reaction_dict['ts_xyz_guess'] = self.ts_xyz_guess
         reaction_dict['ts_label'] = self.ts_label
         return reaction_dict
@@ -288,6 +287,42 @@ class ARCReaction(object):
             if 'preserve_param_in_scan' in reaction_dict else None
         self.atom_map = reaction_dict['atom_map'] if 'atom_map' in reaction_dict else None
         self.done_opt_r_n_p = reaction_dict['done_opt_r_n_p'] if 'done_opt_r_n_p' in reaction_dict else None
+
+    def copy(self):
+        """
+        Get a copy of this object instance.
+
+        Returns:
+            ARCReaction: A copy of this object instance.
+        """
+        reaction_dict = self.as_dict()
+        return ARCReaction(reaction_dict=reaction_dict)
+
+    def flip_reaction(self):
+        """
+        Get a copy of this object instance with flipped reactants and products.
+
+        Returns:
+            ARCReaction: A copy of this object instance with flipped reactants and products.
+        """
+        reaction_dict = self.as_dict()
+        reset_keys = ['label', 'index', 'atom_map', 'rmg_reaction',
+                      'family', 'family_own_reverse', 'long_kinetic_description']
+        if 'r_species' in reaction_dict.keys() and 'p_species' in reaction_dict.keys():
+            reaction_dict['r_species'], reaction_dict['p_species'] = reaction_dict['p_species'], reaction_dict['r_species']
+        else:
+            reset_keys.extend(['r_species', 'p_species'])
+        if 'reactants' in reaction_dict.keys() and 'products' in reaction_dict.keys():
+            reaction_dict['reactants'], reaction_dict['products'] = reaction_dict['products'], reaction_dict['reactants']
+        else:
+            reset_keys.extend(['reactants', 'products'])
+        for key in reset_keys:
+            if key in reaction_dict.keys():
+                del reaction_dict[key]
+        flipped_rxn = ARCReaction(reaction_dict=reaction_dict)
+        flipped_rxn.set_label_reactants_products()
+        flipped_rxn.rmg_reaction_from_arc_species()
+        return flipped_rxn
 
     def is_isomerization(self):
         """
