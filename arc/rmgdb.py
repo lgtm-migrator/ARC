@@ -33,6 +33,7 @@ def make_rmg_database_object() -> RMGDatabase:
     Returns: RMGDatabase
         A clean RMG database object.
     """
+    global rmg_database_instance_only_fams
     rmgdb = rmg_database_instance_only_fams or RMGDatabase()
     return rmgdb
 
@@ -46,6 +47,11 @@ def load_families_only(rmgdb: RMGDatabase,
         rmgdb (RMGDatabase): The RMG database instance.
         kinetics_families (Union[str, list], optional): Specific kinetics families to load.
     """
+    print(f'\n\n\n\n\n\n\n\n\n\n\n\n\n\nloading DB. db = {rmgdb}')
+    print(f'db.kinetics = {rmgdb.kinetics}')
+    if rmgdb.kinetics is not None:
+        print(f'db.kinetics.families = {rmgdb.kinetics.families}')
+    print('\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n')
     if kinetics_families not in ('default', 'all', 'none') and not isinstance(kinetics_families, list):
         raise InputError(f"kinetics families should be either 'default', 'all', 'none', or a list of names, e.g.,"
                          f" ['H_Abstraction','R_Recombination'] or ['!Intra_Disproportionation']. "
