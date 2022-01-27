@@ -886,12 +886,15 @@ and return the parameters as python variables.</p>
 
 <dl class="py function">
 <dt id="arc.common.rmg_mol_to_dict_repr">
-<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">rmg_mol_to_dict_repr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mol</span><span class="p">:</span> <span class="n">rmgpy.molecule.molecule.Molecule</span></em>, <em class="sig-param"><span class="n">testing</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#rmg_mol_to_dict_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.rmg_mol_to_dict_repr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.common.</code><code class="sig-name descname">rmg_mol_to_dict_repr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mol</span><span class="p">:</span> <span class="n">rmgpy.molecule.molecule.Molecule</span></em>, <em class="sig-param"><span class="n">reset_atom_ids</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">testing</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; dict<a class="reference internal" href="../_modules/arc/common.html#rmg_mol_to_dict_repr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.common.rmg_mol_to_dict_repr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a dict representation of an RMG <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> object instance.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mol</strong> (<em>Molecule</em>) – The RMG <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> object instance.</p></li>
+<li><p><strong>reset_atom_ids</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to reset the atom IDs in the .mol Molecule attribute.
+Useful when copying the object to avoid duplicate atom IDs between
+different object instances.</p></li>
 <li><p><strong>testing</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether this is called during a test, in which case atom IDs should be deterministic.</p></li>
 </ul>
 </dd>

@@ -179,7 +179,8 @@
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="kn">import</span> <span class="n">chain</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
@@ -187,13 +188,19 @@
 
 <span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">ess_factory</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">TeraChemLog</span>
 <span class="kn">import</span> <span class="nn">rmgpy</span>
-<span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="kn">import</span> <span class="n">Element</span><span class="p">,</span> <span class="n">get_element</span>
+<span class="kn">from</span> <span class="nn">rmgpy.molecule.atomtype</span> <span class="kn">import</span> <span class="n">ATOMTYPES</span>
+<span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="kn">import</span> <span class="n">get_element</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.molecule</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Bond</span><span class="p">,</span> <span class="n">Molecule</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.qmdata</span> <span class="kn">import</span> <span class="n">QMData</span>
 <span class="kn">from</span> <span class="nn">rmgpy.qm.symmetry</span> <span class="kn">import</span> <span class="n">PointGroupCalculator</span>
 
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SettingsError</span>
 <span class="kn">from</span> <span class="nn">arc.imports</span> <span class="kn">import</span> <span class="n">settings</span>
+
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">rmgpy.reaction</span> <span class="kn">import</span> <span class="n">Reaction</span>
+    <span class="kn">from</span> <span class="nn">arc.reaction</span> <span class="kn">import</span> <span class="n">ARCReaction</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;arc&#39;</span><span class="p">)</span>
@@ -1396,6 +1403,7 @@
 
 
 <div class="viewcode-block" id="rmg_mol_to_dict_repr"><a class="viewcode-back" href="../../api/common.html#arc.common.rmg_mol_to_dict_repr">[docs]</a><span class="k">def</span> <span class="nf">rmg_mol_to_dict_repr</span><span class="p">(</span><span class="n">mol</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">,</span>
+                         <span class="n">reset_atom_ids</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                          <span class="n">testing</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                          <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1403,22 +1411,23 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        mol (Molecule): The RMG ``Molecule`` object instance.</span>
+<span class="sd">        reset_atom_ids (bool, optional): Whether to reset the atom IDs in the .mol Molecule attribute.</span>
+<span class="sd">                                         Useful when copying the object to avoid duplicate atom IDs between</span>
+<span class="sd">                                         different object instances.</span>
 <span class="sd">        testing (bool, optional): Whether this is called during a test, in which case atom IDs should be deterministic.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        dict: The corresponding dict representation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">testing</span><span class="p">:</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span>
             <span class="n">atom</span><span class="o">.</span><span class="n">id</span> <span class="o">=</span> <span class="n">counter</span>
             <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">id</span> <span class="ow">or</span> <span class="n">reset_atom_ids</span><span class="p">:</span>
         <span class="n">mol</span><span class="o">.</span><span class="n">assign_atom_ids</span><span class="p">()</span>
     <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;atoms&#39;</span><span class="p">:</span> <span class="p">[{</span><span class="s1">&#39;element&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;number&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">number</span><span class="p">,</span>
-                                   <span class="s1">&#39;symbol&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span>
-                                   <span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                                   <span class="s1">&#39;mass&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">mass</span><span class="p">,</span>
                                    <span class="s1">&#39;isotope&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">isotope</span><span class="p">,</span>
                                    <span class="p">},</span>
                        <span class="s1">&#39;radical_electrons&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">radical_electrons</span><span class="p">,</span>
@@ -1427,6 +1436,7 @@
                        <span class="s1">&#39;lone_pairs&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">lone_pairs</span><span class="p">,</span>
                        <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                        <span class="s1">&#39;props&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">props</span><span class="p">,</span>
+                       <span class="s1">&#39;atomtype&#39;</span><span class="p">:</span> <span class="n">atom</span><span class="o">.</span><span class="n">atomtype</span><span class="o">.</span><span class="n">label</span><span class="p">,</span>
                        <span class="s1">&#39;edges&#39;</span><span class="p">:</span> <span class="p">{</span><span class="n">atom_2</span><span class="o">.</span><span class="n">id</span><span class="p">:</span> <span class="n">bond</span><span class="o">.</span><span class="n">order</span>
                                  <span class="k">for</span> <span class="n">atom_2</span><span class="p">,</span> <span class="n">bond</span> <span class="ow">in</span> <span class="n">atom</span><span class="o">.</span><span class="n">edges</span><span class="o">.</span><span class="n">items</span><span class="p">()},</span>
                        <span class="p">}</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">],</span>
@@ -1452,26 +1462,26 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">multiplicity</span><span class="o">=</span><span class="n">representation</span><span class="p">[</span><span class="s1">&#39;multiplicity&#39;</span><span class="p">],</span>
                    <span class="n">props</span><span class="o">=</span><span class="n">representation</span><span class="p">[</span><span class="s1">&#39;props&#39;</span><span class="p">])</span>
-    <span class="n">atoms</span> <span class="o">=</span> <span class="p">{</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]:</span> <span class="n">Atom</span><span class="p">(</span><span class="n">element</span><span class="o">=</span><span class="n">Element</span><span class="p">(</span><span class="n">number</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;element&#39;</span><span class="p">][</span><span class="s1">&#39;number&#39;</span><span class="p">],</span>
-                                                   <span class="n">symbol</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;element&#39;</span><span class="p">][</span><span class="s1">&#39;symbol&#39;</span><span class="p">],</span>
-                                                   <span class="n">name</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;element&#39;</span><span class="p">][</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-                                                   <span class="n">mass</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;element&#39;</span><span class="p">][</span><span class="s1">&#39;mass&#39;</span><span class="p">],</span>
-                                                   <span class="n">isotope</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;element&#39;</span><span class="p">][</span><span class="s1">&#39;isotope&#39;</span><span class="p">],</span>
-                                                   <span class="p">),</span>
+    <span class="n">atoms</span> <span class="o">=</span> <span class="p">{</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]:</span> <span class="n">Atom</span><span class="p">(</span><span class="n">element</span><span class="o">=</span><span class="n">get_element</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;element&#39;</span><span class="p">][</span><span class="s1">&#39;number&#39;</span><span class="p">],</span>
+                                                       <span class="n">isotope</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;element&#39;</span><span class="p">][</span><span class="s1">&#39;isotope&#39;</span><span class="p">]),</span>
                                    <span class="n">radical_electrons</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;radical_electrons&#39;</span><span class="p">],</span>
                                    <span class="n">charge</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;charge&#39;</span><span class="p">],</span>
                                    <span class="n">lone_pairs</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;lone_pairs&#39;</span><span class="p">],</span>
                                    <span class="nb">id</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">],</span>
                                    <span class="n">props</span><span class="o">=</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;props&#39;</span><span class="p">],</span>
                                    <span class="p">)</span> <span class="k">for</span> <span class="n">atom_dict</span> <span class="ow">in</span> <span class="n">representation</span><span class="p">[</span><span class="s1">&#39;atoms&#39;</span><span class="p">]}</span>
+    <span class="k">for</span> <span class="n">atom_dict</span> <span class="ow">in</span> <span class="n">representation</span><span class="p">[</span><span class="s1">&#39;atoms&#39;</span><span class="p">]:</span>
+        <span class="n">atoms</span><span class="p">[</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">atomtype</span> <span class="o">=</span> <span class="n">ATOMTYPES</span><span class="p">[</span><span class="n">atom_dict</span><span class="p">[</span><span class="s1">&#39;atomtype&#39;</span><span class="p">]]</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">atoms</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">atoms</span><span class="p">[</span><span class="n">atom_id</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom_id</span> <span class="ow">in</span> <span class="n">representation</span><span class="p">[</span><span class="s1">&#39;atom_order&#39;</span><span class="p">])</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom_1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atoms</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
         <span class="k">for</span> <span class="n">atom_2_id</span><span class="p">,</span> <span class="n">bond_order</span> <span class="ow">in</span> <span class="n">representation</span><span class="p">[</span><span class="s1">&#39;atoms&#39;</span><span class="p">][</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;edges&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="n">bond</span> <span class="o">=</span> <span class="n">Bond</span><span class="p">(</span><span class="n">atom_1</span><span class="p">,</span> <span class="n">atoms</span><span class="p">[</span><span class="n">atom_2_id</span><span class="p">],</span> <span class="n">bond_order</span><span class="p">)</span>
             <span class="n">mol</span><span class="o">.</span><span class="n">add_bond</span><span class="p">(</span><span class="n">bond</span><span class="p">)</span>
     <span class="n">mol</span><span class="o">.</span><span class="n">update_atomtypes</span><span class="p">(</span><span class="n">raise_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">mol</span><span class="o">.</span><span class="n">update_multiplicity</span><span class="p">()</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">is_ts</span><span class="p">:</span>
         <span class="n">mol</span><span class="o">.</span><span class="n">identify_ring_membership</span><span class="p">()</span>
+        <span class="n">mol</span><span class="o">.</span><span class="n">update_connectivity_values</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">mol</span></div>
 
 
@@ -1492,9 +1502,53 @@
     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="k">else</span> <span class="n">y</span>
     <span class="n">d</span> <span class="o">=</span> <span class="n">x</span> <span class="o">-</span> <span class="n">y</span>
     <span class="n">n</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">sqr_sum</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sqr_sum</span><span class="o">/</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">sqr_sum</span> <span class="o">=</span> <span class="p">(</span><span class="n">d</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">rmsd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">sqr_sum</span> <span class="o">/</span> <span class="n">n</span><span class="p">)</span>
     <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">rmsd</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_check_r_n_p_symbols_between_rmg_and_arc_rxns</span><span class="p">(</span><span class="n">arc_reaction</span><span class="p">:</span> <span class="s1">&#39;ARCReaction&#39;</span><span class="p">,</span>
+                                                  <span class="n">rmg_reactions</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="s1">&#39;Reaction&#39;</span><span class="p">],</span>
+                                                  <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A helper function to check that atom symbols are in the correct order between an ARC reaction</span>
+<span class="sd">    and its corresponding RMG reactions generated by the get_rmg_reactions_from_arc_reaction() function.</span>
+<span class="sd">    Used internally for testing.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        arc_reaction (ARCReaction): The ARCReaction object to inspect.</span>
+<span class="sd">        rmg_reactions (List[&#39;Reaction&#39;]): Entries are RMG Reaction objects to inspect.</span>
+<span class="sd">                                          Could contain either Species or Molecule object as reactants/products.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        bool: Whether atom symbols are in the same respective order.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">num_rs</span><span class="p">,</span> <span class="n">num_ps</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">arc_reaction</span><span class="o">.</span><span class="n">r_species</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">arc_reaction</span><span class="o">.</span><span class="n">p_species</span><span class="p">)</span>
+    <span class="n">arc_r_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arc_reaction</span><span class="o">.</span><span class="n">r_species</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rs</span><span class="p">)))]</span>
+    <span class="n">arc_p_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arc_reaction</span><span class="o">.</span><span class="n">p_species</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_ps</span><span class="p">)))]</span>
+    <span class="k">for</span> <span class="n">rmg_reaction</span> <span class="ow">in</span> <span class="n">rmg_reactions</span><span class="p">:</span>
+        <span class="n">rmg_r_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span>
+                         <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">reactants</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span>
+                                                  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">reactants</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Molecule</span><span class="p">)</span>
+                                                  <span class="k">else</span> <span class="n">rmg_reaction</span><span class="o">.</span><span class="n">reactants</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">molecule</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span>
+                                                  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_rs</span><span class="p">)))]</span>
+        <span class="n">rmg_p_symbols</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span>
+                         <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">chain</span><span class="p">(</span><span class="o">*</span><span class="nb">tuple</span><span class="p">(</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">products</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span>
+                                                  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">products</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">Molecule</span><span class="p">)</span>
+                                                  <span class="k">else</span> <span class="n">rmg_reaction</span><span class="o">.</span><span class="n">products</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">molecule</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span>
+                                                  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_ps</span><span class="p">)))]</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">symbol_1</span> <span class="o">!=</span> <span class="n">symbol_2</span> <span class="k">for</span> <span class="n">symbol_1</span><span class="p">,</span> <span class="n">symbol_2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">arc_r_symbols</span><span class="p">,</span> <span class="n">rmg_r_symbols</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Different element order in reactants between ARC and RMG:&#39;</span><span class="p">)</span>  <span class="c1"># Don&#39;t modify to logging.</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">arc_r_symbols</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">rmg_r_symbols</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="n">symbol_1</span> <span class="o">!=</span> <span class="n">symbol_2</span> <span class="k">for</span> <span class="n">symbol_1</span><span class="p">,</span> <span class="n">symbol_2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">arc_p_symbols</span><span class="p">,</span> <span class="n">rmg_p_symbols</span><span class="p">)):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Different element order in products between ARC and RMG:&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">arc_p_symbols</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">rmg_p_symbols</span><span class="p">)</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">result</span>
 </pre></div>
 
            </div>
