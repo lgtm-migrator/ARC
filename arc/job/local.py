@@ -239,7 +239,8 @@ def submit_job(path):
     elif cluster_soft == 'htcondor' and 'submitting' in stdout[0].lower():
         # Submitting job(s).
         # 1 job(s) submitted to cluster 443069.
-        job_id = stdout[1].split()[-1].split('.')[0]
+        if len(stdout) and len(stdout[1].split()) and len(stdout[1].split()[-1].split('.')):
+            job_id = stdout[1].split()[-1].split('.')[0]
     else:
         raise ValueError(f'Unrecognized cluster software: {cluster_soft}')
     job_status = 'running' if job_id else job_status
