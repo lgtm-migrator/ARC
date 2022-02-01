@@ -239,6 +239,11 @@ def submit_job(path):
     elif cluster_soft == 'htcondor' and 'submitting' in stdout[0].lower():
         # Submitting job(s).
         # 1 job(s) submitted to cluster 443069.
+        print(stdout)
+        print(stdout[1])
+        print(stdout[1].split())
+        print(stdout[1].split()[-1])
+        print(stdout[1].split()[-1].split('.'))
         if len(stdout) and len(stdout[1].split()) and len(stdout[1].split()[-1].split('.')):
             job_id = stdout[1].split()[-1].split('.')[0]
     else:
