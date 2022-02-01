@@ -227,7 +227,7 @@ def submit_job(path):
         stdout, stderr = execute_command(cmd)
     if not len(stdout):
         return None, None
-    if stderr == 0:
+    if len(stderr) > 0 or len(stdout) == 0:
         logger.warning(f'Got the following error when trying to submit job:\n{stderr}.')
         job_status = 'errored'
     elif cluster_soft in ['oge', 'sge'] and 'submitted' in stdout[0].lower():
