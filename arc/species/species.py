@@ -95,7 +95,7 @@ class ARCSpecies(object):
 
     Args:
         label (str, optional): The species label.
-        is_ts (bool, optional): Whether or not the species represents a transition state.
+        is_ts (bool, optional): Whether the species represents a transition state.
         rmg_species (Species, optional): An RMG Species object to be converted to an ARCSpecies object.
         mol (Molecule, optional): An ``RMG Molecule`` object used for BAC determination.
                                   Atom order corresponds to the order in .initial_xyz
@@ -161,7 +161,7 @@ class ARCSpecies(object):
                                 resulting in a 1D scan instead of an ND scan.
                                 Values are nested lists. Each value is a list where the entries are either pivot lists
                                 (e.g., [1, 5]) or lists of pivot lists (e.g., [[1, 5], [6, 8]]), or a mix
-                                (e.g., [[4, 8], [[6, 9], [3, 4]]). The requested directed scan type will be executed
+                                (e.g., [[4, 8], [[6, 9], [3, 4]]]). The requested directed scan type will be executed
                                 separately for each list entry in the value. A list entry that contains only two pivots
                                 will result in a 1D scan, while a list entry with N pivots will consider all of them,
                                 and will result in an ND scan if '_diagonal' is not specified.
@@ -346,7 +346,7 @@ class ARCSpecies(object):
         self.original_label = None
 
         if species_dict is not None:
-            # Reading from a dictionary (it's possible that the dict contain only a 'yml_path' argument, check first)
+            # Reading from a dictionary (it's possible that the dict contains only a 'yml_path' argument, check first)
             if 'yml_path' in species_dict:
                 if 'label' in species_dict:
                     self.label = species_dict['label']
@@ -355,7 +355,7 @@ class ARCSpecies(object):
                 self.from_dict(species_dict=species_dict)
 
         if species_dict is None or self.yml_path is not None:
-            # Not reading from a dictionary
+            # Not reading from a dictionary.
             self.force_field = force_field
             self.is_ts = is_ts
             self.ts_conf_spawned = False
@@ -1352,10 +1352,10 @@ class ARCSpecies(object):
             electrons -= self.charge
             if electrons % 2 == 1:
                 self.multiplicity = 2
-                logger.warning(f'\nMultiplicity not specified for {self.label}, assuming a value of 2')
+                logger.debug(f'\nMultiplicity not specified for {self.label}, assuming a value of 2')
             else:
                 self.multiplicity = 1
-                logger.warning(f'\nMultiplicity not specified for {self.label}, assuming a value of 1')
+                logger.debug(f'\nMultiplicity not specified for {self.label}, assuming a value of 1')
 
     def make_ts_report(self):
         """A helper function to write content into the .ts_report attribute"""
@@ -1382,7 +1382,7 @@ class ARCSpecies(object):
                      ) -> None:
         """
         Make sure atom order in self.mol corresponds to xyz.
-        Important for TS discovery and for identifying rotor indices.
+        Important for TS searches and for identifying rotor indices.
         This works by generating a molecule from xyz and using the
         2D structure to confirm that the perceived molecule is correct.
         If ``xyz`` is not given, the species xyz attribute will be used.
