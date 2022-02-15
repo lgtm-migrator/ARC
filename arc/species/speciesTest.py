@@ -190,8 +190,6 @@ class TestARCSpecies(unittest.TestCase):
         self.assertFalse(self.spc3.is_monoatomic())
         n_rad = ARCSpecies(label='N', smiles='[N]')
         self.assertTrue(n_rad.is_monoatomic())
-        empty_spc = ARCSpecies(label='empty')
-        self.assertIsNone(empty_spc.is_monoatomic())
 
     def test_get_xyz(self):
         """Test the get_xyz() method."""
