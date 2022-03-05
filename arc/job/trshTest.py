@@ -582,10 +582,8 @@ class TestTrsh(unittest.TestCase):
         expect_message = 'Species COCCOO is not oriented correctly around pivots [2, 5], ' \
                          'searching for a better conformation...'
         self.assertEqual(message, expect_message)
-        xyz = {'symbols': ('O', 'O', 'O', 'C', 'C', 'C', 'H',
-                           'H', 'H', 'H', 'H', 'H', 'H', 'H'),
-               'isotopes': (16, 16, 16, 12, 12, 12, 1, 1,
-                            1, 1, 1, 1, 1, 1),
+        xyz = {'symbols': ('O', 'O', 'O', 'C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
+               'isotopes': (16, 16, 16, 12, 12, 12, 1, 1, 1, 1, 1, 1, 1, 1),
                'coords': ((1.064082, 0.653765, -0.451343),
                           (-2.342701, 0.031994, 0.662511),
                           (-2.398473, -1.385822, 0.327886),
