@@ -34,6 +34,7 @@ def check_ts(reaction: 'ARCReaction',
              verbose: bool = True,
              job: Optional['JobAdapter'] = None,
              checks: Optional[List[str]] = None,
+             rxn_zone_atom_indices: Optional[List[int]] = None,
              ):
     """
     Check the TS in terms of energy, normal mode displacement, and IRC.
@@ -50,6 +51,8 @@ def check_ts(reaction: 'ARCReaction',
         parameter (str, optional): The energy parameter to consider ('E0' or 'e_elect').
         job (JobAdapter, optional): The frequency job object instance.
         checks (List[str], optional): Specific checks to run. Optional values: 'energy', 'freq', 'IRC', 'rotors'.
+        rxn_zone_atom_indices (List[int], optional): The 0-indices of atoms identified by the normal displacement
+                                                     mode as the reaction zone. Automatically determined if not given.
     """
     checks = checks or list()
     for entry in checks:
@@ -60,14 +63,14 @@ def check_ts(reaction: 'ARCReaction',
         check_ts_energy(reaction=reaction, verbose=verbose)
 
     if 'freq' in checks or (not reaction.ts_species.ts_checks['normal_mode_displacement'] and job is not None):
-        check_normal_mode_displacement(reaction, job=job)
+        check_normal_mode_displacement(reaction, job=job, rxn_zone_atom_indices=rxn_zone_atom_indices)
 
     # if 'IRC' in checks or (not self.ts_species.ts_checks['IRC'] and IRC_wells is not None):
     #     self.check_irc()
 
     if 'rotors' in checks or (ts_passed_all_checks(species=reaction.ts_species, exemptions=['E0', 'warnings', 'IRC'])
                               and job is not None):
-        invalidate_rotors_with_both_pivots_in_a_reactive_zone(reaction, job)
+        invalidate_rotors_with_both_pivots_in_a_reactive_zone(reaction, job, rxn_zone_atom_indices=rxn_zone_atom_indices)
 
 
 def ts_passed_all_checks(species: 'ARCSpecies',
@@ -215,7 +218,7 @@ def check_rxn_e0(reaction: 'ARCReaction',
 
 
 def check_normal_mode_displacement(reaction: 'ARCReaction',
-                                   job: 'JobAdapter',
+                                   job: Optional['JobAdapter'],
                                    rxn_zone_atom_indices: Optional[List[int]] = None,
                                    ):
     """
@@ -230,13 +233,13 @@ def check_normal_mode_displacement(reaction: 'ARCReaction',
         rxn_zone_atom_indices (List[int], optional): The 0-indices of atoms identified by the normal displacement
                                                      mode as the reaction zone. Automatically determined if not given.
     """
-    if job is None:
+    if job is None and rxn_zone_atom_indices is None:
         return
 
     if reaction.family is None:
         rmgdb.determine_family(reaction)
 
-    rxn_zone_atom_indices = rxn_zone_atom_indices or get_rxn_zone_atom_indices(reaction, job)
+    job.species[0].rxn_zone_atom_indices = rxn_zone_atom_indices or get_rxn_zone_atom_indices(reaction, job)
     reaction.ts_species.ts_checks['normal_mode_displacement'] = False
     rmg_rxn = reaction.rmg_reaction.copy()
 
@@ -249,7 +252,7 @@ def check_normal_mode_displacement(reaction: 'ARCReaction',
     else:
         equivalent_indices = find_equivalent_atoms_in_reactants(arc_reaction=reaction)
         found_positions = list()
-        for rxn_zone_atom_index in rxn_zone_atom_indices:
+        for rxn_zone_atom_index in job.species[0].rxn_zone_atom_indices:
             atom_found = False
             for i, entry in enumerate(equivalent_indices):
                 if rxn_zone_atom_index in entry and i not in found_positions:
