@@ -645,7 +645,7 @@ def determine_top_group_indices(mol, atom1, atom2, index=1) -> Tuple[list, bool]
 
     Returns: Tuple[list, bool]
         - The indices of the atoms in the top (either 0-index or 1-index, as requested).
-        - Whether the top has heavy atoms (is not just a hydrogen atom). True if it has heavy atoms.
+        - Whether the top has heavy atoms (is not just a hydrogen atom). ``True`` if it has heavy atoms.
     """
     top = list()
     explored_atom_list, atom_list_to_explore1, atom_list_to_explore2 = [atom1], [atom2], []
