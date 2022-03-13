@@ -239,7 +239,9 @@ def check_normal_mode_displacement(reaction: 'ARCReaction',
     if reaction.family is None:
         rmgdb.determine_family(reaction)
 
-    job.species[0].rxn_zone_atom_indices = rxn_zone_atom_indices or get_rxn_zone_atom_indices(reaction, job)
+    rxn_zone_atom_indices = rxn_zone_atom_indices or get_rxn_zone_atom_indices(reaction, job)
+    if job is not None:
+        job.species[0].rxn_zone_atom_indices = rxn_zone_atom_indices
     reaction.ts_species.ts_checks['normal_mode_displacement'] = False
     rmg_rxn = reaction.rmg_reaction.copy()
 
@@ -252,7 +254,7 @@ def check_normal_mode_displacement(reaction: 'ARCReaction',
     else:
         equivalent_indices = find_equivalent_atoms_in_reactants(arc_reaction=reaction)
         found_positions = list()
-        for rxn_zone_atom_index in job.species[0].rxn_zone_atom_indices:
+        for rxn_zone_atom_index in rxn_zone_atom_indices:
             atom_found = False
             for i, entry in enumerate(equivalent_indices):
                 if rxn_zone_atom_index in entry and i not in found_positions:
