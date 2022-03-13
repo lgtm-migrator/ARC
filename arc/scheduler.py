@@ -2303,7 +2303,10 @@ class Scheduler(object):
                             str(f'Polarizability calculated at the {self.freq_level.simple()} level of theory')
                 if self.species_dict[label].is_ts:
                     if self.species_dict[label].rxn_index in self.rxn_dict.keys():
-                        check_ts(reaction=self.rxn_dict[self.species_dict[label].rxn_index], job=job)
+                        check_ts(reaction=self.rxn_dict[self.species_dict[label].rxn_index],
+                                 job=job,
+                                 checks=['freq'],
+                                 )
                     if self.species_dict[label].ts_checks['normal_mode_displacement'] is False:
                         logger.info(f'TS {label} did not pass the normal mode displacement check. '
                                     f'Status is:\n{self.species_dict[label].ts_checks}\n'
@@ -2516,7 +2519,7 @@ class Scheduler(object):
         if self.species_dict[label].is_ts:
             for rxn in self.rxn_dict.values():
                 if rxn.ts_label == label:
-                    check_ts(reaction=rxn, verbose=True)
+                    check_ts(reaction=rxn, verbose=True, checks=['energy'])
                     if not (rxn.ts_species.ts_checks['E0'] or rxn.ts_species.ts_checks['e_elect']):
                         logger.info(f'TS {label} did not pass the energy check. '
                                     f'Status is:\n{self.species_dict[label].ts_checks}\n'
