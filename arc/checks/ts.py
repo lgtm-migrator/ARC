@@ -18,7 +18,10 @@ from arc.common import (ARC_PATH,
                         get_logger,
                         read_yaml_file,
                         )
-from arc.species.mapping import find_equivalent_atoms_in_reactants
+from arc.species.converter import xyz_from_data, xyz_to_coords_list
+from arc.species.mapping import (get_atom_indices_of_labeled_atoms_in_an_rmg_reaction,
+                                 get_rmg_reactions_from_arc_reaction,
+                                 find_equivalent_atoms_in_reactants)
 from arc.statmech.factory import statmech_factory
 
 if TYPE_CHECKING:
@@ -63,14 +66,15 @@ def check_ts(reaction: 'ARCReaction',
         check_ts_energy(reaction=reaction, verbose=verbose)
 
     if 'freq' in checks or (not reaction.ts_species.ts_checks['normal_mode_displacement'] and job is not None):
-        check_normal_mode_displacement(reaction, job=job, rxn_zone_atom_indices=rxn_zone_atom_indices)
+        check_normal_mode_displacement(reaction, job=job)
 
     # if 'IRC' in checks or (not self.ts_species.ts_checks['IRC'] and IRC_wells is not None):
     #     self.check_irc()
 
     if 'rotors' in checks or (ts_passed_all_checks(species=reaction.ts_species, exemptions=['E0', 'warnings', 'IRC'])
                               and job is not None):
-        invalidate_rotors_with_both_pivots_in_a_reactive_zone(reaction, job, rxn_zone_atom_indices=rxn_zone_atom_indices)
+        invalidate_rotors_with_both_pivots_in_a_reactive_zone(reaction, job,
+                                                              rxn_zone_atom_indices=rxn_zone_atom_indices)
 
 
 def ts_passed_all_checks(species: 'ARCSpecies',
@@ -120,10 +124,11 @@ def check_ts_energy(reaction: 'ARCReaction',
             r_text = f'{r_e_elect - min_e:.2f} kJ/mol' if r_e_elect is not None else 'None'
             ts_text = f'{ts_e_elect - min_e:.2f} kJ/mol' if ts_e_elect is not None else 'None'
             p_text = f'{p_e_elect - min_e:.2f} kJ/mol' if p_e_elect is not None else 'None'
-            logger.info(f'\nReaction {reaction.label} (TS {reaction.ts_label}) has the following path electronic energy:\n'
-                        f'Reactants: {r_text}\n'
-                        f'TS: {ts_text}\n'
-                        f'Products: {p_text}')
+            logger.info(
+                f'\nReaction {reaction.label} (TS {reaction.ts_label}) has the following path electronic energy:\n'
+                f'Reactants: {r_text}\n'
+                f'TS: {ts_text}\n'
+                f'Products: {p_text}')
 
         if all([val is not None for val in [r_e_elect, p_e_elect, ts_e_elect]]):
             # We have all params, we can make a quantitative decision.
@@ -219,52 +224,93 @@ def check_rxn_e0(reaction: 'ARCReaction',
 
 def check_normal_mode_displacement(reaction: 'ARCReaction',
                                    job: Optional['JobAdapter'],
-                                   rxn_zone_atom_indices: Optional[List[int]] = None,
                                    ):
     """
-    Check the normal mode displacement by making sure that the atom indices derived from the major motion
-    (the major normal mode displacement) fit the expected RMG reaction template.
-    Note that RMG does not differentiate well between hydrogen atoms since it thinks in 2D,
-    and therefore we must consider symmetry/degeneracy as facilitated by find_equivalent_atoms_in_reactants().
+    Check the normal mode displacement by identifying bonds that break and form
+    and comparing to the expected RMG template, if available.
+    If no RMG template is available, just see that some bonds break/form, and that this is not a torsional saddle point.
+    Note that RMG does not differentiate well between 2D equivalent hydrogen atoms,
+    therefore we must consider symmetry/degeneracy as facilitated by find_equivalent_atoms_in_reactants().
 
     Args:
         reaction (ARCReaction): The reaction for which the TS is checked.
         job (JobAdapter): The frequency job object instance.
-        rxn_zone_atom_indices (List[int], optional): The 0-indices of atoms identified by the normal displacement
-                                                     mode as the reaction zone. Automatically determined if not given.
     """
-    if job is None and rxn_zone_atom_indices is None:
+    if job is None:
         return
+    reaction.ts_species.ts_checks['normal_mode_displacement'] = False
 
+    expected_breaking_bonds, expected_forming_bonds = get_expected_changing_bonds(reaction)
+    breaking_bonds, forming_bonds = determine_changing_bonds(job)  # returns empty list if no change
+
+    if expected_breaking_bonds is None or expected_forming_bonds is None:
+        if len(breaking_bonds) or len(forming_bonds):
+            reaction.ts_species.ts_checks['warnings'] += 'Could not compare normal displacement mode to expected ' \
+                                                         'breaking/forming bonds due to a missing RMG template; '
+            reaction.ts_species.ts_checks['normal_mode_displacement'] = True
+    else:
+        if len(breaking_bonds) == len(expected_breaking_bonds) and len(forming_bonds) == len(expected_forming_bonds) \
+                and all(breaking_bond in expected_breaking_bonds for breaking_bond in breaking_bonds) \
+                and all(forming_bond in expected_forming_bonds for forming_bond in forming_bonds):
+            reaction.ts_species.ts_checks['normal_mode_displacement'] = True
+
+
+def get_expected_changing_bonds(reaction: 'ARCReaction',
+                                ) -> Tuple[Optional[List[Tuple[int, ...]]], Optional[List[Tuple[int, ...]]]]:
+    """
+    Get the expected forming and breaking bonds from the RMG reaction template.
+
+    Args:
+        reaction (ARCReaction): The reaction for which the TS is checked.
+
+    Returns:
+        Tuple[Optional[List[Tuple[int, int]]], Optional[List[Tuple[int, int]]]]:
+            The breaking and forming bonds. Returns (None, None) if the reaction family cannot be identified.
+    """
     if reaction.family is None:
         rmgdb.determine_family(reaction)
+    rmg_reactions = get_rmg_reactions_from_arc_reaction(arc_reaction=reaction)
+    r_label_dict, _ = get_atom_indices_of_labeled_atoms_in_an_rmg_reaction(arc_reaction=reaction,
+                                                                           rmg_reaction=rmg_reactions[0])
+    if reaction.family is None or rmg_reactions is None or not len(rmg_reactions) or r_label_dict is None:
+        return None, None
+    template_recipe_actions = reaction.family.forward_recipe.actions
+    # [['BREAK_BOND', '*1', 1, '*2'], ['FORM_BOND', '*2', 1, '*3'], ['GAIN_RADICAL', '*1', '1']]
+    expected_breaking_bonds = [tuple(sorted([r_label_dict[action[1]], r_label_dict[action[3]]]))
+                               for action in template_recipe_actions if action[0] == 'BREAK_BOND']
+    expected_forming_bonds = [tuple(sorted([r_label_dict[action[1]], r_label_dict[action[3]]]))
+                              for action in template_recipe_actions if action[0] == 'FORM_BOND']
+    return expected_breaking_bonds, expected_forming_bonds
 
-    rxn_zone_atom_indices = rxn_zone_atom_indices or get_rxn_zone_atom_indices(reaction, job)
-    if job is not None:
-        job.species[0].rxn_zone_atom_indices = rxn_zone_atom_indices
-    reaction.ts_species.ts_checks['normal_mode_displacement'] = False
-    rmg_rxn = reaction.rmg_reaction.copy()
 
-    try:
-        reaction.family.add_atom_labels_for_reaction(reaction=rmg_rxn, output_with_resonance=False, save_order=True)
-    except (ActionError, AttributeError, ValueError):
-        reaction.ts_species.ts_checks['warnings'] += 'Could not determine atom labels from RMG, ' \
-                                                     'cannot check normal mode displacement; '
-        reaction.ts_species.ts_checks['normal_mode_displacement'] = True
-    else:
-        equivalent_indices = find_equivalent_atoms_in_reactants(arc_reaction=reaction)
-        found_positions = list()
-        for rxn_zone_atom_index in rxn_zone_atom_indices:
-            atom_found = False
-            for i, entry in enumerate(equivalent_indices):
-                if rxn_zone_atom_index in entry and i not in found_positions:
-                    atom_found = True
-                    found_positions.append(i)
-                    break
-            if not atom_found:
-                break
-        else:
-            reaction.ts_species.ts_checks['normal_mode_displacement'] = True
+def determine_changing_bonds(job: Optional['JobAdapter'],
+                             factor: float = 0.5,
+                             ) -> Tuple[List[Tuple[int, ...]], List[Tuple[int, ...]]]:
+    """
+    Determine breaking and forming bonds of a reaction by the TS freq job output.
+
+    Args:
+        job (JobAdapter): The frequency job object instance.
+        factor (float, optional): THe factor by which to perturb the TS coords in the displacement direction.
+
+    Returns:
+        Tuple[List[Tuple[int, ...]], List[Tuple[int, ...]]]:
+            The breaking and forming bonds. Returns empty lists if no breaking/forming bonds were identified.
+    """
+    freqs, normal_modes_disp = parser.parse_normal_mode_displacement(path=job.local_path_to_output_file,
+                                                                     raise_error=False)
+    if not len(normal_modes_disp):
+        return [], []
+    largest_neg_freq_idx = 0
+    for i, freq in enumerate(freqs):
+        if freq < 0 and freq < freqs[largest_neg_freq_idx]:
+            largest_neg_freq_idx = i
+    xyz = parser.parse_xyz_from_file(job.local_path_to_output_file)
+    coords = np.array(xyz_to_coords_list(xyz), np.float64)
+    displacement = normal_modes_disp[largest_neg_freq_idx]
+    xyz_1 = xyz_from_data(coords=coords + factor * displacement, symbols=xyz['symbols'])
+    xyz_2 = xyz_from_data(coords=coords - factor * displacement, symbols=xyz['symbols'])
+    
 
 
 def invalidate_rotors_with_both_pivots_in_a_reactive_zone(reaction: 'ARCReaction',
@@ -297,6 +343,7 @@ def get_rxn_zone_atom_indices(reaction: 'ARCReaction',
                               ) -> List[int]:
     """
     Get the reaction zone atom indices by parsing normal mode displacement.
+    Hard coded for H abs?
 
     Args:
         reaction (ARCReaction): The respective reaction object instance.
@@ -407,7 +454,7 @@ def get_rxn_normal_mode_disp_atom_number(rxn_family: Optional[str] = None,
                                          ) -> int:
     """
     Get the number of atoms expected to have the largest normal mode displacement per family.
-    If ``rms_list`` is given, also include atoms with an rms value close to the lowest rms still considered.
+    If ``rms_list`` is given, also include atoms with an RMS value close to the lowest RMS still considered.
 
     Args:
         rxn_family (str, optional): The reaction family label.
