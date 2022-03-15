@@ -572,7 +572,7 @@ def get_single_bond_length(symbol_1: str,
                            charge_2: int = 0,
                            ) -> float:
     """
-    Get the an approximate for a single bond length between two elements.
+    Get an approximate for a single bond length between two elements.
 
     Args:
         symbol_1 (str): Symbol 1.
@@ -592,6 +592,38 @@ def get_single_bond_length(symbol_1: str,
     if bond2 in SINGLE_BOND_LENGTH.keys():
         return SINGLE_BOND_LENGTH[bond2]
     return 2.5
+
+
+def get_bonds_from_dmat(dmat: np.ndarray,
+                        elements: Union[Tuple[str, ...], List[str]],
+                        charges: Optional[List[int]] = None
+                        ) -> List[Tuple[int, int]]:
+    """
+    Guess the connectivity of a molecule from its distance matrix representation.
+
+    Args:
+        dmat (np.ndarray): An NxN matrix of atom distances in Angstrom.
+        elements (List[str]): The corresponding element list in the same atomic order.
+        charges (List[int], optional): A corresponding list of formal atomic charges.
+    """
+    if len(elements) != dmat.shape[0] or len(elements) != dmat.shape[1] or len(dmat.shape) != 2:
+        raise ValueError(f'The dimensions of the DMat {dmat.shape} must be equal to the number of elements {len(elements)}')
+    bonds = list()
+    charges = charges or [0] * len(elements)
+    for i, e_1 in enumerate(elements):
+        for j, e_2 in enumerate(elements):
+            if i > j and not (e_1 == 'H' and e_2 == 'H' and len(elements) > 2):
+                # sbl = get_single_bond_length(symbol_1=e_1,
+                #                                        symbol_2=e_2,
+                #                                        charge_1=charges[i],
+                #                                        charge_2=charges[j])
+                # print(f'check {elements[i], elements[j]}: dmat: {dmat[i, j]}, SBL: {sbl}')
+                if dmat[i, j] < 1.1 * get_single_bond_length(symbol_1=e_1,
+                                                             symbol_2=e_2,
+                                                             charge_1=charges[i],
+                                                             charge_2=charges[j]):
+                    bonds.append(tuple(sorted([i, j])))
+    return bonds
 
 
 def determine_symmetry(xyz: dict) -> Tuple[int, int]:
