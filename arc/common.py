@@ -723,10 +723,10 @@ def extremum_list(lst: list,
         return max([entry for entry in lst if entry is not None])
 
 
-def get_index_of_extremum(lst: list,
-                          return_min: bool = True,
-                          skip_values: Optional[list] = None
-                          ) -> Optional[Union[int, None]]:
+def get_extremum_index(lst: list,
+                       return_min: bool = True,
+                       skip_values: Optional[list] = None
+                       ) -> Optional[Union[int, None]]:
     """
     A helper function for finding the extremum (either minimum or maximum) of a list of numbers (int/float)
     where some entries could be ``None``.
