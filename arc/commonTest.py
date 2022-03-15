@@ -265,48 +265,47 @@ class TestCommon(unittest.TestCase):
         max_lst = common.extremum_list(lst, return_min=False)
         self.assertEqual(max_lst, 100)
 
-    def test_get_index_of_extremum(self):
-        """Test the get_index_of_extremum() function."""
+    def test_get_get_extremum_index(self):
+        """Test the get_extremum_index() function."""
         lst = []
-        extremum_index = common.get_index_of_extremum(lst)
+        extremum_index = common.get_extremum_index(lst)
         self.assertIsNone(extremum_index)
 
         lst = [None]
-        extremum_index = common.get_index_of_extremum(lst)
+        extremum_index = common.get_extremum_index(lst)
         self.assertIsNone(extremum_index)
 
         lst = [None, None]
-        extremum_index = common.get_index_of_extremum(lst)
+        extremum_index = common.get_extremum_index(lst)
         self.assertIsNone(extremum_index)
 
         lst = [100]
-        extremum_index = common.get_index_of_extremum(lst)
+        extremum_index = common.get_extremum_index(lst)
         self.assertEqual(extremum_index, 0)
 
         lst = [-8, -80]
-        extremum_index = common.get_index_of_extremum(lst)
+        extremum_index = common.get_extremum_index(lst)
         self.assertEqual(extremum_index, 1)
 
         lst = [-8, None]
-        extremum_index = common.get_index_of_extremum(lst)
+        extremum_index = common.get_extremum_index(lst)
         self.assertEqual(extremum_index, 0)
 
         lst = [-8, -8, -8, -8]
-        extremum_index = common.get_index_of_extremum(lst)
+        extremum_index = common.get_extremum_index(lst)
         self.assertEqual(extremum_index, 0)
 
         lst = [-8, None, None, 100, -79, None]
-        extremum_index = common.get_index_of_extremum(lst)
+        extremum_index = common.get_extremum_index(lst)
         self.assertEqual(extremum_index, 4)
 
         lst = [-8, None, None, 100, -79, None]
-        extremum_index = common.get_index_of_extremum(lst, return_min=False)
+        extremum_index = common.get_extremum_index(lst, return_min=False)
         self.assertEqual(extremum_index, 3)
 
         lst = [8, None, 0, 100, 79, None]
-        extremum_index = common.get_index_of_extremum(lst, skip_values=[0])
+        extremum_index = common.get_extremum_index(lst, skip_values=[0])
         self.assertEqual(extremum_index, 0)
-
 
     def test_key_by_val(self):
         d = {1: 5, 2: 8}
