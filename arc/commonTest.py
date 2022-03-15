@@ -626,6 +626,30 @@ class TestCommon(unittest.TestCase):
         bonds = common.get_bonds_from_dmat(dmat=ts_n3h5_2_dmat, elements=ts_n3h5_2_xyz['symbols'])
         self.assertEqual(bonds, [(0, 1), (0, 3), (3, 4), (3, 5), (2, 6), (6, 7)])
 
+        # TS C3 intra H migration 1
+        ts_c3_intra_h_1_xyz = {'symbols': ('C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
+                               'isotopes': (12, 12, 12, 1, 1, 1, 1, 1, 1, 1),
+                               'coords': ((1.524852, 0.591965, -0.276141), (0.15624659, -0.07605135, -0.22609488),
+                                          (-1.00575771, 0.59324294, 0.32280653), (0.11884265, -1.16827906, -0.35326306),
+                                          (2.19484, 0.138175, -1.010532), (1.441557, 1.657406, -0.52194235),
+                                          (-0.290061, 0.790224, -0.88231488), (2.00176129, 0.53979971, 0.708471),
+                                          (-1.84853706, 0.023846, 0.73488606), (-0.89616871, 1.61707229, 0.73243706))}
+        ts_c3_intra_h_1_dmat = converter.xyz_to_dmat(ts_c3_intra_h_1_xyz)
+        bonds = common.get_bonds_from_dmat(dmat=ts_c3_intra_h_1_dmat, elements=ts_c3_intra_h_1_xyz['symbols'])
+        self.assertEqual(bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (1, 6), (0, 7), (2, 8), (2, 9)])
+
+        # TS C3 intra H migration 2
+        ts_c3_intra_h_1_xyz = {'symbols': ('C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
+                               'isotopes': (12, 12, 12, 1, 1, 1, 1, 1, 1, 1),
+                               'coords': ((1.524852, 0.591965, -0.276141), (0.20330541, -0.06428665, -0.29668312),
+                                          (-0.98222829, 0.62853706, 0.40515947), (0.13060735, -1.13298494, -0.31796894),
+                                          (2.19484, 0.138175, -1.010532), (1.441557, 1.657406, -0.51017765),
+                                          (-1.290061, 0.190224, -0.95290312), (2.02529071, 0.51627029, 0.708471),
+                                          (-1.81324294, 0.023846, 0.69959194), (-0.87263929, 1.64060171, 0.69714294))}
+        ts_c3_intra_h_1_dmat = converter.xyz_to_dmat(ts_c3_intra_h_1_xyz)
+        bonds = common.get_bonds_from_dmat(dmat=ts_c3_intra_h_1_dmat, elements=ts_c3_intra_h_1_xyz['symbols'])
+        self.assertEqual(bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (0, 7), (2, 8), (2, 9), (2, 6)])
+
     def test_globalize_paths(self):
         """Test modifying a file's contents to correct absolute file paths"""
         project_directory = os.path.join(common.ARC_PATH, 'arc', 'testing', 'restart', '4_globalized_paths')
