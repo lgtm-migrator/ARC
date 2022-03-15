@@ -596,7 +596,8 @@ def get_single_bond_length(symbol_1: str,
 
 def get_bonds_from_dmat(dmat: np.ndarray,
                         elements: Union[Tuple[str, ...], List[str]],
-                        charges: Optional[List[int]] = None
+                        charges: Optional[List[int]] = None,
+                        bond_lone_hydrogens=True,
                         ) -> List[Tuple[int, int]]:
     """
     Guess the connectivity of a molecule from its distance matrix representation.
@@ -605,24 +606,29 @@ def get_bonds_from_dmat(dmat: np.ndarray,
         dmat (np.ndarray): An NxN matrix of atom distances in Angstrom.
         elements (List[str]): The corresponding element list in the same atomic order.
         charges (List[int], optional): A corresponding list of formal atomic charges.
+        bond_lone_hydrogens (bool, optional): Whether to assign a bond to hydrogen atoms which were not identified
+                                              as bonded. If so, the closest atom will be considered.
     """
     if len(elements) != dmat.shape[0] or len(elements) != dmat.shape[1] or len(dmat.shape) != 2:
         raise ValueError(f'The dimensions of the DMat {dmat.shape} must be equal to the number of elements {len(elements)}')
-    bonds = list()
+    bonds, bonded_hydrogens = list(), list()
     charges = charges or [0] * len(elements)
     for i, e_1 in enumerate(elements):
         for j, e_2 in enumerate(elements):
             if i > j and not (e_1 == 'H' and e_2 == 'H' and len(elements) > 2):
-                # sbl = get_single_bond_length(symbol_1=e_1,
-                #                                        symbol_2=e_2,
-                #                                        charge_1=charges[i],
-                #                                        charge_2=charges[j])
-                # print(f'check {elements[i], elements[j]}: dmat: {dmat[i, j]}, SBL: {sbl}')
                 if dmat[i, j] < 1.1 * get_single_bond_length(symbol_1=e_1,
                                                              symbol_2=e_2,
                                                              charge_1=charges[i],
                                                              charge_2=charges[j]):
                     bonds.append(tuple(sorted([i, j])))
+                    if e_1 == 'H':
+                        bonded_hydrogens.append(i)
+                    if e_2 == 'H':
+                        bonded_hydrogens.append(j)
+    if bond_lone_hydrogens:
+        for i, element in enumerate(elements):
+            if element == 'H' and i not in bonded_hydrogens:
+                bonds.append(tuple(sorted([i, get_extremum_index(lst=dmat[i], return_min=True, skip_values=[0])])))
     return bonds
 
 
