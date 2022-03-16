@@ -450,6 +450,32 @@ def translate_xyz(xyz_dict: dict,
     return new_xyz
 
 
+def displace_xyz(xyz: dict,
+                 displacement: np.ndarray,
+                 amplitude: float = 0.25,
+                 use_weights: bool = True,
+                 ) -> Tuple[dict, dict]:
+    """
+    Displace the coordinates using the ``displacement`` by the requested ``amplitude`` using atom mass weights.
+
+    Args:
+        xyz (dict): The coordinates.
+        displacement (list): The corresponding xyz displacement for each atom.
+        amplitude (float, optional): The factor multiplication for the displacement.
+        use_weights( bool, optional): Whether to scale displacements by the square root of the respective element mass.
+
+    Returns:
+        Tuple[dict, dict]:
+            The two displaced xyz's, one for each direction (+/-) of the ``displacement``.
+    """
+    coords = np.array(xyz_to_coords_list(xyz), np.float64)
+    weights = np.sqrt(np.array(get_element_mass_from_xyz(xyz)).reshape(-1, 1)) if use_weights \
+        else np.ones((coords.shape[0], 1))
+    xyz_1 = xyz_from_data(coords=coords + amplitude * displacement * weights, symbols=xyz['symbols'])
+    xyz_2 = xyz_from_data(coords=coords - amplitude * displacement * weights, symbols=xyz['symbols'])
+    return xyz_1, xyz_2
+
+
 def get_element_mass_from_xyz(xyz: dict) -> List[float]:
     """
     Get a list of element masses corresponding to the given ``xyz`` considering isotopes.
