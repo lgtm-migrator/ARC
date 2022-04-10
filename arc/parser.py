@@ -127,7 +127,7 @@ def parse_normal_mode_displacement(path: str,
         NotImplementedError: If the parser is not implemented for the ESS this log file belongs to.
 
     Returns: Tuple[np.ndarray, np.ndarray]
-        The frequencies (in cm^-1) and The normal displacement modes.
+        The frequencies (in cm^-1) and the normal mode displacements.
     """
     software = software or determine_ess(path)
     freqs, normal_mode_disp, normal_mode_disp_entries = list(), list(), list()
