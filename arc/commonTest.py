@@ -549,8 +549,7 @@ class TestCommon(unittest.TestCase):
     def test_get_bonds_from_dmat(self):
         """test getting bonds from a distance matrix"""
         h2_xyz = {'symbols': ('H', 'H'), 'isotopes': (1, 1), 'coords': ((0.0, 0.0, 0.371517), (0.0, 0.0, -0.371517))}
-        h2_dmat = converter.xyz_to_dmat(h2_xyz)
-        bonds = common.get_bonds_from_dmat(dmat=h2_dmat, elements=h2_xyz['symbols'])
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(h2_xyz), elements=h2_xyz['symbols'])
         self.assertEqual(bonds, [(0, 1)])
 
         nh3_xyz = {'symbols': ('N', 'H', 'H', 'H'), 'isotopes': (14, 1, 1, 1),
@@ -560,7 +559,7 @@ class TestCommon(unittest.TestCase):
                               (0.9376091065010891, -0.05885406074163403, -0.10079042914685925))}
         nh3_dmat = converter.xyz_to_dmat(nh3_xyz)
         bonds = common.get_bonds_from_dmat(dmat=nh3_dmat, elements=nh3_xyz['symbols'])
-        self.assertEqual(bonds, [(0, 1), (0, 2), (0, 3)])
+        self.assertTrue(common.check_that_all_entries_are_in_list(bonds, [(0, 1), (0, 2), (0, 3)]))
 
         with self.assertRaises(ValueError):
             common.get_bonds_from_dmat(dmat=nh3_dmat, elements=h2_xyz['symbols'])
@@ -587,10 +586,10 @@ class TestCommon(unittest.TestCase):
                                  (0.31874961995347606, 3.6737255646101694, -2.865553968557727),
                                  (-1.348690242126151, 3.20647349995194, -3.2707873365181532),
                                  (-1.150962458565406, 4.645286501517968, -1.4926167602923543))}
-        c5diol_dmat = converter.xyz_to_dmat(c5diol_xyz)
-        bonds = common.get_bonds_from_dmat(dmat=c5diol_dmat, elements=c5diol_xyz['symbols'])
-        self.assertEqual(bonds, [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (0, 7), (1, 8), (1, 9), (2, 10),
-                                 (2, 11), (3, 12), (3, 13), (4, 14), (4, 15), (5, 16), (5, 17), (6, 18)])
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(c5diol_xyz), elements=c5diol_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(
+            bonds, [(0, 1), (1, 2), (2, 3), (3, 4), (4, 5), (5, 6), (0, 7), (1, 8), (1, 9), (2, 10), (2, 11), (3, 12),
+                    (3, 13), (4, 14), (4, 15), (5, 16), (5, 17), (6, 18)]))
 
         b_butenyl_xyz = {'symbols': ('C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C', 'C',
                                      'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
@@ -616,10 +615,10 @@ class TestCommon(unittest.TestCase):
                                     (-0.42576149750456516, -2.219250874579489, -2.5232375475370903),
                                     (-2.5542078891776994, -2.996143835485984, -3.368970805863449),
                                     (-3.1787270916846255, -3.26780621963705, -1.641942110891295))}
-        b_butenyl_dmat = converter.xyz_to_dmat(b_butenyl_xyz)
-        bonds = common.get_bonds_from_dmat(dmat=b_butenyl_dmat, elements=b_butenyl_xyz['symbols'])
-        self.assertEqual(bonds, [(0, 1), (1, 2), (2, 3), (3, 4), (0, 5), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (0, 10),
-                                 (1, 11), (2, 12), (3, 13), (4, 14), (6, 15), (7, 16), (7, 17), (8, 18), (9, 19), (9, 20)])
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(b_butenyl_xyz), elements=b_butenyl_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(
+            bonds, [(0, 1), (1, 2), (2, 3), (3, 4), (0, 5), (4, 5), (5, 6), (6, 7), (7, 8), (8, 9), (0, 10),
+                    (1, 11), (2, 12), (3, 13), (4, 14), (6, 15), (7, 16), (7, 17), (8, 18), (9, 19), (9, 20)]))
 
         # TS N2H3 + NH2 perturbation 1
         ts_n3h5_1_xyz = {'symbols': ('N', 'H', 'H', 'N', 'H', 'H', 'N', 'H'), 'isotopes': (14, 1, 1, 14, 1, 1, 14, 1),
@@ -627,9 +626,8 @@ class TestCommon(unittest.TestCase):
                                     (0.050017, 0.609187, -0.289804), (-1.230175, -0.49518, -0.005872),
                                     (-1.816882, -0.464956, 0.807105), (-1.846181, -0.503768, -0.816157),
                                     (1.943069, -0.169246, -0.067924), (1.737758, -0.876687, 0.671382))}
-        ts_n3h5_1_dmat = converter.xyz_to_dmat(ts_n3h5_1_xyz)
-        bonds = common.get_bonds_from_dmat(dmat=ts_n3h5_1_dmat, elements=ts_n3h5_1_xyz['symbols'])
-        self.assertEqual(bonds, [(0, 1), (0, 2), (0, 3), (3, 4), (3, 5), (6, 7)])
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(ts_n3h5_1_xyz), elements=ts_n3h5_1_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(bonds, [(0, 1), (0, 2), (0, 3), (3, 4), (3, 5), (6, 7)]))
 
         # TS N2H3 + NH2 perturbation 2
         ts_n3h5_2_xyz = {'symbols': ('N', 'H', 'H', 'N', 'H', 'H', 'N', 'H'), 'isotopes': (14, 1, 1, 14, 1, 1, 14, 1),
@@ -637,9 +635,8 @@ class TestCommon(unittest.TestCase):
                                     (1.402417, 0.109387, -0.172204), (-1.230175, -0.43638, -0.005872),
                                     (-1.816882, -0.538456, 0.821805), (-1.713881, -0.636068, -0.874957),
                                     (1.869569, -0.139846, -0.082624), (1.737758, -0.832587, 0.656682))}
-        ts_n3h5_2_dmat = converter.xyz_to_dmat(ts_n3h5_2_xyz)
-        bonds = common.get_bonds_from_dmat(dmat=ts_n3h5_2_dmat, elements=ts_n3h5_2_xyz['symbols'])
-        self.assertEqual(bonds, [(0, 1), (0, 3), (3, 4), (3, 5), (2, 6), (6, 7)])
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(ts_n3h5_2_xyz), elements=ts_n3h5_2_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(bonds, [(0, 1), (0, 3), (3, 4), (3, 5), (2, 6), (6, 7)]))
 
         # TS C3 intra H migration 1
         ts_c3_intra_h_1_xyz = {'symbols': ('C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
@@ -649,21 +646,69 @@ class TestCommon(unittest.TestCase):
                                           (2.19484, 0.138175, -1.010532), (1.441557, 1.657406, -0.52194235),
                                           (-0.290061, 0.790224, -0.88231488), (2.00176129, 0.53979971, 0.708471),
                                           (-1.84853706, 0.023846, 0.73488606), (-0.89616871, 1.61707229, 0.73243706))}
-        ts_c3_intra_h_1_dmat = converter.xyz_to_dmat(ts_c3_intra_h_1_xyz)
-        bonds = common.get_bonds_from_dmat(dmat=ts_c3_intra_h_1_dmat, elements=ts_c3_intra_h_1_xyz['symbols'])
-        self.assertEqual(bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (1, 6), (0, 7), (2, 8), (2, 9)])
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(ts_c3_intra_h_1_xyz), elements=ts_c3_intra_h_1_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(
+            bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (1, 6), (0, 7), (2, 8), (2, 9)]))
 
         # TS C3 intra H migration 2
-        ts_c3_intra_h_1_xyz = {'symbols': ('C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
+        ts_c3_intra_h_2_xyz = {'symbols': ('C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
                                'isotopes': (12, 12, 12, 1, 1, 1, 1, 1, 1, 1),
                                'coords': ((1.524852, 0.591965, -0.276141), (0.20330541, -0.06428665, -0.29668312),
                                           (-0.98222829, 0.62853706, 0.40515947), (0.13060735, -1.13298494, -0.31796894),
                                           (2.19484, 0.138175, -1.010532), (1.441557, 1.657406, -0.51017765),
                                           (-1.290061, 0.190224, -0.95290312), (2.02529071, 0.51627029, 0.708471),
                                           (-1.81324294, 0.023846, 0.69959194), (-0.87263929, 1.64060171, 0.69714294))}
-        ts_c3_intra_h_1_dmat = converter.xyz_to_dmat(ts_c3_intra_h_1_xyz)
-        bonds = common.get_bonds_from_dmat(dmat=ts_c3_intra_h_1_dmat, elements=ts_c3_intra_h_1_xyz['symbols'])
-        self.assertEqual(bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (0, 7), (2, 8), (2, 9), (2, 6)])
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(ts_c3_intra_h_2_xyz), elements=ts_c3_intra_h_2_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(
+            bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (0, 7), (2, 8), (2, 9), (2, 6)]))
+
+        # TS C3 intra H migration 3
+        ts_c3_intra_h_3_xyz = {'symbols': ('C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
+                               'isotopes': (12, 12, 12, 1, 1, 1, 1, 1, 1, 1),
+                               'coords': ((0.52243, -0.940297, -0.553226),
+                                          (0.0853459676972449, 0.19778650807568876, 0.2683129515458674),
+                                          (-0.9372640161513774, 1.2163625242270664, 0.11038855652982141),
+                                          (0.3409084755398544, 0.08505557338043682, 1.4489635733804367),
+                                          (1.487662, -1.382626, -0.294747), (0.581946, -0.596182, -1.5863334755398544),
+                                          (0.8060955791123762, 1.1427712525325744, -0.04576614676087361),
+                                          (-0.2413660489202912, -1.7526210489202914, -0.530005),
+                                          (-1.4459875733804366, 1.71243, 0.7424384266195632),
+                                          (-1.3369720489202912, 1.1281310489202914, -1.0204525733804366))}
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(ts_c3_intra_h_3_xyz), elements=ts_c3_intra_h_3_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(
+            bonds, [(0, 1), (1, 2), (0, 4), (0, 5), (0, 7), (2, 8), (1, 3), (1, 6), (2, 9)]))
+        ts_c3_intra_h_4_xyz = {'symbols': ('C', 'C', 'C', 'H', 'H', 'H', 'H', 'H', 'H', 'H'),
+                               'isotopes': (12, 12, 12, 1, 1, 1, 1, 1, 1, 1),
+                               'coords': ((0.52243, -0.940297, -0.553226),
+                                          (0.22391003230275508, 0.16314549192431121, 0.47615904845413265),
+                                          (-0.8679819838486225, 1.1124394757729337, -0.13209855652982141),
+                                          (0.3509475244601456, 0.0549384266195632, 1.4188464266195633),
+                                          (1.487662, -1.382626, -0.294747), (0.581946, -0.596182, -1.5963725244601457),
+                                          (-0.04722357911237618, 1.6547627474674258, 0.014468146760873612),
+                                          (-0.2212879510797088, -1.7325429510797088, -0.530005),
+                                          (-1.4158704266195632, 1.71243, 0.7725555733804368),
+                                          (-1.3168939510797086, 1.1080529510797088, -0.9903354266195631))}
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(ts_c3_intra_h_4_xyz), elements=ts_c3_intra_h_4_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(
+            bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (2, 6), (0, 7), (2, 9), (2, 8)]))
+        bonds = common.get_bonds_from_dmat(dmat=converter.xyz_to_dmat(ts_c3_intra_h_4_xyz),
+                                           elements=ts_c3_intra_h_4_xyz['symbols'], tolerance=1.5)
+        self.assertTrue(common.check_that_all_entries_are_in_list(
+            bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (2, 6), (0, 7), (2, 9), (2, 8)]))
+
+        ts_c3_intra_h_4_dmat = np.array([[0.0, 1.53828901, 2.51482024, 2.21561943, 1.09276674, 1.10005089, 2.71682111, 1.08688051, 3.54283303, 2.78745668],
+                                         [1.53828901, 0.0, 1.56951093, 0.95734361, 2.14027444, 2.23610266, 1.58480092, 2.19184899, 2.27530511, 2.32755947],
+                                         [2.51482024, 1.56951093, 0.0, 2.23819748, 3.43523869, 2.67689685, 0.9946058, 2.94456579, 1.21596442, 0.96856168],
+                                         [2.21561943, 0.95734361, 2.23819748, 0.0, 2.50900652, 3.09335795, 2.16569999, 2.70565426, 2.50731248, 3.11366385],
+                                         [1.09276674, 2.14027444, 3.43523869, 2.50900652, 0.0, 1.77004086, 3.41719449, 1.76019832, 4.37595784, 3.81482096],
+                                         [1.10005089, 2.23610266, 2.67689685, 3.09335795, 1.77004086, 0.0, 2.83855849, 1.75318016, 3.86429556, 2.62245894],
+                                         [2.71682111, 1.58480092, 0.9946058, 2.16569999, 3.41719449, 2.83855849, 0.0, 3.43519858, 1.56563605, 1.70897182],
+                                         [1.08688051, 2.19184899, 2.94456579, 2.70565426, 1.76019832, 1.75318016, 3.43519858, 0.0, 3.87188972, 3.0791625],
+                                         [3.54283303, 2.27530511, 1.21596442, 2.50731248, 4.37595784, 3.86429556, 1.56563605, 3.87188972, 0.0, 1.86624024],
+                                         [2.78745668, 2.32755947, 0.96856168, 3.11366385, 3.81482096, 2.62245894, 1.70897182, 3.0791625, 1.86624024, 0.0]], np.float64)
+        bonds = common.get_bonds_from_dmat(dmat=ts_c3_intra_h_4_dmat, elements=ts_c3_intra_h_4_xyz['symbols'])
+        self.assertTrue(common.check_that_all_entries_are_in_list(
+            bonds, [(0, 1), (1, 2), (1, 3), (0, 4), (0, 5), (2, 6), (0, 7), (2, 9), (2, 8)]))
 
     def test_globalize_paths(self):
         """Test modifying a file's contents to correct absolute file paths"""
