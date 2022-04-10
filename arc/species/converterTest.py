@@ -3595,6 +3595,13 @@ H      -4.07566100   -0.52115800    0.00003300"""
         self.assertEqual(xyz_1, expected_xyz_1)
         self.assertEqual(xyz_2, expected_xyz_2)
 
+    def test_get_element_mass_from_xyz(self):
+        """Test the get_element_mass_from_xyz() function."""
+        mass_list = converter.get_element_mass_from_xyz({'symbols': ('N', 'H', 'H', 'N', 'H', 'H', 'N', 'H'),
+                                                         'isotopes': (14, 1, 1, 14, 1, 1, 14, 1), 'coords': ()})
+        self.assertEqual(mass_list, [14.00307400443, 1.00782503224, 1.00782503224, 14.00307400443,
+                                     1.00782503224, 1.00782503224, 14.00307400443, 1.00782503224])
+
     def _check_atom_connectivity_in_rd_mol_block(self, rmg_mol, rd_mol_block):
         """An internal helper function for testing."""
         for line in rd_mol_block:
