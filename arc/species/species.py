@@ -2046,7 +2046,7 @@ class TSGuess(object):
         Check that the number of imaginary frequencies make sense.
         Theoretically a TS should only have one imaginary frequency,
         however additional imaginary frequency are allowed if they are very small in magnitude.
-        This method does not consider the normal displacement mode check.
+        This method does not consider the normal mode displacement check.
 
         Returns:
             bool: Whether the imaginary frequencies make sense.
