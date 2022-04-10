@@ -597,6 +597,7 @@ def get_single_bond_length(symbol_1: str,
 def get_bonds_from_dmat(dmat: np.ndarray,
                         elements: Union[Tuple[str, ...], List[str]],
                         charges: Optional[List[int]] = None,
+                        tolerance: float = 1.1,
                         bond_lone_hydrogens=True,
                         ) -> List[Tuple[int, int]]:
     """
@@ -606,29 +607,41 @@ def get_bonds_from_dmat(dmat: np.ndarray,
         dmat (np.ndarray): An NxN matrix of atom distances in Angstrom.
         elements (List[str]): The corresponding element list in the same atomic order.
         charges (List[int], optional): A corresponding list of formal atomic charges.
+        tolerance (float, optional): A factor by which the single bond length threshold is multiplied for the check.
         bond_lone_hydrogens (bool, optional): Whether to assign a bond to hydrogen atoms which were not identified
                                               as bonded. If so, the closest atom will be considered.
+
+    Returns:
+        List[Tuple[int, int]]:
+            A list of tuple entries, each represents a bond and contains sorted atom indices.
     """
     if len(elements) != dmat.shape[0] or len(elements) != dmat.shape[1] or len(dmat.shape) != 2:
         raise ValueError(f'The dimensions of the DMat {dmat.shape} must be equal to the number of elements {len(elements)}')
     bonds, bonded_hydrogens = list(), list()
     charges = charges or [0] * len(elements)
+    # Heavy atoms
     for i, e_1 in enumerate(elements):
         for j, e_2 in enumerate(elements):
-            if i > j and not (e_1 == 'H' and e_2 == 'H' and len(elements) > 2):
-                if dmat[i, j] < 1.1 * get_single_bond_length(symbol_1=e_1,
-                                                             symbol_2=e_2,
-                                                             charge_1=charges[i],
-                                                             charge_2=charges[j]):
-                    bonds.append(tuple(sorted([i, j])))
-                    if e_1 == 'H':
-                        bonded_hydrogens.append(i)
-                    if e_2 == 'H':
-                        bonded_hydrogens.append(j)
+            if i > j and not (e_1 == 'H' or e_2 == 'H') and dmat[i, j] < tolerance * \
+                    get_single_bond_length(symbol_1=e_1,
+                                           symbol_2=e_2,
+                                           charge_1=charges[i],
+                                           charge_2=charges[j]):
+                bonds.append(tuple(sorted([i, j])))
+    # Hydrogen atoms except for H--H bonds, make sure each H has only one bond (the closest heavy atom).
+    for i, e_1 in enumerate(elements):
+        if e_1 == 'H':
+            j = get_extremum_index(lst=dmat[i], return_min=True, skip_values=[0])
+            if i != j and elements[j] != 'H':
+                bonds.append(tuple(sorted([i, j])))
+                bonded_hydrogens.append(i)
+    # Lone hydrogens, also important for the H2 molecule.
     if bond_lone_hydrogens:
-        for i, element in enumerate(elements):
-            if element == 'H' and i not in bonded_hydrogens:
-                bonds.append(tuple(sorted([i, get_extremum_index(lst=dmat[i], return_min=True, skip_values=[0])])))
+        for i, e_1 in enumerate(elements):
+            j = get_extremum_index(lst=dmat[i], return_min=True, skip_values=[0])
+            bond = tuple(sorted([i, j]))
+            if i != j and e_1 == 'H' and i not in bonded_hydrogens and bond not in bonds:
+                bonds.append(bond)
     return bonds
 
 
