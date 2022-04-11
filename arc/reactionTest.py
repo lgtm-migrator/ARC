@@ -619,7 +619,7 @@ class TestARCReaction(unittest.TestCase):
         self.assertNotEqual(products[0].label, products[1].label)
 
     def test_get_expected_changing_bonds(self):
-        """Test the get_expected_changing_bonds() function."""
+        """Test the get_expected_changing_bonds() method."""
         expected_breaking_bonds, expected_forming_bonds = self.rxn11.get_expected_changing_bonds(
             r_label_dict={'*1': 1, '*2': 2, '*3': 6})
         self.assertEqual(expected_breaking_bonds, [(2, 6)])
