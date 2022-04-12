@@ -195,7 +195,7 @@ def which(command: Union[str, list],
 
     Returns:
         Optional[Union[bool, str]]:
-            The command path or None, returns ``True`` or ``False`` if ``return_bool`` is ``True``.
+            The command path or ``None``, returns ``True`` or ``False`` if ``return_bool`` is set to ``True``.
     """
     if env is None:
         lenv = {"PATH": os.pathsep + os.environ.get("PATH", "") + os.path.dirname(sys.executable),
