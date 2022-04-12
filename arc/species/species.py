@@ -77,7 +77,7 @@ class ARCSpecies(object):
                               'scan': ``List[int]``,  # 1-indexed
                               'torsion': ``List[int]``,  # 0-indexed
                               'number_of_running_jobs': ``int``,
-                              'success': ``bool``,
+                              'success': Optional[``bool``],  # ``None`` by default
                               'invalidation_reason': ``str``,
                               'times_dihedral_set': ``int``,
                               'scan_path': <path to scan output file>,
@@ -97,8 +97,7 @@ class ARCSpecies(object):
         label (str, optional): The species label.
         is_ts (bool, optional): Whether the species represents a transition state.
         rmg_species (Species, optional): An RMG Species object to be converted to an ARCSpecies object.
-        mol (Molecule, optional): An ``RMG Molecule`` object used for BAC determination.
-                                  Atom order corresponds to the order in .initial_xyz
+        mol (Molecule, optional): An ``RMG Molecule``. Atom order corresponds to the order in .initial_xyz
         xyz (list, str, dict, optional): Entries are either string-format coordinates, file paths, or ARC's dict format.
                                          (If there's only one entry, it could be given directly, not in a list).
                                          The file paths could direct to either a .xyz file, ARC conformers
