@@ -1155,10 +1155,8 @@ class TestCommon(unittest.TestCase):
         """
         globalized_restart_path = os.path.join(common.ARC_PATH, 'arc', 'testing', 'restart', '4_globalized_paths',
                                                'restart_paths_globalized.yml')
-        try:
+        if os.path.isfile(globalized_restart_path):
             os.remove(path=globalized_restart_path)
-        except FileNotFoundError:
-            pass
 
 
 if __name__ == '__main__':
