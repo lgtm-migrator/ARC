@@ -597,8 +597,8 @@ def get_single_bond_length(symbol_1: str,
 def get_bonds_from_dmat(dmat: np.ndarray,
                         elements: Union[Tuple[str, ...], List[str]],
                         charges: Optional[List[int]] = None,
-                        tolerance: float = 1.1,
-                        bond_lone_hydrogens=True,
+                        tolerance: float = 1.2,
+                        bond_lone_hydrogens: bool = True,
                         ) -> List[Tuple[int, int]]:
     """
     Guess the connectivity of a molecule from its distance matrix representation.
@@ -622,7 +622,7 @@ def get_bonds_from_dmat(dmat: np.ndarray,
     # Heavy atoms
     for i, e_1 in enumerate(elements):
         for j, e_2 in enumerate(elements):
-            if i > j and not (e_1 == 'H' or e_2 == 'H') and dmat[i, j] < tolerance * \
+            if i > j and e_1 != 'H' and e_2 != 'H' and dmat[i, j] < tolerance * \
                     get_single_bond_length(symbol_1=e_1,
                                            symbol_2=e_2,
                                            charge_1=charges[i],
@@ -632,7 +632,7 @@ def get_bonds_from_dmat(dmat: np.ndarray,
     for i, e_1 in enumerate(elements):
         if e_1 == 'H':
             j = get_extremum_index(lst=dmat[i], return_min=True, skip_values=[0])
-            if i != j and elements[j] != 'H':
+            if i != j and (elements[j] != 'H'):
                 bonds.append(tuple(sorted([i, j])))
                 bonded_hydrogens.append(i)
     # Lone hydrogens, also important for the H2 molecule.
@@ -640,7 +640,7 @@ def get_bonds_from_dmat(dmat: np.ndarray,
         for i, e_1 in enumerate(elements):
             j = get_extremum_index(lst=dmat[i], return_min=True, skip_values=[0])
             bond = tuple(sorted([i, j]))
-            if i != j and e_1 == 'H' and i not in bonded_hydrogens and bond not in bonds:
+            if i != j and e_1 == 'H' and i not in bonded_hydrogens and j not in bonded_hydrogens and bond not in bonds:
                 bonds.append(bond)
     return bonds
 
