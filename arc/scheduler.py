@@ -471,7 +471,11 @@ class Scheduler(object):
                                 if not self.output[species.label]['job_types']['sp'] \
                                         and 'sp' not in list(self.job_dict[species.label].keys()):
                                     self.run_sp_job(species.label)
-                                if self.job_types['rotors']:
+                                if self.job_types['rotors'] and \
+                                        any(spc.rotors_dict is not None and
+                                            any(rotor_dict['success'] is False and not rotor_dict['invalidation_reason']
+                                                for rotor_dict in spc.rotors_dict.values())
+                                            for spc in self.species_list):
                                     # some restart-related checks are performed within run_scan_jobs()
                                     self.run_scan_jobs(species.label)
             else:
