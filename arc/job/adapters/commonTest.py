@@ -23,14 +23,14 @@ class TestJobCommon(unittest.TestCase):
         ans = common.which(command='python', return_bool=False, raise_error=False)
         self.assertIn('arc_env/bin/python', ans)
 
-        ans = common.which(command='ARC.py', return_bool=True, raise_error=False)
+        ans = common.which(command='ls', return_bool=True, raise_error=False)
         self.assertTrue(ans)
 
         ans = common.which(command='fake_command_1', return_bool=True, raise_error=False)
         self.assertFalse(ans)
 
         ans = common.which(command=['fake_command_1', 'ARC.py', 'python'], return_bool=False, raise_error=False)
-        self.assertEqual(ans, 'ARC.py')
+        self.assertIn('ARC.py', ans)
 
 
 if __name__ == '__main__':
