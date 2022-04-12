@@ -304,12 +304,12 @@ class KinBotAdapter(JobAdapter):
                 for method_direction, spc in species_to_explore.items():
                     symbols = spc.get_xyz()['symbols']
                     for m, mol in enumerate(spc.mol_list):
-                        reaction_generator = setup_kinbot(mol=mol,
-                                                          families=self.family_map[rxn.family.label],
-                                                          kinbot_xyz=xyz_to_kinbot_list(spc.get_xyz()),
-                                                          multiplicity=rxn.multiplicity,
-                                                          charge=rxn.charge,
-                                                          )
+                        reaction_generator = set_up_kinbot(mol=mol,
+                                                           families=self.family_map[rxn.family.label],
+                                                           kinbot_xyz=xyz_to_kinbot_list(spc.get_xyz()),
+                                                           multiplicity=rxn.multiplicity,
+                                                           charge=rxn.charge,
+                                                           )
                         for r, kinbot_rxn in enumerate(reaction_generator.species.reac_obj):
                             step, fix, change, release = kinbot_rxn.get_constraints(step=20,
                                                                                     geom=kinbot_rxn.species.geom)
@@ -379,14 +379,14 @@ class KinBotAdapter(JobAdapter):
         self.execute_incore()
 
 
-def setup_kinbot(mol: 'Molecule',
+def set_up_kinbot(mol: 'Molecule',
                  families: List[str],
                  kinbot_xyz: List[Union[str, float]],
                  multiplicity: int,
                  charge: int,
                  ) -> ReactionGenerator:
     """
-    This will setup KinBot to run for a unimolecular reaction starting from the single reactant side.
+    This will set up KinBot to run for a unimolecular reaction starting from the single reactant side.
 
     Args:
         mol (Molecule): The RMG Molecule instance representing the unimolecular well to react.
