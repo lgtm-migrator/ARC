@@ -337,6 +337,7 @@ class ARCSpecies(object):
         self.original_label = None
         self.chosen_ts = None
         self.rxn_zone_atom_indices = None
+        self.ts_checks = dict()
 
         if species_dict is not None:
             # Reading from a dictionary (it's possible that the dict contains only a 'yml_path' argument, check first)
@@ -369,7 +370,6 @@ class ARCSpecies(object):
             self.successful_methods = list()
             self.unsuccessful_methods = list()
             self.chosen_ts_method = None
-            self.ts_checks = dict()
             self.chosen_ts_list = list()
             self.compute_thermo = compute_thermo if compute_thermo is not None else not self.is_ts
             self.e0_only = e0_only
@@ -491,7 +491,8 @@ class ARCSpecies(object):
 
         if self.mol is not None and self.mol_list is None:
             self.set_mol_list()
-        self.populate_ts_checks()
+        if self.is_ts and not any(value is not None for key, value in self.ts_checks.items() if key != 'warnings'):
+            self.populate_ts_checks()
 
     def __str__(self) -> str:
         """Return a string representation of the object"""
