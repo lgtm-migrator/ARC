@@ -94,7 +94,7 @@ H                 -1.28677889    1.04716138   -1.01532486"""
         cls.ts_spc_2 = ARCSpecies(label='TS', is_ts=True, xyz=cls.ts_xyz_2)
         cls.ts_spc_2.mol_from_xyz()
         cls.reactant_2a = ARCSpecies(label='C[CH]C', smiles='C[CH]C', xyz=cls.r_xyz_2a)
-        cls.reactant_2b = ARCSpecies(label='C[CH]C', smiles='C[CH]C', xyz=cls.r_xyz_2b)  # same as a, only once C atom shifted place in the reactant xyz
+        cls.reactant_2b = ARCSpecies(label='C[CH]C', smiles='C[CH]C', xyz=cls.r_xyz_2b)  # Shuffled order, does not match ts_xyz_2
         cls.product_2 = ARCSpecies(label='[CH2]CC', smiles='[CH2]CC', xyz=cls.p_xyz_2)
         cls.rxn_2a = ARCReaction(r_species=[cls.reactant_2a], p_species=[cls.product_2])
         cls.rxn_2a.ts_species = cls.ts_spc_2
@@ -143,9 +143,20 @@ H                 -1.28677889    1.04716138   -1.01532486"""
                     H                 -1.08834550   -1.26701591    0.63792481
                     H                 -2.06804111    0.13183054    0.26847684
                     H                 -1.20990129   -0.69580830   -1.00889416"""
+        ch3chnh2_xyz = {'symbols': ('C', 'C', 'N', 'H', 'H', 'H', 'H', 'H', 'H'), 'isotopes': (12, 12, 14, 1, 1, 1, 1, 1, 1),
+                        'coords': ((-1.126885721359211, 0.0525078449047029, 0.16096122288992248),
+                                   (0.3110254709748632, 0.43198882113724923, 0.25317384633324647),
+                                   (0.8353039548590167, 1.612144179849946, -0.43980881000393546),
+                                   (-1.2280793873408098, -0.9063788436936245, -0.3556390245681601),
+                                   (-1.5506369749373963, -0.04972561706616586, 1.1642482560565997),
+                                   (-1.7098257757667992, 0.801238249703059, -0.3836181889319467),
+                                   (0.9893789736981147, -0.22608070229597396, 0.7909844523882721),
+                                   (1.6782473720416846, 1.9880253918558228, -0.007820540824533973),
+                                   (0.15476721028478654, 2.3655991320212193, -0.527262390251838))}
         ea = ARCSpecies(label='EA', smiles='NCC', xyz=ea_xyz)
+        ch3chnh2 = ARCSpecies(label='CH3CHNH2', smiles='C[CH]N', xyz=ch3chnh2_xyz)
         cls.rxn_5 = ARCReaction(r_species=[ea, ARCSpecies(label='H', smiles='[H]')],
-                                p_species=[ARCSpecies(label='CH3CHNH2', smiles='C[CH]N'), ARCSpecies(label='H2', smiles='[H][H]')])
+                                p_species=[ch3chnh2, ARCSpecies(label='H2', smiles='[H][H]')])
         cls.rxn_5.ts_species = ARCSpecies(label='TS5', is_ts=True,
                                           xyz=os.path.join(ts.ARC_PATH, 'arc', 'testing', 'composite', 'TS0_composite_2044.out'))
         cls.rxn_6 = ARCReaction(r_species=[ea, ARCSpecies(label='H', smiles='[H]')],
@@ -175,6 +186,27 @@ H                 -1.28677889    1.04716138   -1.01532486"""
         cls.rxn_5.determine_family(rmg_database=cls.rmgdb, save_order=True)
         cls.rxn_6.determine_family(rmg_database=cls.rmgdb, save_order=True)
         cls.rxn_7.determine_family(rmg_database=cls.rmgdb, save_order=True)
+
+        cls.ccooj_xyz = {'symbols': ('C', 'C', 'O', 'O', 'H', 'H', 'H', 'H', 'H'),
+                         'isotopes': (12, 12, 16, 16, 1, 1, 1, 1, 1),
+                         'coords': ((-1.0558210286905791, -0.033295741345331475, -0.10080257427276477),
+                                    (0.4179269451258209, 0.1783120494760899, 0.21035514057712598),
+                                    (1.192340198620975, -0.6538968331819118, -0.6111144272932062),
+                                    (2.447496844713327, -0.41401220066030225, -0.2838136270165004),
+                                    (-1.3361400206798786, -1.0915178337292122, 0.0871488160949016),
+                                    (-1.2595361812141086, 0.21489046050976668, -1.164118972112424),
+                                    (-1.674103962566004, 0.6234141912977972, 0.5469951414070585),
+                                    (0.5956635031421627, -0.06437685811832683, 1.2825664049784615),
+                                    (0.6725467605584472, 1.2467632926898817, 0.02676370288619609))}
+        cls.c2h6_xyz = {'symbols': ('C', 'C', 'H', 'H', 'H', 'H', 'H', 'H'), 'isotopes': (12, 12, 1, 1, 1, 1, 1, 1),
+                        'coords': ((0.7556043653036945, 0.024826347908153884, 0.005052054400891163),
+                                   (-0.7556043714831743, -0.02482635425984135, -0.005052060396341506),
+                                   (1.1738008157989488, -0.9310955032458506, -0.32410611474882567),
+                                   (1.118910949297216, 0.8090395514407392, -0.6657965895380061),
+                                   (1.1265685376671182, 0.23440078247573526, 1.0127643787045777),
+                                   (-1.1738008745316266, 0.9310955099502647, 0.3241060408257655),
+                                   (-1.1189110146736851, -0.8090395034382198, 0.6657966599789673),
+                                   (-1.1265684046717404, -0.2344009055503307, -1.0127644068816903))}
 
     def test_check_ts(self):
         """Test the check_ts() function."""
@@ -246,47 +278,39 @@ H                 -1.28677889    1.04716138   -1.01532486"""
         ts.check_ts_energy(reaction=rxn1)
         self.assertFalse(rxn1.ts_species.ts_checks['e_elect'])
 
+    def test_determine_changing_bond(self):
+        """Test the determine_changing_bond() function."""
+        dmat_2 = np.array([[0, 1, 2],
+                           [1, 0, 5],
+                           [2, 5, 0]])
+        dmat_bonds_1 = ts.get_bonds_from_dmat(dmat=dmat_2, elements=['C', 'C', 'H'], tolerance=1.5)
+        dmat_bonds_2 = ts.get_bonds_from_dmat(dmat=dmat_2, elements=['C', 'C', 'H'], tolerance=1.5)
+        change = ts.determine_changing_bond(bond=(0, 1), dmat_bonds_1=dmat_bonds_1, dmat_bonds_2=dmat_bonds_2)
+        self.assertIsNone(change)
+        dmat_1 = np.array([[0, 5, 2],
+                           [5, 0, 5],
+                           [2, 5, 0]])
+        dmat_bonds_1 = ts.get_bonds_from_dmat(dmat=dmat_1, elements=['C', 'C', 'H'], tolerance=1.5)
+        change = ts.determine_changing_bond(bond=(0, 1), dmat_bonds_1=dmat_bonds_1, dmat_bonds_2=dmat_bonds_2)
+        self.assertEqual(change, 'forming')
+        change = ts.determine_changing_bond(bond=(0, 1), dmat_bonds_1=dmat_bonds_2, dmat_bonds_2=dmat_bonds_1)
+        self.assertEqual(change, 'breaking')
+
     def test_check_normal_mode_displacement(self):
         """Test the check_normal_mode_displacement() function."""
         self.rxn_2a.ts_species.populate_ts_checks()
         self.assertFalse(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
-        self.rxn_2b.ts_species.populate_ts_checks()
-        self.assertFalse(self.rxn_2b.ts_species.ts_checks['normal_mode_displacement'])
-
         self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'composite',
                                                            'TS_intra_H_migration_CBS-QB3.out')
-        # Expecting for rxn_2a: [[0, 2], [1], [4, 5, 6, 7, 8, 9]])
         self.rxn_2a.determine_family(rmg_database=self.rmgdb)
-        ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1, rxn_zone_atom_indices=[15, 25])  # wrong indices
-        self.assertFalse(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
-        self.rxn_2a.ts_species.populate_ts_checks()
-        ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1, rxn_zone_atom_indices=[0, 1, 3])  # non-reactive atom 3
-        self.assertFalse(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
-        self.rxn_2a.ts_species.populate_ts_checks()
-        ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1, rxn_zone_atom_indices=[0, 0, 4])  # repeated indices
-        self.assertFalse(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
-        self.rxn_2a.ts_species.populate_ts_checks()
-        ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1, rxn_zone_atom_indices=[0, 2, 4])  # not including all positions
-        self.assertFalse(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
-        self.rxn_2a.ts_species.populate_ts_checks()
-        ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1, rxn_zone_atom_indices=[6, 1, 4])  # not including all positions
-        self.assertFalse(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
-        self.rxn_2a.ts_species.populate_ts_checks()
-        ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1, rxn_zone_atom_indices=[0, 1, 4])  # correct
+        ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1)
         self.assertTrue(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
         self.rxn_2a.ts_species.populate_ts_checks()
-        ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1, rxn_zone_atom_indices=[2, 1, 8])  # correct variant
-        self.assertTrue(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
 
-        # Expecting for rxn_2b: [[0, 6], [1], [3, 4, 5, 7, 8, 9]])
-        ts.check_normal_mode_displacement(reaction=self.rxn_2b, job=self.job1, rxn_zone_atom_indices=[0, 1, 2])  # non-reactive atom 2
+        self.rxn_2b.ts_species.populate_ts_checks()
         self.assertFalse(self.rxn_2b.ts_species.ts_checks['normal_mode_displacement'])
-        self.rxn_2b.ts_species.populate_ts_checks()
-        ts.check_normal_mode_displacement(reaction=self.rxn_2b, job=self.job1, rxn_zone_atom_indices=[0, 1, 4])  # correct
-        self.assertTrue(self.rxn_2b.ts_species.ts_checks['normal_mode_displacement'])
-        self.rxn_2b.ts_species.populate_ts_checks()
-        ts.check_normal_mode_displacement(reaction=self.rxn_2b, job=self.job1, rxn_zone_atom_indices=[6, 1, 4])  # correct variant (but incorrect for rxn2_a)
-        self.assertTrue(self.rxn_2b.ts_species.ts_checks['normal_mode_displacement'])
+        ts.check_normal_mode_displacement(reaction=self.rxn_2b, job=self.job1)
+        self.assertFalse(self.rxn_2b.ts_species.ts_checks['normal_mode_displacement'])
 
         # Wrong TS for intra H migration [CH2]CC <=> C[CH]C
         self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'composite',
@@ -338,12 +362,12 @@ H                 -1.28677889    1.04716138   -1.01532486"""
         ts.check_normal_mode_displacement(reaction=self.rxn_2a, job=self.job1)
         self.assertTrue(self.rxn_2a.ts_species.ts_checks['normal_mode_displacement'])
 
-        self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'freq',
-                                                           'TS_NH3+H=NH2+H2.out')  # NH3 + H <=> NH2 + H2
-        self.rxn_3.ts_species.populate_ts_checks()
-        self.assertFalse(self.rxn_3.ts_species.ts_checks['normal_mode_displacement'])
-        ts.check_normal_mode_displacement(reaction=self.rxn_3, job=self.job1)
-        self.assertTrue(self.rxn_3.ts_species.ts_checks['normal_mode_displacement'])
+        # self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'freq',
+        #                                                    'TS_NH3+H=NH2+H2.out')  # NH3 + H <=> NH2 + H2
+        # self.rxn_3.ts_species.populate_ts_checks()
+        # self.assertFalse(self.rxn_3.ts_species.ts_checks['normal_mode_displacement'])
+        # ts.check_normal_mode_displacement(reaction=self.rxn_3, job=self.job1)
+        # self.assertTrue(self.rxn_3.ts_species.ts_checks['normal_mode_displacement'])
 
         # CCO[O] + CC <=> CCOO + [CH2]C, incorrect TS:
         self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'composite',
@@ -365,6 +389,37 @@ H                 -1.28677889    1.04716138   -1.01532486"""
         self.rxn_5.ts_species.populate_ts_checks()
         ts.check_normal_mode_displacement(reaction=self.rxn_5, job=self.job1)
         self.assertTrue(self.rxn_5.ts_species.ts_checks['normal_mode_displacement'])
+
+        # NH2 + N2H3 <=> NH + N2H4:
+        self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'freq', 'TS_NH2+N2H3.out')
+        rxn_6 = ARCReaction(r_species=[ARCSpecies(label='NH2', xyz="""N       0.00000000   -0.00000000    0.14115400
+                                                                      H      -0.80516800    0.00000000   -0.49355600
+                                                                      H       0.80516800   -0.00000000   -0.49355600"""),
+                                       ARCSpecies(label='N2H3', xyz="""N       0.59115400    0.02582600   -0.07080800
+                                                                       H       1.01637000    0.90287000    0.19448100
+                                                                       H       1.13108000   -0.79351700    0.15181600
+                                                                       N      -0.73445800   -0.15245400    0.02565700
+                                                                       H      -1.14969800    0.77790100   -0.02540800""")],
+                            p_species=[ARCSpecies(label='NH', xyz="""N       0.00000000    0.00000000    0.13025700
+                                                                     H       0.00000000    0.00000000   -0.90825700"""),
+                                       ARCSpecies(label='N2H4', xyz="""N       0.70348300    0.09755100   -0.07212500
+                                                                       N      -0.70348300   -0.09755100   -0.07212500
+                                                                       H       1.05603900    0.38865300    0.83168200
+                                                                       H      -1.05603900   -0.38865300    0.83168200
+                                                                       H       1.14245100   -0.77661300   -0.32127200
+                                                                       H      -1.14245100    0.77661300   -0.32127200""")])
+        rxn_6.ts_species = ARCSpecies(label='TS6', is_ts=True, xyz="""N      -0.44734500    0.68033000   -0.09191900
+                                                                      H      -0.45257300    1.14463200    0.81251500
+                                                                      H       0.67532500    0.38185200   -0.23044400
+                                                                      N      -1.22777700   -0.47121500   -0.00284000
+                                                                      H      -1.81516400   -0.50310400    0.81640600
+                                                                      H      -1.78119500   -0.57249600   -0.84071000
+                                                                      N       1.91083300   -0.14543600   -0.06636000
+                                                                      H       1.73701100   -0.85419700    0.66460600""")
+        rxn_6.ts_species.mol_from_xyz()
+        rxn_6.ts_species.populate_ts_checks()
+        ts.check_normal_mode_displacement(reaction=rxn_6, job=self.job1)
+        self.assertTrue(rxn_6.ts_species.ts_checks['normal_mode_displacement'])
 
     def test_invalidate_rotors_with_both_pivots_in_a_reactive_zone(self):
         """Test the invalidate_rotors_with_both_pivots_in_a_reactive_zone() function"""
@@ -415,33 +470,51 @@ H                 -1.28677889    1.04716138   -1.01532486"""
         self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'composite',
                                                            'TS0_composite_2102.out')
         rxn_zone_atom_indices = ts.get_rxn_zone_atom_indices(reaction=self.rxn_4, job=self.job1)
-        self.assertEqual(rxn_zone_atom_indices, [10, 14, 3])
+        self.assertEqual(rxn_zone_atom_indices, [14, 10, 3, 2, 16])
 
         self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'composite',
                                                            'TS0_composite_2044.out')
         rxn_zone_atom_indices = ts.get_rxn_zone_atom_indices(reaction=self.rxn_5, job=self.job1)
-        self.assertEqual(rxn_zone_atom_indices, [10, 1, 5])
+        self.assertEqual(rxn_zone_atom_indices, [5, 10, 1, 3, 0])
 
         self.job1.local_path_to_output_file = os.path.join(ts.ARC_PATH, 'arc', 'testing', 'composite',
                                                            'TS1_composite_695.out')
         rxn_zone_atom_indices = ts.get_rxn_zone_atom_indices(reaction=self.rxn_6, job=self.job1)
-        print(rxn_zone_atom_indices)
-        self.assertEqual(rxn_zone_atom_indices, [10, 2, 7])
+        self.assertEqual(rxn_zone_atom_indices, [7, 2, 9, 8, 1])  # Atom 10, the abstractor, is not moving
 
     def test_get_rms_from_normal_modes_disp(self):
         """Test the get_rms_from_normal_modes_disp() function"""
-        rms = ts.get_rms_from_normal_mode_disp(self.normal_modes_disp_1, np.array([-1000.3, 320.5], np.float64))
-        self.assertEqual(rms, [0.07874007874011811,
-                               0.07280109889280519,
-                               0.0,
-                               0.9914635646356349,
-                               0.03605551275463989,
-                               0.034641016151377546,
-                               0.0,
-                               0.033166247903554,
-                               0.01414213562373095,
-                               0.0],
-                         )
+        rms = ts.get_rms_from_normal_mode_disp(normal_mode_disp=self.normal_modes_disp_1,
+                                               freqs=np.array([-1000.3, 320.5], np.float64))
+        self.assertEqual(rms, [0.07874007874011811, 0.07280109889280519, 0.0, 0.9914635646356349, 0.03605551275463989,
+                               0.034641016151377546, 0.0, 0.033166247903554, 0.01414213562373095, 0.0])
+
+        freqs_2, normal_modes_disp_2 = parse_normal_mode_displacement(
+            os.path.join(ts.ARC_PATH, 'arc', 'testing', 'composite', 'TS0_composite_2102.out'))
+        rms = ts.get_rms_from_normal_mode_disp(normal_mode_disp=normal_modes_disp_2,
+                                               freqs=freqs_2,
+                                               reaction=ARCReaction(r_species=[ARCSpecies(label='CCOOj', xyz=self.ccooj_xyz),
+                                                                               ARCSpecies(label='C2H6', xyz=self.c2h6_xyz)],
+                                                                    p_species=[ARCSpecies(label='CCOOH', smiles='CCOO'),
+                                                                               ARCSpecies(label='C2H5', smiles='C[CH2]')])
+                                               )
+        self.assertEqual(rms, [0.0,                     # 0
+                               0.0008785397004602187,   # 1
+                               0.0034115627396496605,   # 2
+                               0.004483671853664259,    # 3 * (the abstracting O)
+                               0.0,                     # 4
+                               0.0,                     # 5
+                               0.00022485182747281122,  # 6
+                               0.0,                     # 7
+                               0.00022485182747281122,  # 8
+                               0.0008785397004602187,    # 9
+                               0.0076083769883172085,   # 10 * (the abstracting C)
+                               0.00022485182747281122,  # 11
+                               0.0,                     # 12
+                               0.00022485182747281122,  # 13
+                               0.021950421894561232,    # 14 * (the abstracted H)
+                               0.0027261835255033436,   # 15
+                               0.002790337797642228])   # 16
 
     def test_get_index_of_abs_largest_neg_freq(self):
         """Test the get_index_of_abs_largest_neg_freq() function"""
@@ -457,7 +530,7 @@ H                 -1.28677889    1.04716138   -1.01532486"""
         """Test the get_expected_num_atoms_with_largest_normal_mode_disp() function"""
         normal_disp_mode_rms = [0.01414213562373095, 0.05, 0.04, 0.5632938842203065, 0.7993122043357026,
                                 0.08944271909999159, 0.10677078252031312, 0.09000000000000001, 0.05, 0.09433981132056604]
-        num_of_atoms = ts.get_expected_num_atoms_with_largest_normal_mode_disp(normal_disp_mode_rms=normal_disp_mode_rms,
+        num_of_atoms = ts.get_expected_num_atoms_with_largest_normal_mode_disp(normal_mode_disp_rms=normal_disp_mode_rms,
                                                                                ts_guesses=self.ts_1.ts_guesses)
         self.assertEqual(num_of_atoms, 4)
 
