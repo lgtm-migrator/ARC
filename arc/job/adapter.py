@@ -360,7 +360,7 @@ class JobAdapter(ABC):
         """
         return None  # tmp
         # Todo: set a capacity for incore jobs per adapter. E.g., 1 for Gaussian, 100 for GCN without parallelization
-        # todo: adapters with high capacity should know about it, they're currently set up to only run one instance
+        # todo: adapters with high capacity should know about it, they're currently set up to only run one instance # Todo
         if len(self.job_types) > 1:
             self.iterate_by.append('job_types')
 
@@ -537,7 +537,7 @@ class JobAdapter(ABC):
 
         self.set_additional_file_paths()
 
-    def MOVE_TO_ADAPTERS(self):
+    def MOVE_TO_ADAPTERS(self):  # Todo
         """Todo: TMP method"""
         self.additional_files_to_upload = list()
         # self.additional_files_to_upload is a list of dictionaries, each with the following keys:

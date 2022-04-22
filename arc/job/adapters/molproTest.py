@@ -101,24 +101,23 @@ uccsd(t)-f12;
         self.assertEqual(self.job_1.files_to_upload, job_1_files_to_upload)
         self.assertEqual(self.job_1.files_to_download, job_1_files_to_download)
 
-        # job_2_files_to_upload = [{'file_name': 'submit.sh',
-        #                           'local': os.path.join(self.job_2.local_path, 'submit.sh'),
-        #                           'remote': os.path.join(self.job_2.remote_path, 'submit.sh'),
-        #                           'source': 'path',
-        #                           'make_x': False},
-        #                          {'file_name': 'data.hdf5',
-        #                           'local': os.path.join(self.job_2.local_path, 'data.hdf5'),
-        #                           'remote': os.path.join(self.job_2.remote_path, 'data.hdf5'),
-        #                           'source': 'path',
-        #                           'make_x': False}]
-        # job_2_files_to_download = [{'file_name': 'data.hdf5',
-        #                             'local': os.path.join(self.job_2.local_path, 'data.hdf5'),
-        #                             'remote': os.path.join(self.job_2.remote_path, 'data.hdf5'),
-        #                             'source': 'path',
-        #                             'make_x': False}]
-        # self.assertEqual(self.job_2.files_to_upload, job_2_files_to_upload)
-        # self.assertEqual(self.job_2.files_to_download, job_2_files_to_download)
-
+        job_2_files_to_upload = [{'file_name': 'submit.sh',
+                                  'local': os.path.join(self.job_2.local_path, 'submit.sh'),
+                                  'remote': os.path.join(self.job_2.remote_path, 'submit.sh'),
+                                  'source': 'path',
+                                  'make_x': False},
+                                 {'file_name': 'data.hdf5',
+                                  'local': os.path.join(self.job_2.local_path, 'data.hdf5'),
+                                  'remote': os.path.join(self.job_2.remote_path, 'data.hdf5'),
+                                  'source': 'path',
+                                  'make_x': False}]
+        job_2_files_to_download = [{'file_name': 'data.hdf5',
+                                    'local': os.path.join(self.job_2.local_path, 'data.hdf5'),
+                                    'remote': os.path.join(self.job_2.remote_path, 'data.hdf5'),
+                                    'source': 'path',
+                                    'make_x': False}]
+        self.assertEqual(self.job_2.files_to_upload, job_2_files_to_upload)
+        self.assertEqual(self.job_2.files_to_download, job_2_files_to_download)
 
     @classmethod
     def tearDownClass(cls):
