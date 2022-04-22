@@ -486,7 +486,7 @@ This function assumes there ARE additional atoms connected to <code class="docut
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>atom1</strong> (<em>Atom</em>) – The atom who’s neighbors will be searched.</p></li>
+<li><p><strong>atom1</strong> (<em>Atom</em>) – The atom whose neighbors will be searched.</p></li>
 <li><p><strong>atom2</strong> (<em>Atom</em>) – An atom connected to <code class="docutils literal notranslate"><span class="pre">atom1</span></code> to exclude (a pivotal atom).</p></li>
 <li><p><strong>mol</strong> (<em>Molecule</em>) – The molecule to process.</p></li>
 </ul>
@@ -703,8 +703,7 @@ below which all (unique) generated conformers will be returned.</p></li>
 <li><p><strong>de_threshold</strong> (<em>float</em><em>, </em><em>optional</em>) – Energy threshold (in kJ/mol) above which wells will not be considered.</p></li>
 <li><p><strong>smeared_scan_res</strong> (<em>float</em><em>, </em><em>optional</em>) – The resolution (in degrees) for scanning smeared wells.</p></li>
 <li><p><strong>combination_threshold</strong> (<em>int</em><em>, </em><em>optional</em>) – A threshold below which all combinations will be generated.</p></li>
-<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use (MMFF94, MMFF94s, UFF, GAFF, fit).
-‘fit’ will first run MMFF94, than fit a custom Amber FF to the species.</p></li>
+<li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use (MMFF94, MMFF94s, UFF, GAFF).</p></li>
 <li><p><strong>max_combination_iterations</strong> (<em>int</em><em>, </em><em>optional</em>) – The maximum number of times to iteratively search
 for the lowest conformer.</p></li>
 <li><p><strong>diastereomers</strong> (<em>list</em><em>, </em><em>optional</em>) – Entries are xyz’s in a dictionary format or conformer structures
@@ -818,7 +817,7 @@ The coordinates are returned in the order of atoms in mol.</p>
 
 <dl class="py function">
 <dt id="arc.species.conformers.get_lowest_confs">
-<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">get_lowest_confs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">confs</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>dict<span class="p">, </span>list<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">int</span> <span class="o">=</span> <span class="default_value">10</span></em>, <em class="sig-param"><span class="n">e</span><span class="p">:</span> <span class="n">float</span> <span class="o">=</span> <span class="default_value">5.0</span></em>, <em class="sig-param"><span class="n">energy</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FF energy'</span></em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/species/conformers.html#get_lowest_confs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.get_lowest_confs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">get_lowest_confs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span><span class="p">:</span> <span class="n">str</span></em>, <em class="sig-param"><span class="n">confs</span><span class="p">:</span> <span class="n">Union<span class="p">[</span>dict<span class="p">, </span>list<span class="p">]</span></span></em>, <em class="sig-param"><span class="n">n</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>int<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">10</span></em>, <em class="sig-param"><span class="n">e</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>float<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">5.0</span></em>, <em class="sig-param"><span class="n">energy</span><span class="p">:</span> <span class="n">str</span> <span class="o">=</span> <span class="default_value">'FF energy'</span></em><span class="sig-paren">)</span> &#x2192; list<a class="reference internal" href="../_modules/arc/species/conformers.html#get_lowest_confs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.get_lowest_confs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the most stable conformer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -1058,7 +1057,7 @@ but use OpenBabel to optimize them (RDKit doesn’t have GAFF).</p>
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – The 3D coordinates.</p></li>
 <li><p><strong>force_field</strong> (<em>str</em><em>, </em><em>optional</em>) – The type of force field to use.</p></li>
 <li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The conformer searching method to use in OpenBabel.
-For method description, see <a class="reference external" href="http://openbabel.org/dev-api/group__conformer.shtml">http://openbabel.org/dev-api/group__conformer.shtml</a></p></li>
+For method description, see <a class="reference external" href="https://openbabel.org/dev-api/group__conformer.shtml">https://openbabel.org/dev-api/group__conformer.shtml</a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -1078,7 +1077,7 @@ For method description, see <a class="reference external" href="http://openbabel
 <dt id="arc.species.conformers.openbabel_force_field_on_rdkit_conformers">
 <code class="sig-prename descclassname">arc.species.conformers.</code><code class="sig-name descname">openbabel_force_field_on_rdkit_conformers</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">label</span></em>, <em class="sig-param"><span class="n">rd_mol</span></em>, <em class="sig-param"><span class="n">force_field</span><span class="o">=</span><span class="default_value">'MMFF94s'</span></em>, <em class="sig-param"><span class="n">optimize</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#openbabel_force_field_on_rdkit_conformers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.conformers.openbabel_force_field_on_rdkit_conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Optimize RDKit conformers by OpenBabel using a force field (MMFF94 or MMFF94s are recommended).
-This is a fall back method when RDKit fails to generate force field optimized conformers.</p>
+This is a fallback method when RDKit fails to generate force field optimized conformers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

@@ -226,7 +226,7 @@
 <span class="sd">        xyz_str (str): The string xyz format to be converted.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ConverterError: If xyz_str is not a string or does not have four space-separated entries per non empty line.</span>
+<span class="sd">        ConverterError: If xyz_str is not a string or does not have four space-separated entries per non-empty line.</span>
 
 <span class="sd">    Returns: dict</span>
 <span class="sd">        The ARC xyz format.</span>
@@ -467,7 +467,7 @@
 <span class="sd">        xyz_file (str): The content of an XYZ file</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ConverterError: If cannot identify the number of atoms entry, of if it is different that the actual number.</span>
+<span class="sd">        ConverterError: If cannot identify the number of atoms entry, or if it is different that the actual number.</span>
 
 <span class="sd">    Returns: dict</span>
 <span class="sd">        The ARC dictionary xyz format.</span>
@@ -1027,7 +1027,7 @@
 <span class="sd">        zmat_str (str): The zmat.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        Tuple[str: The coords section, str: The variables section if it exists, else None]</span>
+<span class="sd">        Tuple[str, str]: The coords section, The variables section if it exists, else None]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">coords</span><span class="p">,</span> <span class="n">variables</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
     <span class="n">flag</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1224,8 +1224,8 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">][</span><span class="n">param</span><span class="p">]</span> <span class="o">+=</span> <span class="n">increment</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
-            <span class="c1"># the requested parameter represents an angle split by a dummy atom,</span>
-            <span class="c1"># a list of the two corresponding parameters was be returned</span>
+            <span class="c1"># The requested parameter represents an angle split by a dummy atom,</span>
+            <span class="c1"># a list of the two corresponding parameters was returned.</span>
             <span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">][</span><span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">new_value</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">][</span><span class="n">par</span><span class="p">]</span> <span class="k">for</span> <span class="n">par</span> <span class="ow">in</span> <span class="n">param</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
         <span class="n">new_xyz</span> <span class="o">=</span> <span class="n">zmat_to_xyz</span><span class="p">(</span><span class="n">zmat</span><span class="o">=</span><span class="n">zmat</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">new_xyz</span></div>
@@ -1545,7 +1545,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        ref_mol (Molecule): The reference Molecule object.</span>
-<span class="sd">        mol_list (list): Entries are Molecule objects whos atoms will be reordered according to the reference.</span>
+<span class="sd">        mol_list (list): Entries are Molecule objects whose atoms will be reordered according to the reference.</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        bool: Whether the reordering was successful, ``True`` if it was.</span>
@@ -1677,7 +1677,7 @@
 <div class="viewcode-block" id="to_rdkit_mol"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.to_rdkit_mol">[docs]</a><span class="k">def</span> <span class="nf">to_rdkit_mol</span><span class="p">(</span><span class="n">mol</span><span class="p">,</span> <span class="n">remove_h</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sanitize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Convert a molecular structure to an RDKit RDMol object. Uses</span>
-<span class="sd">    `RDKit &lt;http://rdkit.org/&gt;`_ to perform the conversion.</span>
+<span class="sd">    `RDKit &lt;https://rdkit.org/&gt;`_ to perform the conversion.</span>
 <span class="sd">    Perceives aromaticity.</span>
 <span class="sd">    Adopted from rmgpy/molecule/converter.py</span>
 
@@ -1745,7 +1745,7 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        mol (Molecule): The RMG Molecule object.</span>
-<span class="sd">        xyz (dict): The xyz coordinates (of the conformer, atoms must be ordered as in ``mol``.</span>
+<span class="sd">        xyz (dict): The xyz coordinates of the conformer, atoms must be ordered as in ``mol``.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ConverterError: if ``xyz`` is of wrong type.</span>

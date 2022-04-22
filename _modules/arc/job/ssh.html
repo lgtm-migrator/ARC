@@ -305,7 +305,7 @@
 
 <span class="sd">        Raises:</span>
 <span class="sd">            InputError: If both `local_file_path` or `file_string` are invalid,</span>
-<span class="sd">                        or `local_file_path` does not exists.</span>
+<span class="sd">                        or `local_file_path` does not exist.</span>
 <span class="sd">            ServerError: If the file cannot be uploaded with maximum times to try</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">local_file_path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_string</span><span class="p">:</span>
@@ -511,7 +511,7 @@
 
     <span class="k">def</span> <span class="nf">_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">paramiko</span><span class="o">.</span><span class="n">sftp_client</span><span class="o">.</span><span class="n">SFTPClient</span><span class="p">,</span> <span class="n">paramiko</span><span class="o">.</span><span class="n">SSHClient</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Connect via paramiko, and open a SSH session as well as a SFTP session.</span>
+<span class="sd">        Connect via paramiko, and open an SSH session as well as a SFTP session.</span>
 
 <span class="sd">        Returns: Tuple[paramiko.sftp_client.SFTPClient, paramiko.SSHClient]</span>
 <span class="sd">            - An SFTP client used to perform remote file operations.</span>
@@ -523,7 +523,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="c1"># If the server accepts the connection but the SSH daemon doesn&#39;t respond in </span>
             <span class="c1"># 15 seconds (default in paramiko) due to network congestion, faulty switches, </span>
-            <span class="c1"># etc..., common solution is to enlarging the timeout variable.</span>
+            <span class="c1"># etc..., common solution is enlarging the timeout variable.</span>
             <span class="n">ssh</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">hostname</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">un</span><span class="p">,</span> <span class="n">banner_timeout</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span>
         <span class="k">except</span><span class="p">:</span>
             <span class="c1"># This sometimes gives &quot;SSHException: Error reading SSH protocol banner[Error 104] Connection reset by peer&quot;</span>
@@ -643,7 +643,7 @@
 <span class="sd">            remote_file_path (str): The path to the file on the remote server.</span>
 
 <span class="sd">        Returs:</span>
-<span class="sd">            bool: If the file exists on the remote server. ``True`` if exist.</span>
+<span class="sd">            bool: Whether the file exists on the remote server. ``True`` if it exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;[ -f &quot;</span><span class="si">{</span><span class="n">remote_file_path</span><span class="si">}</span><span class="s1">&quot; ] &amp;&amp; echo &quot;File exists&quot;&#39;</span>
         <span class="n">stdout</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_command_to_server</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">remote_path</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
@@ -660,7 +660,7 @@
 <span class="sd">            remote_dir_path (str): The path to the directory on the remote server.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            bool: If the directory exists on the remote server. ``True`` if exist.</span>
+<span class="sd">            bool: Whether the directory exists on the remote server. ``True`` if it exists.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;[ -d &quot;</span><span class="si">{</span><span class="n">remote_dir_path</span><span class="si">}</span><span class="s1">&quot; ] &amp;&amp; echo &quot;Dir exists&quot;&#39;</span>
         <span class="n">stdout</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_send_command_to_server</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
@@ -719,7 +719,7 @@
         <span class="n">status</span> <span class="o">=</span> <span class="n">status_line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">4</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">status</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="s1">&#39;qw&#39;</span><span class="p">,</span> <span class="s1">&#39;t&#39;</span><span class="p">]:</span>
             <span class="k">return</span> <span class="s1">&#39;running&#39;</span>
-        <span class="k">elif</span> <span class="n">status</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">,]:</span>
+        <span class="k">elif</span> <span class="n">status</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;e&#39;</span><span class="p">]:</span>
             <span class="k">return</span> <span class="s1">&#39;errored&#39;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unknown cluster software </span><span class="si">{</span><span class="n">servers</span><span class="p">[</span><span class="n">server</span><span class="p">][</span><span class="s2">&quot;cluster_soft&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span></div>

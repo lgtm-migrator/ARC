@@ -393,7 +393,7 @@ Two <code class="docutils literal notranslate"><span class="pre">atom_list_to_ex
 <dl class="simple">
 <dt>Returns: Tuple[list, bool]</dt><dd><ul class="simple">
 <li><p>The indices of the atoms in the top (either 0-index or 1-index, as requested).</p></li>
-<li><p>Whether the top has heavy atoms (is not just a hydrogen atom). True if it has heavy atoms.</p></li>
+<li><p>Whether the top has heavy atoms (is not just a hydrogen atom). <code class="docutils literal notranslate"><span class="pre">True</span></code> if it has heavy atoms.</p></li>
 </ul>
 </dd>
 </dl>
@@ -596,8 +596,7 @@ Even if just one of the items in the key has a close match, use the close value.
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>l1</strong> (<em>list</em>) – The first list.</p></li>
 <li><p><strong>l2</strong> (<em>list</em>) – The second list.</p></li>
-<li><p><strong>(</strong><strong>bool</strong> (<em>order_by_first_list</em>) – Whether to order the output list using the order of the values in the first list.</p></li>
-<li><p><strong>optional</strong> – Whether to order the output list using the order of the values in the first list.</p></li>
+<li><p><strong>order_by_first_list</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to order the output list using the order of the values in the first list.</p></li>
 <li><p><strong>return_unique</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to return only unique values in the intersection of two lists.</p></li>
 </ul>
 </dd>

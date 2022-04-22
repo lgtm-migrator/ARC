@@ -238,7 +238,7 @@
 <span class="sd">                              &#39;scan&#39;: ``List[int]``,  # 1-indexed</span>
 <span class="sd">                              &#39;torsion&#39;: ``List[int]``,  # 0-indexed</span>
 <span class="sd">                              &#39;number_of_running_jobs&#39;: ``int``,</span>
-<span class="sd">                              &#39;success&#39;: ``bool``,</span>
+<span class="sd">                              &#39;success&#39;: Optional[``bool``],  # ``None`` by default</span>
 <span class="sd">                              &#39;invalidation_reason&#39;: ``str``,</span>
 <span class="sd">                              &#39;times_dihedral_set&#39;: ``int``,</span>
 <span class="sd">                              &#39;scan_path&#39;: &lt;path to scan output file&gt;,</span>
@@ -256,10 +256,9 @@
 
 <span class="sd">    Args:</span>
 <span class="sd">        label (str, optional): The species label.</span>
-<span class="sd">        is_ts (bool, optional): Whether or not the species represents a transition state.</span>
+<span class="sd">        is_ts (bool, optional): Whether the species represents a transition state.</span>
 <span class="sd">        rmg_species (Species, optional): An RMG Species object to be converted to an ARCSpecies object.</span>
-<span class="sd">        mol (Molecule, optional): An ``RMG Molecule`` object used for BAC determination.</span>
-<span class="sd">                                  Atom order corresponds to the order in .initial_xyz</span>
+<span class="sd">        mol (Molecule, optional): An ``RMG Molecule``. Atom order corresponds to the order in .initial_xyz</span>
 <span class="sd">        xyz (list, str, dict, optional): Entries are either string-format coordinates, file paths, or ARC&#39;s dict format.</span>
 <span class="sd">                                         (If there&#39;s only one entry, it could be given directly, not in a list).</span>
 <span class="sd">                                         The file paths could direct to either a .xyz file, ARC conformers</span>
@@ -270,7 +269,7 @@
 <span class="sd">        smiles (str, optional): A `SMILES &lt;https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system&gt;`_</span>
 <span class="sd">                                representation for the species 2D graph.</span>
 <span class="sd">        adjlist (str, optional): An `RMG adjacency list</span>
-<span class="sd">                                 &lt;http://reactionmechanismgenerator.github.io/RMG-Py/reference/molecule/adjlist.html&gt;`_</span>
+<span class="sd">                                 &lt;https://reactionmechanismgenerator.github.io/RMG-Py/reference/molecule/adjlist.html&gt;`_</span>
 <span class="sd">                                 representation for the species 2D graph.</span>
 <span class="sd">        inchi (str, optional): An `InChI &lt;https://www.inchi-trust.org/&gt;`_ representation for the species 2D graph.</span>
 <span class="sd">        bond_corrections (dict, optional): The bond additivity corrections (BAC) to be used. Determined from the</span>
@@ -322,7 +321,7 @@
 <span class="sd">                                resulting in a 1D scan instead of an ND scan.</span>
 <span class="sd">                                Values are nested lists. Each value is a list where the entries are either pivot lists</span>
 <span class="sd">                                (e.g., [1, 5]) or lists of pivot lists (e.g., [[1, 5], [6, 8]]), or a mix</span>
-<span class="sd">                                (e.g., [[4, 8], [[6, 9], [3, 4]]). The requested directed scan type will be executed</span>
+<span class="sd">                                (e.g., [[4, 8], [[6, 9], [3, 4]]]). The requested directed scan type will be executed</span>
 <span class="sd">                                separately for each list entry in the value. A list entry that contains only two pivots</span>
 <span class="sd">                                will result in a 1D scan, while a list entry with N pivots will consider all of them,</span>
 <span class="sd">                                and will result in an ND scan if &#39;_diagonal&#39; is not specified.</span>
@@ -330,7 +329,7 @@
 <span class="sd">                                Note: An &#39;all&#39; string entry is also allowed in the value list, triggering a directed</span>
 <span class="sd">                                internal rotation scan for all torsions in the molecule. If &#39;all&#39; is specified within</span>
 <span class="sd">                                a second level list, then all the dihedrals will be considered together.</span>
-<span class="sd">                                Currently ARC does not automatically identify torsions to be treated as ND, and this</span>
+<span class="sd">                                Currently, ARC does not automatically identify torsions to be treated as ND, and this</span>
 <span class="sd">                                attribute must be specified by the user.</span>
 <span class="sd">                                An additional supported key is &#39;ess&#39;, in which case ARC will allow the ESS to take care</span>
 <span class="sd">                                of spawning the ND continuous constrained optimizations (not yet implemented).</span>
@@ -507,7 +506,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">original_label</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">species_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Reading from a dictionary (it&#39;s possible that the dict contain only a &#39;yml_path&#39; argument, check first)</span>
+            <span class="c1"># Reading from a dictionary (it&#39;s possible that the dict contains only a &#39;yml_path&#39; argument, check first)</span>
             <span class="k">if</span> <span class="s1">&#39;yml_path&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">:</span>
                 <span class="k">if</span> <span class="s1">&#39;label&#39;</span> <span class="ow">in</span> <span class="n">species_dict</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="n">species_dict</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span>
@@ -516,7 +515,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span><span class="n">species_dict</span><span class="o">=</span><span class="n">species_dict</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">species_dict</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">yml_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="c1"># Not reading from a dictionary</span>
+            <span class="c1"># Not reading from a dictionary.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">force_field</span> <span class="o">=</span> <span class="n">force_field</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span> <span class="o">=</span> <span class="n">is_ts</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">ts_conf_spawned</span> <span class="o">=</span> <span class="kc">False</span>
@@ -1513,10 +1512,10 @@
             <span class="n">electrons</span> <span class="o">-=</span> <span class="bp">self</span><span class="o">.</span><span class="n">charge</span>
             <span class="k">if</span> <span class="n">electrons</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="mi">2</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Multiplicity not specified for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">, assuming a value of 2&#39;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Multiplicity not specified for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">, assuming a value of 2&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">=</span> <span class="mi">1</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Multiplicity not specified for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">, assuming a value of 1&#39;</span><span class="p">)</span></div>
+                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Multiplicity not specified for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">, assuming a value of 1&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.make_ts_report"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.make_ts_report">[docs]</a>    <span class="k">def</span> <span class="nf">make_ts_report</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A helper function to write content into the .ts_report attribute&quot;&quot;&quot;</span>
@@ -1543,7 +1542,7 @@
                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Make sure atom order in self.mol corresponds to xyz.</span>
-<span class="sd">        Important for TS discovery and for identifying rotor indices.</span>
+<span class="sd">        Important for TS searches and for identifying rotor indices.</span>
 <span class="sd">        This works by generating a molecule from xyz and using the</span>
 <span class="sd">        2D structure to confirm that the perceived molecule is correct.</span>
 <span class="sd">        If ``xyz`` is not given, the species xyz attribute will be used.</span>
@@ -1735,7 +1734,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Check whether the perception of self.final_xyz or ``xyz`` is isomorphic with self.mol.</span>
 <span class="sd">        If it is not isomorphic, compliant coordinates will be checked (equivalent to checking isomorphism without</span>
-<span class="sd">        bond order information, only does not necessitates a molecule object, directly checks bond lengths).</span>
+<span class="sd">        bond order information, only does not necessitate a molecule object, directly checks bond lengths).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            mol (Molecule, optional): A molecule to check instead of self.mol.</span>
@@ -2362,13 +2361,13 @@
         <span class="n">tol</span> <span class="o">=</span> <span class="n">max_e</span>
     <span class="n">min_e</span> <span class="o">=</span> <span class="n">energies</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
-        <span class="c1"># sometimes the opt level and scan levels mismatch, causing the minimum to be close to 0 degrees, but not at 0</span>
+        <span class="c1"># Sometimes the opt level and scan levels mismatch, causing the minimum to be close to 0 degrees, but not at 0.</span>
         <span class="k">if</span> <span class="n">e</span> <span class="o">&lt;</span> <span class="n">min_e</span><span class="p">:</span>
             <span class="n">min_e</span> <span class="o">=</span> <span class="n">e</span>
     <span class="n">peaks</span><span class="p">,</span> <span class="n">valleys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># the peaks and valleys of the scan</span>
     <span class="n">worst_peak_resolution</span><span class="p">,</span> <span class="n">worst_valley_resolution</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">energies</span><span class="p">):</span>
-        <span class="c1"># identify peaks and valleys, and determine worst resolutions in the scan</span>
+        <span class="c1"># Identify peaks and valleys, and determine the worst resolutions in the scan.</span>
         <span class="n">ip1</span> <span class="o">=</span> <span class="n">cyclic_index_i_plus_1</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))</span>  <span class="c1"># i Plus 1</span>
         <span class="n">im1</span> <span class="o">=</span> <span class="n">cyclic_index_i_minus_1</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>  <span class="c1"># i Minus 1</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">energies</span><span class="p">[</span><span class="n">im1</span><span class="p">]</span> <span class="o">==</span> <span class="n">e</span><span class="p">:</span>

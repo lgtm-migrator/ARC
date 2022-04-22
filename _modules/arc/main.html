@@ -734,6 +734,7 @@
 
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_checks</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">delete_check_files</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete_leftovers</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">save_project_info_file</span><span class="p">()</span>
 
@@ -1034,6 +1035,17 @@
                         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">deleting all check files...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
                         <span class="n">logged</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file_</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ARC.delete_leftovers"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.delete_leftovers">[docs]</a>    <span class="k">def</span> <span class="nf">delete_leftovers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete leftover files, e.g., files created by the Symmetry program.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">files_to_delete</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;nul&#39;</span><span class="p">,</span> <span class="s1">&#39;timer.dat&#39;</span><span class="p">,</span> <span class="s1">&#39;run.out&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">file_</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">file_</span> <span class="ow">in</span> <span class="n">files_to_delete</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file_</span><span class="p">)):</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file_</span><span class="p">))</span>
+            <span class="k">break</span></div>
 
 <div class="viewcode-block" id="ARC.determine_unique_species_labels"><a class="viewcode-back" href="../../api/main.html#arc.main.ARC.determine_unique_species_labels">[docs]</a>    <span class="k">def</span> <span class="nf">determine_unique_species_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

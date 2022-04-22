@@ -531,7 +531,7 @@
             <span class="k">if</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
                 <span class="n">zmat_index</span> <span class="o">=</span> <span class="n">key_by_val</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">],</span> <span class="n">atom</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">atom</span> <span class="o">!=</span> <span class="n">atom_index</span> <span class="ow">and</span> <span class="n">zmat_index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">a_atoms</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">is_dummy</span><span class="p">(</span><span class="n">zmat</span><span class="p">,</span> <span class="n">zmat_index</span><span class="p">):</span>
-                    <span class="c1"># Check whether this atom (B) is part of a linear chain, if it is try to correctly determine</span>
+                    <span class="c1"># Check whether this atom (B) is part of a linear chain. If it is, try to correctly determine</span>
                     <span class="c1"># dihedrals in this molecule w/o this atom, otherwise it&#39;s meaningless, and the zmat looses info.</span>
                     <span class="c1">#</span>
                     <span class="c1">#                     D (atom_index, r_atoms[0])</span>
@@ -574,7 +574,7 @@
     <span class="k">if</span> <span class="n">trivial_assignment</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">a_atoms</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">a_atoms</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
         <span class="n">a_atoms</span> <span class="o">=</span> <span class="p">[</span><span class="n">atom</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">r_atoms</span><span class="p">]</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)):</span>
-            <span class="c1"># Check whether this atom (B) is part of a linear chain, if it is try to correctly determine</span>
+            <span class="c1"># Check whether this atom (B) is part of a linear chain. If it is, try to correctly determine</span>
             <span class="c1"># dihedrals in this molecule w/o this atom, otherwise it&#39;s meaningless, and the zmat looses info.</span>
             <span class="c1">#</span>
             <span class="c1">#                     D (atom_index, r_atoms[0])</span>
@@ -668,7 +668,7 @@
         <span class="k">if</span> <span class="n">d_constraint_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;D_atom&#39;</span><span class="p">,</span> <span class="s1">&#39;D_group&#39;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">ZMatError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an invalid D constraint type &quot;</span><span class="si">{</span><span class="n">d_constraint_type</span><span class="si">}</span><span class="s1">&quot; for </span><span class="si">{</span><span class="n">d_constraint</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">d_atoms</span> <span class="o">=</span> <span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">key_by_val</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">],</span> <span class="n">atom</span><span class="p">)</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">d_constraint</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span>
-    <span class="k">elif</span> <span class="n">specific_atom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">specific_atom</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">a_atoms</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># A specific atom was specified (e.g., a dummy atom was added to assist defining this atom), consider it.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">specific_atom</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">ZMatError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;specific atom must be of type int, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">specific_atom</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -773,7 +773,7 @@
             <span class="c1"># Atom A is allowed to be a dummy atom only if the atom represented by n is not.</span>
             <span class="n">zmat_index</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="k">if</span> <span class="n">atom</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">([</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">][</span><span class="n">d_atom</span><span class="p">]</span> <span class="k">for</span> <span class="n">d_atom</span> <span class="ow">in</span> <span class="n">d_atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]):</span>
-                <span class="c1"># Check whether this atom (A) is part of a linear chain, if it is try to correctly determine</span>
+                <span class="c1"># Check whether this atom (A) is part of a linear chain. If it is, try to correctly determine</span>
                 <span class="c1"># dihedrals in this molecule w/o this atom, otherwise it&#39;s meaningless, and the zmat looses info.</span>
                 <span class="c1">#</span>
                 <span class="c1">#             X       D (atom_index)</span>
@@ -968,8 +968,7 @@
         <span class="n">zmat</span> <span class="o">=</span> <span class="n">update_zmat_with_new_atom</span><span class="p">(</span><span class="n">zmat</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">coords</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">atom_index</span><span class="p">,</span> <span class="n">r_atoms</span><span class="p">,</span> <span class="n">a_atoms</span><span class="p">,</span> <span class="n">d_atoms</span><span class="p">,</span> <span class="n">added_dummy</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="c1"># Some constraints did not &quot;pass&quot;: some of the atoms the atom represented by ``atom_index`` is constraint to</span>
-        <span class="c1"># were not added to the zmat yet; skip this atom until they are.</span>
+        <span class="c1"># Some constraints did not &quot;pass&quot;: some atoms were not added to the zmat yet; skip this atom until they are.</span>
         <span class="n">skipped_atoms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom_index</span><span class="p">)</span>
 
     <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">coords</span>  <span class="c1"># Update xyz with the updated coords.</span>
@@ -1104,7 +1103,7 @@
     <span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">][</span><span class="n">a_str</span><span class="p">]</span> <span class="o">=</span> <span class="mf">90.0</span>
     <span class="k">if</span> <span class="n">d_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="c1"># Determine the dihedral angle of XCBA to be equal to the dihedral angle of DCBA</span>
-        <span class="c1"># so later the dihedral of DCXB will be either 180 or 0 degrees, depends on the the order</span>
+        <span class="c1"># so later the dihedral of DCXB will be either 180 or 0 degrees, depends on the order</span>
         <span class="c1"># in which DCB are considered (and their relative position on a single straight line).</span>
         <span class="c1">#</span>
         <span class="c1">#       X        E</span>
@@ -1123,7 +1122,7 @@
         <span class="n">connectivity</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">][</span><span class="n">n</span><span class="p">][</span><span class="mi">1</span><span class="p">:])]</span> <span class="o">=</span> <span class="p">[</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">][</span><span class="n">r_atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">]]]</span>
     <span class="c1"># Before adding the original (non-dummy) atom, increase n due to the increased number of atoms.</span>
     <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
-    <span class="c1"># Store atom &quot;B&quot;&#39;s index for the dihedral of atom D.</span>
+    <span class="c1"># Store atom B&#39;s index for the dihedral of atom D.</span>
     <span class="n">specific_last_d_atom</span> <span class="o">=</span> <span class="n">a_atoms</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="c1"># Update the r_atoms and a_atoms for the original (non-dummy) atom (d_atoms is set below).</span>
     <span class="c1">#</span>
@@ -1161,7 +1160,7 @@
 <span class="sd">                               ``True`` to skip, default is ``False``.</span>
 
 <span class="sd">    Raises:</span>
-<span class="sd">        ZMatError: If zmat if of wrong type or does not contain all keys.</span>
+<span class="sd">        ZMatError: If zmat is of wrong type or does not contain all keys.</span>
 
 <span class="sd">    Returns: Tuple[List[dict], List[str]]</span>
 <span class="sd">        - The cartesian coordinates.</span>
@@ -1174,6 +1173,9 @@
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">]):</span>
         <span class="k">raise</span> <span class="n">ZMatError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;zmat sections symbols, coords, and map have different lengths: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s2">&quot;symbols&quot;</span><span class="p">])</span><span class="si">}</span><span class="s1">, &#39;</span>
                         <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s2">&quot;coords&quot;</span><span class="p">])</span><span class="si">}</span><span class="s1">, and </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s2">&quot;map&quot;</span><span class="p">])</span><span class="si">}</span><span class="s1">, respectively.&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">ZMatError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got ``None`` for var </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> in zmat:</span><span class="se">\n</span><span class="si">{</span><span class="n">zmat</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">var_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
     <span class="n">coords_to_skip</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">coords</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]):</span>
@@ -1281,7 +1283,7 @@
                       <span class="n">cd_length</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">bcd_angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">abcd_dihedral</span><span class="p">),</span>
                       <span class="n">cd_length</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">bcd_angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">abcd_dihedral</span><span class="p">)])</span>
         <span class="n">d</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>  <span class="c1"># Rotate the coordinate system into the reference frame of orientation defined by A, B, C.</span>
-        <span class="c1"># Add the coordinates of atom C the the resulting atom D:</span>
+        <span class="c1"># Add the coordinates of atom C to the resulting atom D:</span>
         <span class="n">coords</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">d</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">coords</span><span class="p">[</span><span class="n">c_index</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">coords</span><span class="p">[</span><span class="n">c_index</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">d</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">coords</span><span class="p">[</span><span class="n">c_index</span><span class="p">][</span><span class="mi">2</span><span class="p">]))</span>
     <span class="k">return</span> <span class="n">coords</span>
 
@@ -1607,7 +1609,6 @@
                 <span class="c1"># Determine the &quot;top&quot; of the *relevant branch* of this torsion</span>
                 <span class="c1"># since the first atom (number 0) is the constrained one being changed,</span>
                 <span class="c1"># this top is defined from the second atom in the torsion (number 1) to it.</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;determining top_d for </span><span class="si">{</span><span class="n">constraint_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1"> -&gt; </span><span class="si">{</span><span class="n">constraint_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="n">top_d</span> <span class="o">=</span> <span class="n">determine_top_group_indices</span><span class="p">(</span><span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span>
                                                     <span class="n">atom1</span><span class="o">=</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">constraint_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span>
                                                     <span class="n">atom2</span><span class="o">=</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">constraint_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
@@ -2024,8 +2025,8 @@
     <span class="k">raise</span> <span class="n">ZMatError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find a key corresponding to </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1"> </span><span class="si">{</span><span class="n">indices</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span></div>
 
 
-<span class="k">def</span> <span class="nf">_compare_zmats</span><span class="p">(</span><span class="n">zmat1</span><span class="p">:</span><span class="nb">dict</span><span class="p">,</span>
-                   <span class="n">zmat2</span><span class="p">:</span><span class="nb">dict</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">_compare_zmats</span><span class="p">(</span><span class="n">zmat1</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+                   <span class="n">zmat2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                    <span class="n">r_tol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                    <span class="n">a_tol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                    <span class="n">d_tol</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>

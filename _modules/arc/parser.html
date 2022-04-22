@@ -528,7 +528,7 @@
 <span class="sd">                                            &#39;trsh&#39;: &lt;list, job.ess_trsh_methods&gt;}&gt;</span>
 <span class="sd">                         },</span>
 
-<span class="sd">        The dihedrals angles of the original conformer</span>
+<span class="sd">        The dihedral angles of the original conformer</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">software</span> <span class="o">=</span> <span class="n">software</span> <span class="ow">or</span> <span class="n">determine_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">results</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;directed_scan_type&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;ess_</span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
@@ -1014,13 +1014,13 @@
         <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
         <span class="k">while</span> <span class="n">line</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;search&#39;</span><span class="p">:</span>
-                <span class="c1"># Stop searching if found enough blocks</span>
+                <span class="c1"># Stop searching if enough blocks were found.</span>
                 <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">blks</span><span class="p">))</span> <span class="o">==</span> <span class="n">block_count</span><span class="p">:</span>
                     <span class="k">break</span>
-                <span class="c1"># Check if matching the head pattern</span>
+                <span class="c1"># Check if matching the head pattern.</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">match</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="n">head_pat</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
-                    <span class="c1"># Switch to &#39;read&#39; mode</span>
+                    <span class="c1"># Switch to &#39;read&#39; mode.</span>
                     <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
                         <span class="n">tail_repeat</span> <span class="o">=</span> <span class="mi">0</span>
                         <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;read&#39;</span>
@@ -1031,7 +1031,7 @@
                 <span class="n">match</span> <span class="o">=</span> <span class="n">search</span><span class="p">(</span><span class="n">tail_pat</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
                     <span class="n">tail_repeat</span> <span class="o">+=</span> <span class="mi">1</span>
-                    <span class="c1"># If see enough tail patterns, switch to &#39;search&#39; mode</span>
+                    <span class="c1"># If there are enough tail patterns, switch to &#39;search&#39; mode.</span>
                     <span class="k">if</span> <span class="n">tail_repeat</span> <span class="o">==</span> <span class="n">tail_count</span><span class="p">:</span>
                         <span class="n">mode</span> <span class="o">=</span> <span class="s1">&#39;search&#39;</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
@@ -1153,7 +1153,7 @@
                     <span class="ow">and</span> <span class="nb">set</span><span class="p">(</span><span class="n">scan_args</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="nb">set</span><span class="p">(</span><span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;atoms&#39;</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
                 <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="c1"># Currently doesn&#39;t support scan of angles</span>
+                <span class="c1"># Currently doesn&#39;t support scan of angles.</span>
                 <span class="n">ic_dict</span><span class="p">[</span><span class="s1">&#39;scan&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_ic_info() can currently only parse Gaussian output &#39;</span>

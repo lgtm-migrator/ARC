@@ -309,8 +309,7 @@
 <span class="sd">        de_threshold (float, optional): Energy threshold (in kJ/mol) above which wells will not be considered.</span>
 <span class="sd">        smeared_scan_res (float, optional): The resolution (in degrees) for scanning smeared wells.</span>
 <span class="sd">        combination_threshold (int, optional): A threshold below which all combinations will be generated.</span>
-<span class="sd">        force_field (str, optional): The type of force field to use (MMFF94, MMFF94s, UFF, GAFF, fit).</span>
-<span class="sd">                                     &#39;fit&#39; will first run MMFF94, than fit a custom Amber FF to the species.</span>
+<span class="sd">        force_field (str, optional): The type of force field to use (MMFF94, MMFF94s, UFF, GAFF).</span>
 <span class="sd">        max_combination_iterations (int, optional): The maximum number of times to iteratively search</span>
 <span class="sd">                                                    for the lowest conformer.</span>
 <span class="sd">        diastereomers (list, optional): Entries are xyz&#39;s in a dictionary format or conformer structures</span>
@@ -1121,8 +1120,8 @@
 
 <div class="viewcode-block" id="get_lowest_confs"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.get_lowest_confs">[docs]</a><span class="k">def</span> <span class="nf">get_lowest_confs</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                      <span class="n">confs</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">list</span><span class="p">],</span>
-                     <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-                     <span class="n">e</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span>
+                     <span class="n">n</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+                     <span class="n">e</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mf">5.0</span><span class="p">,</span>
                      <span class="n">energy</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;FF energy&#39;</span><span class="p">,</span>
                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -1257,7 +1256,7 @@
 <div class="viewcode-block" id="openbabel_force_field_on_rdkit_conformers"><a class="viewcode-back" href="../../../api/conformers.html#arc.species.conformers.openbabel_force_field_on_rdkit_conformers">[docs]</a><span class="k">def</span> <span class="nf">openbabel_force_field_on_rdkit_conformers</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Optimize RDKit conformers by OpenBabel using a force field (MMFF94 or MMFF94s are recommended).</span>
-<span class="sd">    This is a fall back method when RDKit fails to generate force field optimized conformers.</span>
+<span class="sd">    This is a fallback method when RDKit fails to generate force field optimized conformers.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        label (str): The species&#39; label.</span>
@@ -1337,7 +1336,7 @@
         <span class="n">unoptimized_xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">unoptimized_xyzs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">try_ob</span><span class="p">:</span>
-        <span class="c1"># use OB as the fall back method</span>
+        <span class="c1"># use OB as the fallback method</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using OpenBabel (instead of RDKit) as a fall back method to generate conformers for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">. &#39;</span>
                        <span class="sa">f</span><span class="s1">&#39;This is often slower, and prohibits ARC from using all features of the conformers module.&#39;</span><span class="p">)</span>
         <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">openbabel_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">)</span>
@@ -1366,7 +1365,7 @@
 <span class="sd">        xyz (dict, optional): The 3D coordinates.</span>
 <span class="sd">        force_field (str, optional): The type of force field to use.</span>
 <span class="sd">        method (str, optional): The conformer searching method to use in OpenBabel.</span>
-<span class="sd">                                For method description, see http://openbabel.org/dev-api/group__conformer.shtml</span>
+<span class="sd">                                For method description, see https://openbabel.org/dev-api/group__conformer.shtml</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        Tuple[list, list]:</span>
@@ -1747,7 +1746,7 @@
 <span class="sd">    This function assumes there ARE additional atoms connected to ``atom1``, and that ``atom2`` is not a hydrogen atom.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        atom1 (Atom): The atom who&#39;s neighbors will be searched.</span>
+<span class="sd">        atom1 (Atom): The atom whose neighbors will be searched.</span>
 <span class="sd">        atom2 (Atom): An atom connected to ``atom1`` to exclude (a pivotal atom).</span>
 <span class="sd">        mol (Molecule): The molecule to process.</span>
 

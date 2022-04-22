@@ -203,7 +203,7 @@ If the species is a transition state (TS), its <code class="docutils literal not
 ‘scan’: <code class="docutils literal notranslate"><span class="pre">List[int]</span></code>,  # 1-indexed
 ‘torsion’: <code class="docutils literal notranslate"><span class="pre">List[int]</span></code>,  # 0-indexed
 ‘number_of_running_jobs’: <code class="docutils literal notranslate"><span class="pre">int</span></code>,
-‘success’: <code class="docutils literal notranslate"><span class="pre">bool</span></code>,
+‘success’: Optional[<code class="docutils literal notranslate"><span class="pre">bool</span></code>],  # <code class="docutils literal notranslate"><span class="pre">None</span></code> by default
 ‘invalidation_reason’: <code class="docutils literal notranslate"><span class="pre">str</span></code>,
 ‘times_dihedral_set’: <code class="docutils literal notranslate"><span class="pre">int</span></code>,
 ‘scan_path’: &lt;path to scan output file&gt;,
@@ -231,10 +231,9 @@ If the species is a transition state (TS), its <code class="docutils literal not
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The species label.</p></li>
-<li><p><strong>is_ts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether or not the species represents a transition state.</p></li>
+<li><p><strong>is_ts</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the species represents a transition state.</p></li>
 <li><p><strong>rmg_species</strong> (<em>Species</em><em>, </em><em>optional</em>) – An RMG Species object to be converted to an ARCSpecies object.</p></li>
-<li><p><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – An <code class="docutils literal notranslate"><span class="pre">RMG</span> <span class="pre">Molecule</span></code> object used for BAC determination.
-Atom order corresponds to the order in .initial_xyz</p></li>
+<li><p><strong>mol</strong> (<em>Molecule</em><em>, </em><em>optional</em>) – An <code class="docutils literal notranslate"><span class="pre">RMG</span> <span class="pre">Molecule</span></code>. Atom order corresponds to the order in .initial_xyz</p></li>
 <li><p><strong>xyz</strong> (<em>list</em><em>, </em><em>str</em><em>, </em><em>dict</em><em>, </em><em>optional</em>) – Entries are either string-format coordinates, file paths, or ARC’s dict format.
 (If there’s only one entry, it could be given directly, not in a list).
 The file paths could direct to either a .xyz file, ARC conformers
@@ -244,7 +243,7 @@ adjlist/smiles/xyz (If unspecified, assumed to be either a singlet or a doublet)
 <li><p><strong>charge</strong> (<em>int</em><em>, </em><em>optional</em>) – The species’ net charge. Assumed to be 0 if unspecified.</p></li>
 <li><p><strong>smiles</strong> (<em>str</em><em>, </em><em>optional</em>) – A <a class="reference external" href="https://en.wikipedia.org/wiki/Simplified_molecular-input_line-entry_system">SMILES</a>
 representation for the species 2D graph.</p></li>
-<li><p><strong>adjlist</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="http://reactionmechanismgenerator.github.io/RMG-Py/reference/molecule/adjlist.html">RMG adjacency list</a>
+<li><p><strong>adjlist</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="https://reactionmechanismgenerator.github.io/RMG-Py/reference/molecule/adjlist.html">RMG adjacency list</a>
 representation for the species 2D graph.</p></li>
 <li><p><strong>inchi</strong> (<em>str</em><em>, </em><em>optional</em>) – An <a class="reference external" href="https://www.inchi-trust.org/">InChI</a> representation for the species 2D graph.</p></li>
 <li><p><strong>bond_corrections</strong> (<em>dict</em><em>, </em><em>optional</em>) – The bond additivity corrections (BAC) to be used. Determined from the
@@ -296,7 +295,7 @@ Specifying ‘_diagonal’ will increment all the respective dihedrals together,
 resulting in a 1D scan instead of an ND scan.
 Values are nested lists. Each value is a list where the entries are either pivot lists
 (e.g., [1, 5]) or lists of pivot lists (e.g., [[1, 5], [6, 8]]), or a mix
-(e.g., [[4, 8], [[6, 9], [3, 4]]). The requested directed scan type will be executed
+(e.g., [[4, 8], [[6, 9], [3, 4]]]). The requested directed scan type will be executed
 separately for each list entry in the value. A list entry that contains only two pivots
 will result in a 1D scan, while a list entry with N pivots will consider all of them,
 and will result in an ND scan if ‘_diagonal’ is not specified.
@@ -304,7 +303,7 @@ ARC will generate geometries using the ``rotor_scan_resolution`</cite> argument 
 Note: An ‘all’ string entry is also allowed in the value list, triggering a directed
 internal rotation scan for all torsions in the molecule. If ‘all’ is specified within
 a second level list, then all the dihedrals will be considered together.
-Currently ARC does not automatically identify torsions to be treated as ND, and this
+Currently, ARC does not automatically identify torsions to be treated as ND, and this
 attribute must be specified by the user.
 An additional supported key is ‘ess’, in which case ARC will allow the ESS to take care
 of spawning the ND continuous constrained optimizations (not yet implemented).</p></li>
@@ -1047,7 +1046,7 @@ different object instances.</p>
 <code class="sig-name descname">check_xyz_isomorphism</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">mol</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>rmgpy.molecule.molecule.Molecule<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">xyz</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>dict<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">allow_nonisomorphic_2d</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">False</span></em>, <em class="sig-param"><span class="n">verbose</span><span class="p">:</span> <span class="n">Optional<span class="p">[</span>bool<span class="p">]</span></span> <span class="o">=</span> <span class="default_value">True</span></em><span class="sig-paren">)</span> &#x2192; bool<a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.check_xyz_isomorphism"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.check_xyz_isomorphism" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check whether the perception of self.final_xyz or <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is isomorphic with self.mol.
 If it is not isomorphic, compliant coordinates will be checked (equivalent to checking isomorphism without
-bond order information, only does not necessitates a molecule object, directly checks bond lengths).</p>
+bond order information, only does not necessitate a molecule object, directly checks bond lengths).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -1224,7 +1223,7 @@ relevant rotors info for the species, including directed and ND rotors.</p>
 <dt id="arc.species.species.ARCSpecies.mol_from_xyz">
 <code class="sig-name descname">mol_from_xyz</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">xyz</span><span class="p">:</span> <span class="n">dict</span> <span class="o">=</span> <span class="default_value">None</span></em>, <em class="sig-param"><span class="n">get_cheap</span><span class="p">:</span> <span class="n">bool</span> <span class="o">=</span> <span class="default_value">False</span></em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.mol_from_xyz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.mol_from_xyz" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make sure atom order in self.mol corresponds to xyz.
-Important for TS discovery and for identifying rotor indices.
+Important for TS searches and for identifying rotor indices.
 This works by generating a molecule from xyz and using the
 2D structure to confirm that the perceived molecule is correct.
 If <code class="docutils literal notranslate"><span class="pre">xyz</span></code> is not given, the species xyz attribute will be used.</p>
