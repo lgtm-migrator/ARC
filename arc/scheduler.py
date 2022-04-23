@@ -2382,7 +2382,7 @@ class Scheduler(object):
                 if tsg.conformer_index == self.species_dict[label].chosen_ts:
                     tsg.imaginary_freqs = neg_freqs
                     break
-            if tsg is not None and not tsg.check_imaginary_frequencies():
+            if tsg is not None and not check_imaginary_frequencies(tsg.imaginary_freqs):
                 # Imaginary frequencies are problematic, try choosing a different TSGuess, and optimize it.
                 add_text = f' major imaginary frequency between {LOWEST_MAJOR_TS_FREQ} and {HIGHEST_MAJOR_TS_FREQ}.' \
                     if len(neg_freqs) == 1 and (neg_freqs[0] < LOWEST_MAJOR_TS_FREQ
