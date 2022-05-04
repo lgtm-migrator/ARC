@@ -453,17 +453,7 @@ class TestHeuristicsAdapter(unittest.TestCase):
         self.assertEqual(rxn7.ts_species.charge, 0)
         self.assertEqual(rxn7.ts_species.multiplicity, 2)
         self.assertEqual(len(rxn7.ts_species.ts_guesses), 1)  # No dihedral scans for H attacking at 180 degrees.
-        self.assertTrue(almost_equal_coords(rxn7.ts_species.ts_guesses[0].initial_xyz,
-                                            {'symbols': ('C', 'C', 'O', 'H', 'H', 'H', 'H', 'H'),
-                                             'isotopes': (12, 12, 16, 1, 1, 1, 1, 1),
-                                             'coords': ((-5.668810146262865e-08, -0.48719172182900145, -1.1721907663384206),
-                                                        (-5.668810146262865e-08, -0.48719172182900145, 0.16119415878387744),
-                                                        (-5.668810146262865e-08, 0.6381065684637319, 0.933134016171312),
-                                                        (-3.6906864264223316e-08, -1.4258733886217165, -1.7175793139772886),
-                                                        (-9.526192583832159e-08, 0.42803267481449664, -1.7526542401902248),
-                                                        (0.0, -1.3854217138117004, 0.7672141857856329),
-                                                        (8.461119254489423e-07, 1.5722313670073633, 0.23298892236129287),
-                                                        (1.5355909530954166e-06, 2.2856334921752297, -0.30172014288208393))}))
+        self.assertEqual(rxn7.ts_species.ts_guesses[0].initial_xyz['symbols'], ('C', 'C', 'O', 'H', 'H', 'H', 'H', 'H'))
 
         # NCO + NH2 <=> HNCO + NH
         nco_xyz = """N       1.36620399    0.00000000    0.00000000
