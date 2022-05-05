@@ -6,9 +6,13 @@ Todo:
       summing up the rates appropriately
     - test H2O2 as the RH abstractor, see that both TS chiralities are attained
     - Add tests
-    - add database and train from database, see https://github.com/ReactionMechanismGenerator/ARC/commit/081df5bf8e53987e9ff48eef481c17997f9cff2a, https://github.com/ReactionMechanismGenerator/ARC/commit/9a569ee80331494dcca26490fd66accc69697380, https://github.com/ReactionMechanismGenerator/ARC/commit/10d255467334f7821547e7dc5d98bb50bbfab7c0
+    - add database and train from database, see
+      https://github.com/ReactionMechanismGenerator/ARC/commit/081df5bf8e53987e9ff48eef481c17997f9cff2a,
+      https://github.com/ReactionMechanismGenerator/ARC/commit/9a569ee80331494dcca26490fd66accc69697380,
+      https://github.com/ReactionMechanismGenerator/ARC/commit/10d255467334f7821547e7dc5d98bb50bbfab7c0
     - use FF or TorchANI to only retain guesses with reasonable energies
-    - Think: two H sites on a CH2 element, one being abstracted. On which one in the reactant do we put the abstractor? Can/should we try both?
+    - Think: two H sites on a CH2 element, one being abstracted. On which one in the reactant do we put the abstractor?
+      Can/should we try both?
 """
 
 import datetime
@@ -38,7 +42,6 @@ if TYPE_CHECKING:
     from rmgpy.data.kinetics.family import KineticsFamily
     from arc.level import Level
     from arc.reaction import ARCReaction
-    from arc.species import ARCSpecies
 
 
 DIHEDRAL_INCREMENT = 30
@@ -122,7 +125,7 @@ class HeuristicsAdapter(JobAdapter):
                  rotor_index: Optional[int] = None,
                  server: Optional[str] = None,
                  server_nodes: Optional[list] = None,
-                 species: Optional[List['ARCSpecies']] = None,
+                 species: Optional[List[ARCSpecies]] = None,
                  testing: bool = False,
                  times_rerun: int = 0,
                  torsions: Optional[List[List[int]]] = None,
@@ -307,7 +310,7 @@ class HeuristicsAdapter(JobAdapter):
                 #     atom_symbol_key=tuple(sorted([atom_a.element.symbol, atom_b.element.symbol])),
                 # )
                 # r1_stretch_, r2_stretch_, a2_ = 1.2, 1.2, 170  # general guesses
-                tsg = TSGuess(method=f'Heuristics')
+                tsg = TSGuess(method='Heuristics')
                 tsg.tic()
                 xyzs = h_abstraction(arc_reaction=rxn,
                                      rmg_reactions=reaction_list,
@@ -324,7 +327,7 @@ class HeuristicsAdapter(JobAdapter):
                         unique = False
                         break
                 if unique:
-                    ts_guess = TSGuess(method=f'Heuristics',
+                    ts_guess = TSGuess(method='Heuristics',
                                        index=len(rxn.ts_species.ts_guesses),
                                        method_index=method_index,
                                        t0=tsg.t0,
@@ -785,9 +788,11 @@ def react(reactants: List[Union[Molecule, Species]],
     # Assure Molecule object instances:
     reactant_mols, product_mols = list(), list()
     for reactant in reactants:
-        reactant_mols.append(reactant.copy(deep=True) if isinstance(reactant, Molecule) else reactant.molecule[0].copy(deep=True))
+        reactant_mols.append(reactant.copy(deep=True) if isinstance(reactant, Molecule)
+                             else reactant.molecule[0].copy(deep=True))
     for product in products:
-        product_mols.append(product.copy(deep=True) if isinstance(product, Molecule) else product.molecule[0].copy(deep=True))
+        product_mols.append(product.copy(deep=True) if isinstance(product, Molecule)
+                            else product.molecule[0].copy(deep=True))
     reactants_copy, products_copy = [r.copy(deep=True) for r in reactant_mols], [p.copy(deep=True) for p in product_mols]
 
     try:
