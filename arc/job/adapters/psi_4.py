@@ -83,8 +83,6 @@ default_job_settings, global_ess_settings, input_filenames, output_filenames, ro
 # trsh: set full_hess_every 1
 
 
-
-
 # job_type_1: '' for sp, irc, or composite methods, 'opt=calcfc', 'opt=(calcfc,ts,noeigen)',
 # job_type_2: '' or 'freq iop(7/33=1)' (cannot be combined with CBS-QB3)
 #             'scf=(tight,direct) int=finegrid irc=(rcfc,forward,maxpoints=100,stepsize=10) geom=check' for irc f
