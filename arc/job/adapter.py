@@ -1002,7 +1002,6 @@ class JobAdapter(ABC):
         if self.fine:
             info += ' (fine opt)'
         if self.job_type == 'scan':
-            # pivots = [torsion[1:3] for torsion in self.torsions] if len(self.scan) > 1 else self.scan[0][1:3]
             constraints = list()
             for constraint_tuple in self.constraints:
                 constraints.append(f'{constraint_type_dict[len(constraint_tuple[0])]} '
