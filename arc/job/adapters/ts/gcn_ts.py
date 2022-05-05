@@ -32,7 +32,6 @@ except (ImportError, ModuleNotFoundError):
 if TYPE_CHECKING:
     from arc.level import Level
     from arc.reaction import ARCReaction
-    from arc.species import ARCSpecies
 
 
 TS_GCN_PYTHON = settings['TS_GCN_PYTHON']
@@ -117,7 +116,7 @@ class GCNAdapter(JobAdapter):
                  rotor_index: Optional[int] = None,
                  server: Optional[str] = None,
                  server_nodes: Optional[list] = None,
-                 species: Optional[List['ARCSpecies']] = None,
+                 species: Optional[List[ARCSpecies]] = None,
                  testing: bool = False,
                  times_rerun: int = 0,
                  torsions: Optional[List[List[int]]] = None,
