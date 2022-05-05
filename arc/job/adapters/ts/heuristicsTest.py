@@ -27,7 +27,7 @@ from arc.job.adapters.ts.heuristics import (HeuristicsAdapter,
                                             )
 from arc.reaction import ARCReaction
 from arc.rmgdb import load_families_only, make_rmg_database_object
-from arc.species.converter import str_to_xyz, xyz_to_str, zmat_to_xyz
+from arc.species.converter import str_to_xyz, zmat_to_xyz
 from arc.species.species import ARCSpecies
 from arc.species.zmat import _compare_zmats
 
