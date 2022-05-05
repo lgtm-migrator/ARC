@@ -1088,20 +1088,21 @@ class TestHeuristicsAdapter(unittest.TestCase):
 
     def test_combine_coordinates_with_redundant_atoms(self):
         """Test the combine_coordinates_with_redundant_atoms() function."""
-        ts_xyz = combine_coordinates_with_redundant_atoms(xyz_1=self.ccooh_xyz,
-                                                          xyz_2=self.c2h6_xyz,
-                                                          mol_1=ARCSpecies(label='CCOOH', smiles='CCOO', xyz=self.ccooh_xyz).mol,
-                                                          mol_2=ARCSpecies(label='C2H6', smiles='CC', xyz=self.c2h6_xyz).mol,
-                                                          reactant_2=ARCSpecies(label='C2H5', smiles='C[CH2]', xyz=self.c2h5_xyz),
-                                                          h1=9,
-                                                          h2=5,
-                                                          c=2,
-                                                          d=0,
-                                                          a2=180,
-                                                          d2=None,
-                                                          d3=0,
-                                                          reactants_reversed=False,
-                                                          )
+        ts_xyz = combine_coordinates_with_redundant_atoms(
+            xyz_1=self.ccooh_xyz,
+            xyz_2=self.c2h6_xyz,
+            mol_1=ARCSpecies(label='CCOOH', smiles='CCOO', xyz=self.ccooh_xyz).mol,
+            mol_2=ARCSpecies(label='C2H6', smiles='CC', xyz=self.c2h6_xyz).mol,
+            reactant_2=ARCSpecies(label='C2H5', smiles='C[CH2]', xyz=self.c2h5_xyz),
+            h1=9,
+            h2=5,
+            c=2,
+            d=0,
+            a2=180,
+            d2=None,
+            d3=0,
+            reactants_reversed=False,
+        )
         expected_xyz = {'symbols': ('C', 'C', 'O', 'O', 'H', 'H', 'H', 'H', 'H', 'H', 'C', 'C', 'H', 'H', 'H', 'H', 'H'),
                         'isotopes': (12, 12, 16, 16, 1, 1, 1, 1, 1, 1, 12, 12, 1, 1, 1, 1, 1),
                         'coords': ((0.8187041630923411, -1.305974629356673, -2.1958802480028368),
