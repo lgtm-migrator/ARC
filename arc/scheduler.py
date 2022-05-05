@@ -1480,7 +1480,6 @@ class Scheduler(object):
         if divmod(360, increment)[1]:
             raise SchedulerError(f'The directed scan got an illegal scan resolution of {increment}')
         scans = self.species_dict[label].rotors_dict[rotor_index]['scan']
-        pivots = self.species_dict[label].rotors_dict[rotor_index]['pivots']
         directed_scan_type = self.species_dict[label].rotors_dict[rotor_index]['directed_scan_type']
         xyz = xyz or self.species_dict[label].get_xyz(generate=True)
 
@@ -2549,7 +2548,7 @@ class Scheduler(object):
             raise SchedulerError(f'Could not match rotor {job.rotor_index} of species {label} '
                                  f'with pivots {self.species_dict[label].rotors_dict[job.rotor_index]["pivots"]} '
                                  f'to any of the existing rotors in the species.\n'
-                                 f'The rotors dict of {label} is:\n{pprint.pprint(self.species_dict[label].rotors_dict)}')
+                                 f'The rotors dict of {label} is:\n{pprint.pformat(self.species_dict[label].rotors_dict)}')
 
         invalidation_reason, message = '', ''
         if self.species_dict[label].rotors_dict[job.rotor_index]['dimensions'] == 1:
