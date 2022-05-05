@@ -114,8 +114,8 @@ def check_argument_consistency(obj):
         raise ValueError(f'Got an illegal rotor scan resolution of {obj.scan_res}.')
     if obj.job_type == 'scan' and ((not obj.species[0].rotors_dict or obj.rotor_index is None) and obj.torsions is None):
         # If this is a scan job type and species.rotors_dict is empty (e.g., via pipe), then torsions must be set up
-        raise ValueError(f'Either torsions or a species rotors_dict along with a rotor_index argument '
-                         f'must be specified for an ESS scan job.')
+        raise ValueError('Either torsions or a species rotors_dict along with a rotor_index argument '
+                         'must be specified for an ESS scan job.')
 
 
 def update_input_dict_with_args(args: dict,
