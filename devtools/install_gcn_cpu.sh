@@ -11,7 +11,6 @@ git checkout main
 git pull origin main
 
 # Add to PYTHONPATH
-echo $PYTHONPATH
 echo "Adding GCN to PYTHONPATH"
 export PYTHONPATH=$PYTHONPATH:$(pwd)
 echo 'export PYTHONPATH=$PYTHONPATH:'"$(pwd)" >> ~/.bashrc
@@ -19,10 +18,10 @@ echo $PYTHONPATH
 
 # create the environment
 echo "Creating the GCN-cpu environment..."
-cd devtools || exit
 source ~/.bashrc
-bash create_env_cpu.sh
+bash devtools/create_env_cpu.sh
 
 # Restore the original directory
+cd ../ARC || exit
 echo "Done installing GCN-cpu."
 popd || exit

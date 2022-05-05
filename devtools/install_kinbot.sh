@@ -20,5 +20,6 @@ echo 'export PYTHONPATH=$PYTHONPATH:'"$(pwd)" >> ~/.bashrc
 echo $PYTHONPATH
 
 # Restore the original directory
+cd ../ARC || exit
 echo "Done installing Kinbot."
 popd || exit

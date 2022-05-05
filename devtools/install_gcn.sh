@@ -22,5 +22,6 @@ source ~/.bashrc
 make conda_env
 
 # Restore the original directory
+cd ../ARC || exit
 echo "Done installing GCN."
 popd || exit

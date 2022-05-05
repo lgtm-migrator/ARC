@@ -25,5 +25,6 @@ conda install -c anaconda yaml -y
 source ~/.bashrc
 
 # Restore the original directory
+cd ../ARC || exit
 echo "Done installing AutoTST."
 popd || exit
