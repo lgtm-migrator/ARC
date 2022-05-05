@@ -56,7 +56,7 @@ ${job_type_2}
 %%pal # job parallelization settings
 nprocs ${cpus}
 end
-%%scf # recommended SCF settings 
+%%scf # recommended SCF settings
 NRMaxIt 400
 NRStart 0.00005
 MaxIter 500
@@ -314,7 +314,7 @@ class OrcaAdapter(JobAdapter):
                 self.add_to_args(val="""
 %geom
 Calc_Hess true # calculation of the exact Hessian before the first opt step
-end               
+end
 """,
                                  key1='block')
             if 'dlpno' in self.level.method:
@@ -329,8 +329,8 @@ end
                 or orca_default_options_dict['freq']['keyword'].get('use_num_freq', False)
             if use_num_freq:
                 self.add_to_args(val='NumFreq', key1='keyword')
-                logger.info(f'Using numerical frequencies calculation in Orca. Note: This job might therefore be '
-                            f'time-consuming.')
+                logger.info('Using numerical frequencies calculation in Orca. Note: This job might therefore be '
+                            'time-consuming.')
 
         elif self.job_type == 'sp':
             input_dict['job_type_1'] = 'sp'
