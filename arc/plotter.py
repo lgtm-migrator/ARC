@@ -254,9 +254,10 @@ def plot_ts_guesses_by_e_and_method(species: ARCSpecies,
         path (str): The path for saving the figure.
     """
     if not isinstance(species, ARCSpecies):
-        raise ValueError(f'The species argument must be of an ARC species type, got {species} which is a {type(species)}')
+        raise ValueError(f'The species argument must be of an ARC species type, '
+                         f'got {species} which is a {type(species)}')
     if not species.is_ts:
-        raise ValueError(f'The species must be a TS (got species.is_ts = False)')
+        raise ValueError('The species must be a TS (got species.is_ts = False)')
     if os.path.isdir(path):
         path = os.path.join(path, 'ts_guesses.png')
 
