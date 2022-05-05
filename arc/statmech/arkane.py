@@ -128,7 +128,7 @@ class ArkaneAdapter(StatmechAdapter):
             # with species used for a rate coefficient calculation.
             arkane.input.species_dict = dict()
             if self.sp_level.to_arkane_level_of_theory(variant='AEC', raise_error=False, warn=False) is None:
-                raise ValueError(f'Cannot compute thermo without a valid Arkane Level for AEC.')
+                raise ValueError('Cannot compute thermo without a valid Arkane Level for AEC.')
 
         if self.species is None:
             raise InputError('Cannot not compute thermo without a species object.')
