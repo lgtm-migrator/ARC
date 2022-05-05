@@ -26,9 +26,6 @@ from arc.species.species import ARCSpecies, TSGuess, colliding_atoms
 HAS_GCN = True
 try:
     from inference import inference
-except ModuleNotFoundError:
-    # arc_env is missing GCN packages such as torch_sparse
-    pass
 except (ImportError, ModuleNotFoundError):
     HAS_GCN = False
 
