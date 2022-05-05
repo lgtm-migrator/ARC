@@ -66,7 +66,7 @@ class TestKinBotAdapter(unittest.TestCase):
         self.assertEqual(rxn1.ts_species.ts_guesses[1].method_index, 1)
         self.assertEqual(rxn1.ts_species.ts_guesses[0].method_direction, 'F')
         self.assertEqual(rxn1.ts_species.ts_guesses[1].method_direction, 'R')
-        self.assertTrue(rxn1.ts_species.ts_guesses[0].execution_time.seconds < 300)  # 0:00:00.003082
+        self.assertLess(rxn1.ts_species.ts_guesses[0].execution_time.seconds, 300)  # 0:00:00.003082
         self.assertTrue(rxn1.ts_species.ts_guesses[0].success)
         self.assertTrue(rxn1.ts_species.ts_guesses[1].success)
 
