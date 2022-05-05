@@ -12,7 +12,7 @@ from mako.template import Template
 
 from arc.common import get_logger, torsions_to_scans
 from arc.imports import incore_commands, settings
-from arc.job.adapter import JobAdapter, constraint_type_dict
+from arc.job.adapter import JobAdapter
 from arc.job.adapters.common import (check_argument_consistency,
                                      is_restricted,
                                      set_job_args,
