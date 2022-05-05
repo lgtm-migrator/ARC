@@ -67,7 +67,7 @@ class TestOrcaAdapter(unittest.TestCase):
 %pal # job parallelization settings
 nprocs 48
 end
-%scf # recommended SCF settings 
+%scf # recommended SCF settings
 NRMaxIt 400
 NRStart 0.00005
 MaxIter 500
