@@ -28,6 +28,7 @@ try:
     from inference import inference
 except (ImportError, ModuleNotFoundError):
     HAS_GCN = False
+HAS_GCN = True  # debug
 
 if TYPE_CHECKING:
     from arc.level import Level
