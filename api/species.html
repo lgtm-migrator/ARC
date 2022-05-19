@@ -194,41 +194,31 @@
 If the species is a transition state (TS), its <code class="docutils literal notranslate"><span class="pre">ts_guesses</span></code> attribute will have one or more <code class="docutils literal notranslate"><span class="pre">TSGuess</span></code> objects.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="arc.species.species.ARCSpecies">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">arc.species.species.</span></span><span class="sig-name descname"><span class="pre">ARCSpecies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bdes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_corrections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_thermo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consider_all_diastereomers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_rotors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e0_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_symmetry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'MMFF94s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inchi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_ts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">rmgpy.molecule.molecule.Molecule</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_radicals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_isomers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preserve_param_in_scan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmg_species</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">rmgpy.species.Species</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rxn_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rxn_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts_methods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yml_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">arc.species.species.</span></span><span class="sig-name descname"><span class="pre">ARCSpecies</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">adjlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bdes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bond_corrections</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">checkfile</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_thermo</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">consider_all_diastereomers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">directed_rotors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e0_only</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_symmetry</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fragments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'MMFF94s'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inchi</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_ts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">rmgpy.molecule.molecule.Molecule</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_radicals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">occ</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">optical_isomers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">preserve_param_in_scan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmg_species</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">rmgpy.species.Species</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rxn_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rxn_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smiles</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts_number</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yml_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.ARCSpecies" title="Permalink to this definition">¶</a></dt>
 <dd><p>A class for representing stationary points.</p>
-<dl>
-<dt>Structures (rotors_dict is initialized in conformers.find_internal_rotors; pivots/scan/top values are 1-indexed)::</dt><dd><dl>
-<dt>rotors_dict: {0: {‘pivots’: <code class="docutils literal notranslate"><span class="pre">List[int]</span></code>,  # 1-indexed</dt><dd><blockquote>
-<div><blockquote>
-<div><blockquote>
-<div><p>‘top’: <code class="docutils literal notranslate"><span class="pre">List[int]</span></code>,  # 1-indexed
-‘scan’: <code class="docutils literal notranslate"><span class="pre">List[int]</span></code>,  # 1-indexed
-‘torsion’: <code class="docutils literal notranslate"><span class="pre">List[int]</span></code>,  # 0-indexed
-‘number_of_running_jobs’: <code class="docutils literal notranslate"><span class="pre">int</span></code>,
-‘success’: Optional[<code class="docutils literal notranslate"><span class="pre">bool</span></code>],  # <code class="docutils literal notranslate"><span class="pre">None</span></code> by default
-‘invalidation_reason’: <code class="docutils literal notranslate"><span class="pre">str</span></code>,
-‘times_dihedral_set’: <code class="docutils literal notranslate"><span class="pre">int</span></code>,
-‘scan_path’: &lt;path to scan output file&gt;,
-‘max_e’: <code class="docutils literal notranslate"><span class="pre">float</span></code>,  # relative to the minimum energy, in kJ/mol,
-‘symmetry’: <code class="docutils literal notranslate"><span class="pre">int</span></code>,
-‘dimensions’: <code class="docutils literal notranslate"><span class="pre">int</span></code>,
-‘original_dihedrals’: <code class="docutils literal notranslate"><span class="pre">list</span></code>,
-‘cont_indices’: <code class="docutils literal notranslate"><span class="pre">list</span></code>,
-‘directed_scan_type’: <code class="docutils literal notranslate"><span class="pre">str</span></code>,
-‘directed_scan’: <code class="docutils literal notranslate"><span class="pre">dict</span></code>,  # keys: tuples of dihedrals as strings,</p>
-<blockquote>
-<div><p># values: dicts of energy, xyz, is_isomorphic, trsh</p>
-</div></blockquote>
-</div></blockquote>
-<p>}</p>
-</div></blockquote>
-<p>1: {}, …</p>
-</div></blockquote>
-<p>}</p>
-</dd>
-</dl>
-</dd>
-</dl>
+<p>Structures (rotors_dict is initialized in conformers.find_internal_rotors; pivots/scan/top values are 1-indexed):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>rotors_dict: {0: {&#39;pivots&#39;: ``List[int]``,  # 1-indexed
+                  &#39;top&#39;: ``List[int]``,  # 1-indexed
+                  &#39;scan&#39;: ``List[int]``,  # 1-indexed
+                  &#39;torsion&#39;: ``List[int]``,  # 0-indexed
+                  &#39;number_of_running_jobs&#39;: ``int``,
+                  &#39;success&#39;: Optional[``bool``],  # ``None`` by default
+                  &#39;invalidation_reason&#39;: ``str``,
+                  &#39;times_dihedral_set&#39;: ``int``,
+                  &#39;scan_path&#39;: &lt;path to scan output file&gt;,
+                  &#39;max_e&#39;: ``float``,  # relative to the minimum energy, in kJ/mol,
+                  &#39;symmetry&#39;: ``int``,
+                  &#39;dimensions&#39;: ``int``,
+                  &#39;original_dihedrals&#39;: ``list``,
+                  &#39;cont_indices&#39;: ``list``,
+                  &#39;directed_scan_type&#39;: ``str``,
+                  &#39;directed_scan&#39;: ``dict``,  # keys: tuples of dihedrals as strings,
+                                              # values: dicts of energy, xyz, is_isomorphic, trsh
+                 }
+              1: {}, ...
+             }
+</pre></div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -254,9 +244,6 @@ structure if not directly given.</p></li>
 <li><p><strong>e0_only</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to only run statmech (w/o thermo) to compute E0.</p></li>
 <li><p><strong>species_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</p></li>
 <li><p><strong>yml_path</strong> (<em>str</em><em>, </em><em>optional</em>) – Path to an Arkane YAML file representing a species (for loading the object).</p></li>
-<li><p><strong>ts_methods</strong> (<em>list</em><em>, </em><em>optional</em>) – Methods to try for generating TS guesses. If Species is a TS and <cite>ts_methods</cite> is an
-empty list, then xyz (user guess) must be given. If <cite>ts_methods</cite> is None, it will
-be set to the default methods.</p></li>
 <li><p><strong>ts_number</strong> (<em>int</em><em>, </em><em>optional</em>) – An auto-generated number associating the TS ARCSpecies object with the corresponding
 <a class="reference internal" href="reaction.html#reaction"><span class="std std-ref">ARCReaction</span></a> object.</p></li>
 <li><p><strong>rxn_label</strong> (<em>str</em><em>, </em><em>optional</em>) – The reaction string (relevant for TSs).</p></li>
@@ -685,19 +672,6 @@ if not directly given.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="arc.species.species.ARCSpecies.ts_methods">
-<span class="sig-name descname"><span class="pre">ts_methods</span></span><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_methods" title="Permalink to this definition">¶</a></dt>
-<dd><p>Methods to try for generating TS guesses. If Species is a TS and <cite>ts_methods</cite> is an empty
-list, then xyz (user guess) must be given. If <cite>ts_methods</cite> is None, it will be set to the
-default methods.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
 <dt class="sig sig-object py" id="arc.species.species.ARCSpecies.ts_guesses">
 <span class="sig-name descname"><span class="pre">ts_guesses</span></span><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_guesses" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of TSGuess objects for each of the specified methods.</p>
@@ -742,12 +716,45 @@ default methods.</p>
 </dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="arc.species.species.ARCSpecies.chosen_ts_list">
+<span class="sig-name descname"><span class="pre">chosen_ts_list</span></span><a class="headerlink" href="#arc.species.species.ARCSpecies.chosen_ts_list" title="Permalink to this definition">¶</a></dt>
+<dd><p>The TSGuess index corresponding to the TS guesses that were tried out.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="arc.species.species.ARCSpecies.chosen_ts_method">
 <span class="sig-name descname"><span class="pre">chosen_ts_method</span></span><a class="headerlink" href="#arc.species.species.ARCSpecies.chosen_ts_method" title="Permalink to this definition">¶</a></dt>
 <dd><p>The TS method that was actually used for optimization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="arc.species.species.ARCSpecies.ts_checks">
+<span class="sig-name descname"><span class="pre">ts_checks</span></span><a class="headerlink" href="#arc.species.species.ARCSpecies.ts_checks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks that a TS species went through.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>Dict[str, bool]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="arc.species.species.ARCSpecies.rxn_zone_atom_indices">
+<span class="sig-name descname"><span class="pre">rxn_zone_atom_indices</span></span><a class="headerlink" href="#arc.species.species.ARCSpecies.rxn_zone_atom_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>0-indexed atom indices of the active reaction zone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[int]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1103,7 +1110,6 @@ bond order information, only does not necessitate a molecule object, directly ch
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>smiles</strong> (<em>str</em>) – The SMILES descriptor .</p></li>
 <li><p><strong>adjlist</strong> (<em>str</em>) – The adjacency list descriptor.</p></li>
-<li><p><strong>adjlist</strong> – The adjacency list descriptor.</p></li>
 <li><p><strong>mol</strong> (<em>Molecule</em>) – The respective RMG Molecule object.</p></li>
 </ul>
 </dd>
@@ -1216,6 +1222,20 @@ relevant rotors info for the species, including directed and ND rotors.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="arc.species.species.ARCSpecies.is_monoatomic">
+<span class="sig-name descname"><span class="pre">is_monoatomic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.is_monoatomic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.is_monoatomic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine whether the species is monoatomic.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Whether the species is monoatomic.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Optional[bool]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="arc.species.species.ARCSpecies.make_ts_report">
 <span class="sig-name descname"><span class="pre">make_ts_report</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.make_ts_report"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.make_ts_report" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function to write content into the .ts_report attribute</p>
@@ -1249,6 +1269,12 @@ If <code class="docutils literal notranslate"><span class="pre">xyz</span></code
 <dt class="sig sig-object py" id="arc.species.species.ARCSpecies.number_of_heavy_atoms">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">number_of_heavy_atoms</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#arc.species.species.ARCSpecies.number_of_heavy_atoms" title="Permalink to this definition">¶</a></dt>
 <dd><p>The number of heavy (non hydrogen) atoms in the species</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arc.species.species.ARCSpecies.populate_ts_checks">
+<span class="sig-name descname"><span class="pre">populate_ts_checks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.populate_ts_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.populate_ts_checks" title="Permalink to this definition">¶</a></dt>
+<dd><p>Populate (or restart) the .ts_checks attribute with default (<code class="docutils literal notranslate"><span class="pre">None</span></code>) values.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1299,16 +1325,15 @@ and the indices are 1-indexed.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="arc.species.species.ARCSpecies.set_dihedral">
 <span class="sig-name descname"><span class="pre">set_dihedral</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_increment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">deg_abs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chk_rotor_list</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#ARCSpecies.set_dihedral"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.ARCSpecies.set_dihedral" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generated an RDKit molecule object from either self.final_xyz or <code class="docutils literal notranslate"><span class="pre">xyz</span></code>.
-Increments the current dihedral angle between atoms i, j, k, l in the <cite>scan</cite> list by ‘deg_increment` in degrees.
-Alternatively, specifying deg_abs will rotate to this desired dihedral.
-All bonded atoms are moved accordingly. The result is saved in self.initial_xyz.</p>
+<dd><p>Set the dihedral angle value of the torsion <code class="docutils literal notranslate"><span class="pre">scan</span></code>.
+Either increment by a given value or set to an absolute value.
+All bonded atoms are rotated as groups. The result is saved to <code class="docutils literal notranslate"><span class="pre">self.initial_xyz</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>scan</strong> (<em>list</em>) – The atom indices (1-indexed) representing the dihedral.</p></li>
-<li><p><strong>deg_increment</strong> (<em>float</em><em>, </em><em>optional</em>) – The dihedral angle increment.</p></li>
-<li><p><strong>deg_abs</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute desired dihedral angle.</p></li>
+<li><p><strong>deg_increment</strong> (<em>float</em><em>, </em><em>optional</em>) – The dihedral angle increment in degrees.</p></li>
+<li><p><strong>deg_abs</strong> (<em>float</em><em>, </em><em>optional</em>) – The absolute desired dihedral angle in degrees.</p></li>
 <li><p><strong>count</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to increment the rotor’s times_dihedral_set parameter. <cite>True</cite> to increment.</p></li>
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>optional</em>) – An alternative xyz to use instead of self.final_xyz.</p></li>
 <li><p><strong>chk_rotor_list</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to check if the changing dihedral is in the rotor list.</p></li>
@@ -1353,32 +1378,27 @@ The mol_list attribute is used for identifying rotors and generating conformers.
 
 <dl class="py class">
 <dt class="sig sig-object py" id="arc.species.species.TSGuess">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">arc.species.species.</span></span><span class="sig-name descname"><span class="pre">TSGuess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reactants_xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">products_xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">family</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmg_reaction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">rmgpy.reaction.Reaction</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arc_reaction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">project_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess" title="Permalink to this definition">¶</a></dt>
-<dd><p>TSGuess class</p>
-<p>The user can define xyz directly, and the default <cite>method</cite> will be ‘User guess’.
-Alternatively, either ARC or the user can provide reactant/s and product/s geometries with a specified <cite>method</cite>.
-<cite>method</cite> could be one of the following:
-- QST2 (not implemented)
-- DEGSM (not implemented)
-- NEB (not implemented)
-- Kinbot: requires the RMG family, only works for H,C,O,S (not implemented)
-- AutoTST
-- GCN</p>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">arc.species.species.</span></span><span class="sig-name descname"><span class="pre">TSGuess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method_index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method_direction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">constraints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">execution_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">datetime.timedelta</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">success</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">family</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rmg_reaction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">rmgpy.reaction.Reaction</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">arc_reaction</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ts_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">energy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class for representing TS a guess.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
+<li><p><strong>index</strong> (<em>int</em><em>, </em><em>optional</em>) – A running index of all TSGuess objects belonging to an ARCSpecies object.</p></li>
 <li><p><strong>method</strong> (<em>str</em><em>, </em><em>optional</em>) – The method/source used for the xyz guess.</p></li>
-<li><p><strong>reactants_xyz</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of tuples, each containing:
-(reactant label, reactant geometry in string format).</p></li>
-<li><p><strong>products_xyz</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of tuples, each containing:
-(product label, product geometry in string format).</p></li>
+<li><p><strong>method_index</strong> (<em>int</em><em>, </em><em>optional</em>) – A sub-index, used for cases where a single method generates several guesses.
+Counts separately for each direction, ‘F’ and ‘R’.</p></li>
+<li><p><strong>method_direction</strong> (<em>str</em><em>, </em><em>optional</em>) – The reaction direction used for generating the guess (‘F’ or ‘R’).</p></li>
+<li><p><strong>constraints</strong> (<em>dict</em><em>, </em><em>optional</em>) – Any constraints to be used when first optimizing this guess
+(i.e., keeping bond lengths of the reactive site constant).</p></li>
 <li><p><strong>family</strong> (<em>str</em><em>, </em><em>optional</em>) – The RMG family that corresponds to the reaction, if applicable.</p></li>
+<li><p><strong>success</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether the TS guess method succeeded in generating an XYZ guess or not.</p></li>
 <li><p><strong>xyz</strong> (<em>dict</em><em>, </em><em>str</em><em>, </em><em>optional</em>) – The 3D coordinates guess.</p></li>
 <li><p><strong>rmg_reaction</strong> (<em>Reaction</em><em>, </em><em>optional</em>) – An RMG Reaction object.</p></li>
 <li><p><strong>arc_reaction</strong> (<a class="reference internal" href="reaction.html#arc.reaction.ARCReaction" title="arc.reaction.ARCReaction"><em>ARCReaction</em></a><em>, </em><em>optional</em>) – An ARC Reaction object.</p></li>
 <li><p><strong>ts_dict</strong> (<em>dict</em><em>, </em><em>optional</em>) – A dictionary to create this object from (used when restarting ARC).</p></li>
 <li><p><strong>energy</strong> (<em>float</em><em>, </em><em>optional</em>) – Relative energy of all TS conformers in kJ/mol.</p></li>
-<li><p><strong>project_dir</strong> (<em>str</em><em>, </em><em>optional</em>) – Folder path for the project: the input file path or ARC/Projects/project-name.</p></li>
+<li><p><strong>t0</strong> (<em>datetime.datetime</em><em>, </em><em>optional</em>) – Initial time of spawning the guess job.</p></li>
+<li><p><strong>execution_time</strong> (<em>datetime.timedelta</em><em>, </em><em>optional</em>) – Overall execution time for the TS guess method.</p></li>
 </ul>
 </dd>
 </dl>
@@ -1416,25 +1436,24 @@ Alternatively, either ARC or the user can provide reactant/s and product/s geome
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.reactants_xyz">
-<span class="sig-name descname"><span class="pre">reactants_xyz</span></span><a class="headerlink" href="#arc.species.species.TSGuess.reactants_xyz" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of tuples, each containing:
-(reactant label, reactant xyz).</p>
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.method_index">
+<span class="sig-name descname"><span class="pre">method_index</span></span><a class="headerlink" href="#arc.species.species.TSGuess.method_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>A sub-index, used for cases where a single method generates several guesses.
+Counts separately for each direction, ‘F’ and ‘R’.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>int</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.products_xyz">
-<span class="sig-name descname"><span class="pre">products_xyz</span></span><a class="headerlink" href="#arc.species.species.TSGuess.products_xyz" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of tuples, each containing:
-(product label, product xyz).</p>
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.method_direction">
+<span class="sig-name descname"><span class="pre">method_direction</span></span><a class="headerlink" href="#arc.species.species.TSGuess.method_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>The reaction direction used for generating the guess (‘F’ or ‘R’).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1467,7 +1486,7 @@ Alternatively, either ARC or the user can provide reactant/s and product/s geome
 <dd><p>An ARC Reaction object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p><a class="reference internal" href="reaction.html#arc.reaction.ARCReaction" title="arc.reaction.ARCReaction">ARCReaction</a>, optional</p>
+<dd class="field-odd"><p><a class="reference internal" href="reaction.html#arc.reaction.ARCReaction" title="arc.reaction.ARCReaction">ARCReaction</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1478,7 +1497,7 @@ Alternatively, either ARC or the user can provide reactant/s and product/s geome
 <dd><p>Initial time of spawning the guess job.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>float</p>
+<dd class="field-odd"><p>datetime.datetime, optional</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1519,6 +1538,28 @@ Alternatively, either ARC or the user can provide reactant/s and product/s geome
 <dl class="py attribute">
 <dt class="sig sig-object py" id="arc.species.species.TSGuess.index">
 <span class="sig-name descname"><span class="pre">index</span></span><a class="headerlink" href="#arc.species.species.TSGuess.index" title="Permalink to this definition">¶</a></dt>
+<dd><p>A running index of all TSGuess objects belonging to an ARCSpecies object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.imaginary_freqs">
+<span class="sig-name descname"><span class="pre">imaginary_freqs</span></span><a class="headerlink" href="#arc.species.species.TSGuess.imaginary_freqs" title="Permalink to this definition">¶</a></dt>
+<dd><p>The imaginary frequencies of the TS guess after optimization.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.conformer_index">
+<span class="sig-name descname"><span class="pre">conformer_index</span></span><a class="headerlink" href="#arc.species.species.TSGuess.conformer_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>An index corresponding to the conformer jobs spawned for each TSGuess object.
 Assigned only if self.success is <code class="docutils literal notranslate"><span class="pre">True</span></code>.</p>
 <dl class="field-list simple">
@@ -1529,9 +1570,31 @@ Assigned only if self.success is <code class="docutils literal notranslate"><spa
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.project_dir">
-<span class="sig-name descname"><span class="pre">project_dir</span></span><a class="headerlink" href="#arc.species.species.TSGuess.project_dir" title="Permalink to this definition">¶</a></dt>
-<dd><p>Folder path for the project: the input file path or ARC/Projects/project-name.</p>
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.successful_irc">
+<span class="sig-name descname"><span class="pre">successful_irc</span></span><a class="headerlink" href="#arc.species.species.TSGuess.successful_irc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether the IRS run(s) identified this to be the correct TS by isomorphism of the wells.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.successful_normal_mode">
+<span class="sig-name descname"><span class="pre">successful_normal_mode</span></span><a class="headerlink" href="#arc.species.species.TSGuess.successful_normal_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Whether a normal mode check was successful.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.errors">
+<span class="sig-name descname"><span class="pre">errors</span></span><a class="headerlink" href="#arc.species.species.TSGuess.errors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Problems experienced with this TSGuess. Used for logging.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
 <dd class="field-odd"><p>str</p>
@@ -1546,52 +1609,9 @@ Assigned only if self.success is <code class="docutils literal notranslate"><spa
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.autotst">
-<span class="sig-name descname"><span class="pre">autotst</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.autotst"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.autotst" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine a TS guess using AutoTST for the following RMG families:
-Current supported families are:
-- H_Abstraction
-Near-future supported families might be:
-- Disproportionation
-- R_Addition_MultipleBond
-- intra_H_migration</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.degsm">
-<span class="sig-name descname"><span class="pre">degsm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.degsm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.degsm" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine a TS guess using DEGSM</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.execute_ts_guess_method">
-<span class="sig-name descname"><span class="pre">execute_ts_guess_method</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.execute_ts_guess_method"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.execute_ts_guess_method" title="Permalink to this definition">¶</a></dt>
-<dd><p>Execute a TS guess method</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="arc.species.species.TSGuess.from_dict">
 <span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ts_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.from_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for loading this object from a dictionary in a YAML file for restarting ARC</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.gcn">
-<span class="sig-name descname"><span class="pre">gcn</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.gcn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.gcn" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine a TS guess using a graph convolutional network.</p>
-<p>Reactant and product must each be a single fragment.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.kinbot">
-<span class="sig-name descname"><span class="pre">kinbot</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.kinbot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.kinbot" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine a TS guess using Kinbot for RMG’s unimolecular families</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.neb">
-<span class="sig-name descname"><span class="pre">neb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.neb"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.neb" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine a TS guess using NEB</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1609,9 +1629,15 @@ Near-future supported families might be:
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="arc.species.species.TSGuess.qst2">
-<span class="sig-name descname"><span class="pre">qst2</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.qst2"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.qst2" title="Permalink to this definition">¶</a></dt>
-<dd><p>Determine a TS guess using QST2</p>
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.tic">
+<span class="sig-name descname"><span class="pre">tic</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.tic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.tic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.t0.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arc.species.species.TSGuess.tok">
+<span class="sig-name descname"><span class="pre">tok</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#TSGuess.tok"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.TSGuess.tok" title="Permalink to this definition">¶</a></dt>
+<dd><p>Assign the time difference between now and self.t0 into self.execution_time.</p>
 </dd></dl>
 
 </dd></dl>
@@ -1813,13 +1839,6 @@ is aromatic), since we don’t have implementation for aromatic bond additivity 
 <dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="arc.species.species.nearly_equal">
-<span class="sig-prename descclassname"><span class="pre">arc.species.species.</span></span><span class="sig-name descname"><span class="pre">nearly_equal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">a</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">b</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sig_fig</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/species.html#nearly_equal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.species.nearly_equal" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper function to determine whether two floats are nearly equal.
-Can be replaced by math.isclose in Py3</p>
 </dd></dl>
 
 </section>

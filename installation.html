@@ -91,7 +91,7 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation instructions</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#clone-and-setup-path">Clone and setup path</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#install-dependencies">Install dependencies</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#create-a-arc-folder">Create a <code class="docutils literal notranslate"><span class="pre">.arc</span></code> folder</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#create-a-arc-folder-optional-but-recommended">Create a <code class="docutils literal notranslate"><span class="pre">.arc</span></code> folder (optional but recommended)</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#generating-rsa-ssh-keys-and-defining-servers">Generating RSA SSH keys and defining servers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#associating-software-with-servers">Associating software with servers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cluster-software-definitions">Cluster software definitions</a></li>
@@ -178,24 +178,32 @@
             
   <section id="installation-instructions">
 <span id="installation"></span><h1>Installation instructions<a class="headerlink" href="#installation-instructions" title="Permalink to this headline">¶</a></h1>
+<p>ARC can be installed on a server, as well as on your local desktop / laptop, submitting jobs to your server(s).
+The instructions below make this differentiation when relevant (the only difference is that ARC should be “aware”
+of software installed on the same machine, where the communication isn’t done via SSH).</p>
 <dl class="simple">
-<dt>Note:</dt><dd><p>ARC was only tested on Linux (<a class="reference external" href="http://releases.ubuntu.com/18.04/">Ubuntu</a> 18.04.1 LTS) and Mac machines. We don’t expect it to work on Windows.</p>
+<dt>Note:</dt><dd><p>ARC was only tested on Linux (<a class="reference external" href="http://releases.ubuntu.com/18.04/">Ubuntu</a> 18.04.1 and 20.04 LTS) and Mac machines.
+We don’t expect it to work smoothly on Windows machines.</p>
+</dd>
+<dt>Note:</dt><dd><p>These installation instructions assume you already have access to a server with a cluster scheduling software
+(ARC currently supports SGE, Slurm, PBS, and HTCondor) and with properly installed electronic structure software
+(ARC currently supports Gaussian, QChem, Molpro, TeraChem, Orca, and Psi4). We further assume that you have
+some experience working with the server, e.g., writing appropriate submit scripts (example scripts are given,
+but modifications are usually required).</p>
 </dd>
 </dl>
-<p>ARC can be installed on a server, as well as on your local desktop / laptop, submitting jobs to the server/s.
-The instructions below make this differentiation when relevant (the only difference is that ARC should be aware
-of software installed on the same machine, where the communication isn’t done via SSH).</p>
 <section id="clone-and-setup-path">
 <span id="path"></span><h2>Clone and setup path<a class="headerlink" href="#clone-and-setup-path" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p>Download and install the <a class="reference external" href="https://www.anaconda.com/distribution/">Anaconda Python Platform</a> for Python 3.7 or higher if you haven’t already.</p></li>
-<li><p>Get git if you don’t have it already by typing sudo apt-get install git in a terminal.</p></li>
+<li><p>Get git and appropriate compilers if you don’t have them already by typing <code class="docutils literal notranslate"><span class="pre">sudo</span> <span class="pre">apt</span> <span class="pre">install</span> <span class="pre">git</span> <span class="pre">gcc</span> <span class="pre">g++</span> <span class="pre">make</span></code>
+in a terminal.</p></li>
 <li><p>Clone ARC’s repository to by typing the following command in the desired folder (e.g., under <cite>~/Code/</cite>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">ReactionMechanismGenerator</span><span class="o">/</span><span class="n">ARC</span><span class="o">.</span><span class="n">git</span>
 </pre></div>
 </div>
 </li>
-<li><p>Add ARC to your local path in .bashrc (make sure to change <code class="docutils literal notranslate"><span class="pre">~/Path/to/ARC/</span></code> accordingly):</p>
+<li><p>Add ARC to your local path in <code class="docutils literal notranslate"><span class="pre">.bashrc</span></code> (make sure to change <code class="docutils literal notranslate"><span class="pre">~/Path/to/ARC/</span></code> accordingly):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>export PYTHONPATH=$PYTHONPATH:~/Path/to/ARC/
 </pre></div>
 </div>
@@ -205,17 +213,6 @@ of software installed on the same machine, where the communication isn’t done 
 <section id="install-dependencies">
 <span id="arce"></span><h2>Install dependencies<a class="headerlink" href="#install-dependencies" title="Permalink to this headline">¶</a></h2>
 <ul>
-<li><p>Install the latest <strong>DEVELOPER</strong> version of RMG (which has Arkane).
-It is recommended to follow RMG’s <a class="reference external" href="http://reactionmechanismgenerator.github.io/RMG-Py/users/rmg/installation/index.html#for-developers-installation-by-source-using-anaconda-environment">Developer installation by source using Anaconda</a> instructions.
-Make sure to add RMG-Py to your PATH and PYTHONPATH variables as explained in RMG’s documentation.</p></li>
-<li><p>If you’d like to use <a class="reference external" href="https://github.com/ReactionMechanismGenerator/AutoTST">AutoTST</a> in ARC (optional),
-clone it in a separate folder and add it to your PYTHONPATH just as well.</p></li>
-<li><p>If you’d like to use a pre-trained graph convolutional network to quickly predict TS guesses for further optimization,
-run <cite>make gcn</cite> from ARC’s home directory, which clones <a class="reference external" href="https://github.com/ReactionMechanismGenerator/TS-GCN.git">TS-GCN</a>
-under the same parent folder as the ARC repository. It also sets up the environment to run the network.
-The original network was published by <a class="reference external" href="https://chemrxiv.org/articles/Genereting_Transition_States_of_Isomerization_Reactions_with_Deep_Learning/12302084">Pattanaik et al.</a>
-using TensorFlow 1.4 and Python 2.7. This repo uses the same architecture with various minor upgrades, more training data,
-and is translated into PyTorch Geometric and Python 3.7.</p></li>
 <li><p>Create the Anaconda environment for ARC (after changing the directory to the
 installation folder by, e.g., <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">~/Code/ARC/</span></code>):</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">env</span> <span class="n">create</span> <span class="o">-</span><span class="n">f</span> <span class="n">environment</span><span class="o">.</span><span class="n">yml</span>
@@ -226,24 +223,42 @@ installation folder by, e.g., <code class="docutils literal notranslate"><span c
 </pre></div>
 </div>
 </li>
+<li><p>Install the latest <strong>DEVELOPER</strong> version of RMG (which has Arkane).
+It is recommended to follow RMG’s <a class="reference external" href="http://reactionmechanismgenerator.github.io/RMG-Py/users/rmg/installation/index.html#for-developers-installation-by-source-using-anaconda-environment">Developer installation by source using Anaconda</a> instructions.
+Make sure to add RMG-Py to your PATH and PYTHONPATH variables as explained in RMG’s documentation.</p></li>
+<li><p>Type <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">install-all</span></code> under the ARC repository folder to install the following 3rd party repositories:
+<a class="reference external" href="https://github.com/ReactionMechanismGenerator/AutoTST">AutoTST</a>
+(<a class="reference external" href="https://doi.org/10.1021/acs.jpca.7b07361">West et al.</a>),
+<a class="reference external" href="https://github.com/zadorlab/KinBot">KinBot</a>
+(<a class="reference external" href="https://doi.org/10.1016/j.cpc.2019.106947">Van de Vijver et al.</a>),
+and <a class="reference external" href="https://github.com/ReactionMechanismGenerator/TS-GCN.git">TS-GCN</a>
+(<a class="reference external" href="https://chemrxiv.org/articles/Genereting_Transition_States_of_Isomerization_Reactions_with_Deep_Learning/12302084">Pattanaik et al.</a>).
+Note that this should be done on each machine ARC is expected to be executed on.
+For advanced users: ARC will look for the paths to these repos. If your path on a server in not conventional,
+you can assist ARC discover your external repos in <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>.</p></li>
+<li><p>Test ARC by typing <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">test</span></code> under the ARC folder after activating the anaconda <cite>arc_env</cite> environment.</p></li>
 </ul>
 </section>
-<section id="create-a-arc-folder">
-<h2>Create a <code class="docutils literal notranslate"><span class="pre">.arc</span></code> folder<a class="headerlink" href="#create-a-arc-folder" title="Permalink to this headline">¶</a></h2>
+<section id="create-a-arc-folder-optional-but-recommended">
+<h2>Create a <code class="docutils literal notranslate"><span class="pre">.arc</span></code> folder (optional but recommended)<a class="headerlink" href="#create-a-arc-folder-optional-but-recommended" title="Permalink to this headline">¶</a></h2>
 <p>Users are encouraged to create a <code class="docutils literal notranslate"><span class="pre">.arc</span></code> folder under their <code class="docutils literal notranslate"><span class="pre">HOME</span></code> folder on the machine running ARC.
 Copy (and modify as appropriate, see below) the following python files
 from the ARC repository into the newly created folder:
 <code class="docutils literal notranslate"><span class="pre">&lt;base_folder&gt;/ARC/arc/settings/settings.py</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">HOME/.arc/settings.py</span></code>
 <code class="docutils literal notranslate"><span class="pre">&lt;base_folder&gt;/ARC/arc/settings/input.py</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">HOME/.arc/input.py</span></code>
 <code class="docutils literal notranslate"><span class="pre">&lt;base_folder&gt;/ARC/arc/settings/submit.py</span></code> –&gt; <code class="docutils literal notranslate"><span class="pre">HOME/.arc/submit.py</span></code></p>
-<p>By doing this, ARC will use the respective settings and definitions from these copied files
+<p>By doing this, ARC will use the respective settings and definitions from the files under <code class="docutils literal notranslate"><span class="pre">.arc</span></code>
 to override its defaults. Users many (carefully) modify the definitions in the local files
 as appropriate. Note that you may choose to copy only some of these files, in which case the
 definitions from any non-copied files will be taken from ARC’s defaults (e.g., most users will
 not need to modify <code class="docutils literal notranslate"><span class="pre">input.py</span></code>).  Note also that definitions within these files may be partial
 (i.e., you may keep only those parameters you may wish to change within each file), and that any
-missing parameter will be assigned its default value from ARC’s defaults.</p>
-<p>Principally ARC would also work fine if users directly change the respective files within ARC’s repository
+missing parameter will be assigned its default value from ARC’s defaults. It is recommended to
+only keep parameters you modified in <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>, so that other parameters will be updated
+as you update the ARC repository in the future. This recommendation helps avoid merge conflicts
+when updating ARC, and allows a single ARC instance on a server to be used by different users
+with different preferences.</p>
+<p>Principally, ARC would also work fine if users directly change the respective files within ARC’s repository
 instead of making copies. However, modifying the files in ARC directly may cause merging conflicts when
 updating ARC. The down side is that users are responsible to keep their copies up to date with ARC’s format
 if major changes are made. Such changes will be listed under the Release Notes and will result in an increase
@@ -252,34 +267,31 @@ of the MINOR version number (i.e., ,major.MINOR.patch, e.g., <cite>1.1.5</cite> 
 <section id="generating-rsa-ssh-keys-and-defining-servers">
 <h2>Generating RSA SSH keys and defining servers<a class="headerlink" href="#generating-rsa-ssh-keys-and-defining-servers" title="Permalink to this headline">¶</a></h2>
 <p>The first two directives are only required if you’d like ARC to access remote servers
-(ARC could also run “locally” on a server).</p>
+(ARC could also run “locally” when it’s installed on a server).</p>
 <ul class="simple">
-<li><p>Generate RSA SSH keys for your favorite server/s on which relevant electronic structure software
-(ESS, e.g., Gaussian etc.) are installed. <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">Instructions for generating RSA keys could be found here</a>.</p></li>
-<li><p>Copy the RSA SSH key path/s on your local machine to <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> in the servers
+<li><p>Generate RSA SSH keys for your favorite server(s) on which relevant electronic structure software
+(ESS, e.g., Gaussian) are installed. <a class="reference external" href="https://www.digitalocean.com/community/tutorials/how-to-set-up-ssh-keys--2">Instructions for generating RSA keys could be found here</a>.</p></li>
+<li><p>Copy the RSA SSH key path(s) on your local machine to <code class="docutils literal notranslate"><span class="pre">settings.py</span></code> in the <code class="docutils literal notranslate"><span class="pre">servers</span></code>
 dictionary under keys.</p></li>
 <li><p>Update the <code class="docutils literal notranslate"><span class="pre">servers</span></code> dictionary in your copy of ARC’s <a class="reference external" href="https://github.com/ReactionMechanismGenerator/ARC/blob/main/arc/settings/settings.py">settings.py</a>.</p>
 <ul>
-<li><p>A local server must be named with the reserved keyword <code class="docutils literal notranslate"><span class="pre">local</span></code>. <code class="docutils literal notranslate"><span class="pre">cluster_soft</span></code> and username (<code class="docutils literal notranslate"><span class="pre">un</span></code>) are
-mandatory.</p></li>
+<li><p><strong>A local server must be named with the reserved keyword ``local``</strong>.
+<code class="docutils literal notranslate"><span class="pre">cluster_soft</span></code> and username (<code class="docutils literal notranslate"><span class="pre">un</span></code>) are mandatory.</p></li>
 <li><p>A remote server has no limitations for naming. <code class="docutils literal notranslate"><span class="pre">cluster_soft</span></code>, <code class="docutils literal notranslate"><span class="pre">address</span></code>, username (<code class="docutils literal notranslate"><span class="pre">un</span></code>), and <code class="docutils literal notranslate"><span class="pre">key</span></code>
 (the path to the local RSA SSH key) are mandatory.</p></li>
-<li><p>Optional parameters for both local and remote servers are <code class="docutils literal notranslate"><span class="pre">cpus</span></code> and <code class="docutils literal notranslate"><span class="pre">memory</span></code>. These two parameters stand for
-the maximum amount of cpu cores and memory in GB available to a node. If a job crashes due to cpu or memory issues,
-ARC will automatically re-run the job with different cpu and memory allocations within the limitation specified by
-these two parameters. By default, <code class="docutils literal notranslate"><span class="pre">cpus</span></code> is 8 and <code class="docutils literal notranslate"><span class="pre">memory</span></code> is 14 GB.</p></li>
-<li><p>Although ARC currently does not allocate computing resources dynamically based on system size or ESS, the user can
-manually control memory specifications for each project. See <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Advanced Features</span></a> for details.</p></li>
-<li><p>In certain ESS, the maximum number of CPU cores allowed for a calculation depends on system size. If a job crashes
-for this reason, ARC will attempt to re-run the job with fewer CPU cores.</p></li>
-</ul>
-</li>
-<li><p>Update the <code class="docutils literal notranslate"><span class="pre">default_job_settings</span></code> dictionary in your copy of ARC’s <a class="reference external" href="https://github.com/ReactionMechanismGenerator/ARC/blob/main/arc/settings/settings.py">settings.py</a>.</p>
-<ul>
-<li><p>This dictionary contains default job memory, cpu, and time settings.</p></li>
-<li><p>A default ESS job in ARC has 14 GB of memory, 8 cpu cores, and 120 hours of maximum execution time. The default
-settings can be changed by providing different values to the <code class="docutils literal notranslate"><span class="pre">job_total_memory_gb</span></code>, <code class="docutils literal notranslate"><span class="pre">job_cpu_cores</span></code>, and
-<code class="docutils literal notranslate"><span class="pre">job_time_limit_hrs</span></code> keys.</p></li>
+<li><p>Optional parameters for both local and remote servers are <code class="docutils literal notranslate"><span class="pre">cpus</span></code>, <code class="docutils literal notranslate"><span class="pre">memory</span></code>, and <code class="docutils literal notranslate"><span class="pre">path</span></code>.
+The first two parameters stand for the maximum amount of cpu cores and memory in GB available on a node.
+If a job crashes due to cpu or memory issues, ARC will automatically re-run the job with different cpu
+and memory allocations within the specified limitations. By default, <code class="docutils literal notranslate"><span class="pre">cpus</span></code> is 8 and <code class="docutils literal notranslate"><span class="pre">memory</span></code> is 14 GB.
+The optional <code class="docutils literal notranslate"><span class="pre">path</span></code> key is used if it is necessary to direct ARC to create project files in a specific
+location on the server. E.g., if the value <code class="docutils literal notranslate"><span class="pre">/storage/group_name/</span></code> is given for <code class="docutils literal notranslate"><span class="pre">path</span></code>, ARC will
+create project files under <code class="docutils literal notranslate"><span class="pre">/storage/group_name/$USER/runs/ARC_Projects/project_name/</span></code>.</p></li>
+<li><p>Although ARC currently does not allocate computing resources dynamically based on system size or ESS,
+the user can manually control memory specifications for each project.
+See <a class="reference internal" href="advanced.html#advanced"><span class="std std-ref">Advanced Features</span></a> for details.</p></li>
+<li><p>A default ESS job in ARC has 14 GB of memory, 8 cpu cores, and 120 hours of maximum execution time.
+The default settings can be changed by providing different values to the <code class="docutils literal notranslate"><span class="pre">job_total_memory_gb</span></code>,
+<code class="docutils literal notranslate"><span class="pre">job_cpu_cores</span></code>, and <code class="docutils literal notranslate"><span class="pre">job_time_limit_hrs</span></code> keys in the <code class="docutils literal notranslate"><span class="pre">default_job_settings</span></code> dictionary under <code class="docutils literal notranslate"><span class="pre">settings.py</span></code>.</p></li>
 <li><p>ARC will alter job memory, cpu, and time settings when troubleshoot jobs crashed due to resource allocation issues.
 The <code class="docutils literal notranslate"><span class="pre">job_max_server_node_memory_allocation</span></code> key stands for the maximum percentage of total node memory ARC will
 use when troubleshoot a job. The default value is 80%.</p></li>
@@ -288,7 +300,7 @@ use when troubleshoot a job. The default value is 80%.</p></li>
 <li><p>Update the submit scripts in your copy of ARC’s <a class="reference external" href="https://github.com/ReactionMechanismGenerator/ARC/blob/main/arc/settings/submit.py">submit.py</a>
 according to your servers’ definitions.
 * See the given template examples, and follow the structure of nested dictionaries (by server name, then by ESS name).
-* Preserve the variables in curly braces (e.g., <code class="docutils literal notranslate"><span class="pre">{memory}</span></code>), so that ARC is able to auto-complete them.</p></li>
+* Preserve the variables in curly braces (e.g., <code class="docutils literal notranslate"><span class="pre">{memory}</span></code>), so that ARC is able to auto-fill them.</p></li>
 </ul>
 </section>
 <section id="associating-software-with-servers">
@@ -345,23 +357,19 @@ server’s definitions are different that ARC’s, you should also modify the fo
 them differently, e.g., <cite>Slurm1</cite> and <cite>Slurm2</cite>, and make sure to pair them accordingly under the <code class="docutils literal notranslate"><span class="pre">servers</span></code> dictionary.</p>
 </section>
 <section id="tests">
-<span id="id6"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<span id="id5"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><p>If you’d like to make sure ARC has access to your servers and recognises your ESS, use the “radar” tool, available
 as an iPython notebook (see <a class="reference internal" href="tools.html#tools"><span class="std std-ref">Standalone tools</span></a>).</p></li>
 <li><p>Run the minimal example (see <a class="reference internal" href="examples.html#examples"><span class="std std-ref">Examples</span></a>), and a couple more examples, if you’d like, using both input files
 and the API (via iPython notebooks or any other method).</p></li>
 <li><p>Run ARC’s unit tests. Note that for all tests to pass, ARC expects to find the unmodified settings in settings.py.
-Therefore it is recommended to first stash your changes. If you’d like to test ARC with changes you made to the code,
-first commit these changes to a git branch.:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">stash</span>
-<span class="n">make</span> <span class="n">test</span>
+If you made changes to any settings instead of creating respective files under a local <code class="docutils literal notranslate"><span class="pre">.arc.</span></code> folder,
+it is recommended to first stash your changes (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">stash</span></code>). To run the tests, type:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">make</span> <span class="n">test</span>
 </pre></div>
 </div>
-<p>After the tests complete, don’t forget to:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">stash</span> <span class="n">pop</span>
-</pre></div>
-</div>
+<p>After the tests complete, you may unstash your changes, if relevant (<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">stash</span> <span class="pre">pop</span></code>).</p>
 </li>
 </ul>
 </section>

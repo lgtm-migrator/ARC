@@ -335,7 +335,9 @@
 <span class="sd">        reaction (&#39;ARCReaction&#39;): An ARCReaction object instance.</span>
 <span class="sd">        db (RMGDatabase, optional): The RMG database instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">rmg_database_instance</span>
     <span class="k">if</span> <span class="n">reaction</span><span class="o">.</span><span class="n">family</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">db</span> <span class="o">=</span> <span class="n">db</span> <span class="ow">or</span> <span class="n">rmg_database_instance</span>
         <span class="k">if</span> <span class="n">db</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">db</span> <span class="o">=</span> <span class="n">make_rmg_database_object</span><span class="p">()</span>
             <span class="n">load_families_only</span><span class="p">(</span><span class="n">db</span><span class="p">)</span>

@@ -188,10 +188,7 @@
 <span class="kn">from</span> <span class="nn">arc.job.ssh</span> <span class="kn">import</span> <span class="n">SSHClient</span>
 <span class="kn">from</span> <span class="nn">arc.species</span> <span class="kn">import</span> <span class="n">ARCSpecies</span>
 <span class="kn">from</span> <span class="nn">arc.species.conformers</span> <span class="kn">import</span> <span class="n">determine_smallest_atom_index_in_scan</span>
-<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="p">(</span><span class="n">ics_to_scan_constraints</span><span class="p">,</span>
-                                   <span class="n">xyz_from_data</span><span class="p">,</span>
-                                   <span class="n">xyz_to_coords_list</span><span class="p">,</span>
-                                   <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="p">(</span><span class="n">displace_xyz</span><span class="p">,</span> <span class="n">ics_to_scan_constraints</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">arc.species.species</span> <span class="kn">import</span> <span class="n">determine_rotor_symmetry</span>
 <span class="kn">from</span> <span class="nn">arc.species.vectors</span> <span class="kn">import</span> <span class="n">calculate_dihedral_angle</span><span class="p">,</span> <span class="n">calculate_distance</span>
 <span class="kn">from</span> <span class="nn">arc.parser</span> <span class="kn">import</span> <span class="p">(</span><span class="n">parse_1d_scan_coords</span><span class="p">,</span>
@@ -206,9 +203,9 @@
 
 
 <span class="n">delete_command</span><span class="p">,</span> <span class="n">inconsistency_ab</span><span class="p">,</span> <span class="n">inconsistency_az</span><span class="p">,</span> <span class="n">maximum_barrier</span><span class="p">,</span> <span class="n">preserve_params_in_scan</span><span class="p">,</span> <span class="n">rotor_scan_resolution</span><span class="p">,</span> \
-    <span class="n">servers</span><span class="p">,</span> <span class="n">submit_filename</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;delete_command&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;inconsistency_ab&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;inconsistency_az&#39;</span><span class="p">],</span> \
-                               <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;maximum_barrier&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;preserve_params_in_scan&#39;</span><span class="p">],</span> \
-                               <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;rotor_scan_resolution&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;servers&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;submit_filename&#39;</span><span class="p">]</span>
+    <span class="n">servers</span><span class="p">,</span> <span class="n">submit_filenames</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;delete_command&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;inconsistency_ab&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;inconsistency_az&#39;</span><span class="p">],</span> \
+                                <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;maximum_barrier&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;preserve_params_in_scan&#39;</span><span class="p">],</span> \
+                                <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;rotor_scan_resolution&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;servers&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;submit_filenames&#39;</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="determine_ess_status"><a class="viewcode-back" href="../../../api/trsh.html#arc.job.trsh.determine_ess_status">[docs]</a><span class="k">def</span> <span class="nf">determine_ess_status</span><span class="p">(</span><span class="n">output_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -320,11 +317,11 @@
                             <span class="s1">&#39;variable in the submit script, it should point to an existing directory. &#39;</span> \
                             <span class="s1">&#39;Make sure to add &quot;mkdir -p $GAUSS_SCRDIR&quot; to your submit script.&#39;</span>
                     <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
-                <span class="k">if</span> <span class="s1">&#39;a syntax error was detected&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
+                <span class="k">if</span> <span class="s1">&#39;a syntax error was detected&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;an ambiguous keyword was detected&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">lower</span><span class="p">():</span>
                     <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Syntax&#39;</span><span class="p">]</span>
                     <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;There was a syntax error in the Gaussian input file. Check your Gaussian input file &#39;</span> \
                             <span class="s1">&#39;template under arc/job/inputs.py. Alternatively, perhaps the level of theory is not &#39;</span> \
-                            <span class="s1">&#39;supported by Gaussian in the format it was given.&#39;</span>
+                            <span class="s1">&#39;supported by Gaussian in the specific format it was given.&#39;</span>
                     <span class="n">line</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
                 <span class="k">if</span> <span class="n">keywords</span><span class="p">:</span>
                     <span class="k">break</span>
@@ -407,8 +404,7 @@
                                 <span class="c1"># e.g., Please increase MaxCore to more than: 289 MB</span>
                                 <span class="n">estimated_mem</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mi">500</span>
                             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                                <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Insufficient Orca job memory. ARC will estimate the amount of memory &#39;</span> \
-                                        <span class="sa">f</span><span class="s1">&#39;required.&#39;</span>
+                                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Insufficient Orca job memory. ARC will estimate the amount of memory required.&#39;</span>
                                 <span class="n">keywords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Memory&#39;</span><span class="p">)</span>
                                 <span class="k">break</span>
                             <span class="n">keywords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Memory&#39;</span><span class="p">)</span>
@@ -417,7 +413,7 @@
                             <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Orca suggests to increase per cpu core memory to </span><span class="si">{</span><span class="n">estimated_mem</span><span class="si">}</span><span class="s1"> MB.&#39;</span>
                             <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;SCF error in Orca.&#39;</span>
+                        <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;SCF error in Orca.&#39;</span>
                     <span class="k">break</span>
                 <span class="k">elif</span> <span class="s1">&#39;ORCA finished by error termination in MDCI&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                     <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MDCI&#39;</span><span class="p">]</span>
@@ -435,8 +431,8 @@
                                     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                                         <span class="c1"># e.g., Please increase MaxCore</span>
                                         <span class="c1"># In old Orca versions, there is no indication on the minimum memory requirement</span>
-                                        <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Insufficient Orca job memory. ARC will estimate the amount of &#39;</span> \
-                                                <span class="sa">f</span><span class="s1">&#39;memory required.&#39;</span>
+                                        <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Insufficient Orca job memory. ARC will estimate the amount of &#39;</span> \
+                                                <span class="s1">&#39;memory required.&#39;</span>
                                         <span class="k">break</span>
                                     <span class="n">estimated_mem_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estimated_mem</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">estimated_mem_list</span><span class="p">:</span>
@@ -455,14 +451,14 @@
                             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                                 <span class="c1"># e.g., Error (ORCA_MDCI): Number of processes in parallel calculation exceeds</span>
                                 <span class="c1"># number of pairs - error msg in Orca version 4.1.x</span>
-                                <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Orca cannot utilize cpu cores more than electron pairs in a molecule. ARC &#39;</span> \
-                                        <span class="sa">f</span><span class="s1">&#39;will estimate the number of cpu cores needed based on the number of heavy &#39;</span> \
-                                        <span class="sa">f</span><span class="s1">&#39;atoms in the molecule.&#39;</span>
+                                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Orca cannot utilize cpu cores more than electron pairs in a molecule. ARC &#39;</span> \
+                                        <span class="s1">&#39;will estimate the number of cpu cores needed based on the number of heavy &#39;</span> \
+                                        <span class="s1">&#39;atoms in the molecule.&#39;</span>
                             <span class="n">keywords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
                             <span class="n">line</span> <span class="o">=</span> <span class="n">info</span>
                             <span class="k">break</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;MDCI error in Orca. Assuming memory allocation error.&#39;</span>
+                        <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;MDCI error in Orca. Assuming memory allocation error.&#39;</span>
                         <span class="n">keywords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Memory&#39;</span><span class="p">)</span>
                     <span class="k">break</span>
                 <span class="k">elif</span> <span class="s1">&#39;Error : multiplicity&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
@@ -488,11 +484,11 @@
                     <span class="k">break</span>
                 <span class="k">elif</span> <span class="s1">&#39;This wavefunction IS NOT FULLY CONVERGED!&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                     <span class="n">keywords</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Convergence&#39;</span><span class="p">]</span>
-                    <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Specified wavefunction method is not converged. Please restart calculation with larger &#39;</span> \
-                            <span class="sa">f</span><span class="s1">&#39;max iterations or with different convergence flags.&#39;</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Specified wavefunction method is not converged. Please restart calculation with larger &#39;</span> \
+                            <span class="s1">&#39;max iterations or with different convergence flags.&#39;</span>
                     <span class="k">break</span>
                 <span class="k">elif</span> <span class="s1">&#39;ORCA finished by error termination in GTOInt&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
-                    <span class="n">error</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;GTOInt error in Orca. Assuming memory allocation error.&#39;</span>
+                    <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;GTOInt error in Orca. Assuming memory allocation error.&#39;</span>
                     <span class="n">keywords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;GTOInt&#39;</span><span class="p">)</span>
                     <span class="n">keywords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Memory&#39;</span><span class="p">)</span>
                     <span class="k">break</span>
@@ -609,7 +605,7 @@
     <span class="n">neg_freqs_trshed</span> <span class="o">=</span> <span class="n">neg_freqs_trshed</span> <span class="k">if</span> <span class="n">neg_freqs_trshed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
     <span class="n">job_types</span> <span class="o">=</span> <span class="n">job_types</span> <span class="k">if</span> <span class="n">job_types</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="s1">&#39;rotors&#39;</span><span class="p">]</span>
     <span class="n">output_errors</span><span class="p">,</span> <span class="n">output_warnings</span><span class="p">,</span> <span class="n">conformers</span><span class="p">,</span> <span class="n">current_neg_freqs_trshed</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.1</span><span class="p">,</span> <span class="mf">1.25</span><span class="p">,</span> <span class="mf">1.7</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+    <span class="n">factors</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.50</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">]</span>
     <span class="n">factor</span> <span class="o">=</span> <span class="n">factors</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">max_times_to_trsh_neg_freq</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">factors</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
     <span class="n">freqs</span><span class="p">,</span> <span class="n">normal_modes_disp</span> <span class="o">=</span> <span class="n">parse_normal_mode_displacement</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">log_file</span><span class="p">,</span> <span class="n">raise_error</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -641,7 +637,8 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_freqs_idx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_freqs_trshed</span><span class="p">):</span>
             <span class="c1"># species has one negative frequency, and has not been troubleshooted for it before</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Species </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> has a negative frequency (</span><span class="si">{</span><span class="n">freqs</span><span class="p">[</span><span class="n">largest_neg_freq_idx</span><span class="p">]</span><span class="si">}</span><span class="s1">). Perturbing its &#39;</span>
-                        <span class="sa">f</span><span class="s1">&#39;geometry using the respective vibrational normal mode displacement(s).&#39;</span><span class="p">)</span>
+                        <span class="sa">f</span><span class="s1">&#39;geometry using the respective vibrational normal mode displacement(s), &#39;</span>
+                        <span class="sa">f</span><span class="s1">&#39;using an amplitude of </span><span class="si">{</span><span class="n">factor</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
             <span class="n">neg_freqs_idx</span> <span class="o">=</span> <span class="p">[</span><span class="n">largest_neg_freq_idx</span><span class="p">]</span>  <span class="c1"># indices of the negative frequencies to troubleshoot for</span>
         <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">neg_freqs_idx</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span> \
                 <span class="ow">and</span> <span class="nb">any</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">freqs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vf</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">1e-04</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="mf">1e-02</span><span class="p">)</span> <span class="k">for</span> <span class="n">vf</span> <span class="ow">in</span> <span class="n">neg_freqs_trshed</span><span class="p">])</span> \
@@ -669,13 +666,10 @@
         <span class="n">freqs_list</span> <span class="o">=</span> <span class="n">freqs</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="n">current_neg_freqs_trshed</span> <span class="o">=</span> <span class="p">[</span><span class="nb">round</span><span class="p">(</span><span class="n">freqs_list</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">neg_freqs_idx</span><span class="p">]</span>  <span class="c1"># record trshed negative freqs</span>
         <span class="n">xyz</span> <span class="o">=</span> <span class="n">parse_xyz_from_file</span><span class="p">(</span><span class="n">log_file</span><span class="p">)</span>
-        <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz_to_coords_list</span><span class="p">(</span><span class="n">xyz</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">neg_freq_idx</span> <span class="ow">in</span> <span class="n">neg_freqs_idx</span><span class="p">:</span>
-            <span class="n">displacement</span> <span class="o">=</span> <span class="n">normal_modes_disp</span><span class="p">[</span><span class="n">neg_freq_idx</span><span class="p">]</span>
-            <span class="n">coords1</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">displacement</span>
-            <span class="n">coords2</span> <span class="o">=</span> <span class="n">coords</span> <span class="o">-</span> <span class="n">factor</span> <span class="o">*</span> <span class="n">displacement</span>
-            <span class="n">conformers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_from_data</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords1</span><span class="p">,</span> <span class="n">symbols</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]))</span>
-            <span class="n">conformers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_from_data</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords2</span><span class="p">,</span> <span class="n">symbols</span><span class="o">=</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]))</span>
+            <span class="n">xyz_1</span><span class="p">,</span> <span class="n">xyz_2</span> <span class="o">=</span> <span class="n">displace_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">displacement</span><span class="o">=</span><span class="n">normal_modes_disp</span><span class="p">[</span><span class="n">neg_freq_idx</span><span class="p">],</span> <span class="n">amplitude</span><span class="o">=</span><span class="n">factor</span><span class="p">)</span>
+            <span class="n">conformers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_1</span><span class="p">)</span>
+            <span class="n">conformers</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_2</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">current_neg_freqs_trshed</span><span class="p">,</span> <span class="n">conformers</span><span class="p">,</span> <span class="n">output_errors</span><span class="p">,</span> <span class="n">output_warnings</span></div>
 
 
@@ -724,7 +718,7 @@
         <span class="k">raise</span> <span class="n">TrshError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find the scan to troubleshoot in the scan list of species </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">methods</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Expected to get a dict of methods, got None.&#39;</span><span class="p">)</span>
-    
+
     <span class="c1"># Method 1 and method 2</span>
     <span class="k">if</span> <span class="s1">&#39;freeze&#39;</span> <span class="ow">in</span> <span class="n">methods</span><span class="p">:</span>
         <span class="c1"># 1. Freeze specific internal coordinates identified by scan_quality_check()</span>
@@ -784,7 +778,7 @@
                         <span class="k">continue</span>
                     <span class="n">to_freeze</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torsion</span><span class="p">)</span>
                     <span class="n">pruning</span> <span class="o">+=</span> <span class="p">[</span><span class="n">ic</span> <span class="k">for</span> <span class="n">ic</span> <span class="ow">in</span> <span class="n">problematic_ic</span> <span class="k">if</span> <span class="n">is_same_pivot</span><span class="p">(</span><span class="n">torsion</span><span class="p">,</span> <span class="n">ic</span><span class="p">)]</span>
-        
+
         <span class="c1"># 2. Freeze all torsions other than the rotor to be scanned</span>
         <span class="k">if</span> <span class="n">methods</span><span class="p">[</span><span class="s1">&#39;freeze&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
             <span class="n">scan_list</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">scan_list</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">scan</span><span class="p">))</span>
@@ -835,7 +829,7 @@
 <span class="sd">        special_type: Indicate the type of the special rotor. Either ``scan`` for</span>
 <span class="sd">                      the rotor to be scanned or `frozen` for the rotor were frozen</span>
 <span class="sd">                      in the previous job</span>
-<span class="sd">    </span>
+
 <span class="sd">    Returns: list</span>
 <span class="sd">        A list of internal coordinates to be frozen</span>
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -1133,7 +1127,7 @@
             <span class="k">if</span> <span class="s1">&#39;cpu&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ess_trsh_methods</span><span class="p">:</span>
                 <span class="n">ess_trsh_methods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;cpu&#39;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="s1">&#39;dlpno&#39;</span> <span class="ow">in</span> <span class="n">level_of_theory</span><span class="o">.</span><span class="n">method</span> <span class="ow">and</span> <span class="n">is_h</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;DLPNO method is not supported for H atom (or its isotope D or T) in Orca.&#39;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s1">&#39;DLPNO method is not supported for H atom (or its isotope D or T) in Orca.&#39;</span><span class="p">)</span>
             <span class="n">couldnt_trsh</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">couldnt_trsh</span> <span class="o">=</span> <span class="kc">True</span>
@@ -1194,7 +1188,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        scf diis+a</span>
 <span class="sd">        maxit 50</span>
-<span class="sd">        </span>
+
 <span class="sd">        solve in freq:</span>
 <span class="sd">        Maximum gradient component at reference geometry: 2.19e-02</span>
 <span class="sd">        Maximum component of gradient is too large</span>
@@ -1315,7 +1309,7 @@
         <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">False</span>
 
     <span class="c1"># modify the submit file</span>
-    <span class="n">remote_submit_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remote_path</span><span class="p">,</span> <span class="n">submit_filename</span><span class="p">[</span><span class="n">cluster_soft</span><span class="p">])</span>
+    <span class="n">remote_submit_file</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remote_path</span><span class="p">,</span> <span class="n">submit_filenames</span><span class="p">[</span><span class="n">cluster_soft</span><span class="p">])</span>
     <span class="k">with</span> <span class="n">SSHClient</span><span class="p">(</span><span class="n">server</span><span class="p">)</span> <span class="k">as</span> <span class="n">ssh</span><span class="p">:</span>
         <span class="n">content</span> <span class="o">=</span> <span class="n">ssh</span><span class="o">.</span><span class="n">read_remote_file</span><span class="p">(</span><span class="n">remote_file_path</span><span class="o">=</span><span class="n">remote_submit_file</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">cluster_soft</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;oge&#39;</span><span class="p">:</span>
@@ -1340,7 +1334,7 @@
     <span class="c1"># resubmit</span>
     <span class="k">with</span> <span class="n">SSHClient</span><span class="p">(</span><span class="n">server</span><span class="p">)</span> <span class="k">as</span> <span class="n">ssh</span><span class="p">:</span>
         <span class="n">ssh</span><span class="o">.</span><span class="n">upload_file</span><span class="p">(</span><span class="n">remote_file_path</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">remote_path</span><span class="p">,</span>
-                        <span class="n">submit_filename</span><span class="p">[</span><span class="n">cluster_soft</span><span class="p">]),</span> <span class="n">file_string</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
+                        <span class="n">submit_filenames</span><span class="p">[</span><span class="n">cluster_soft</span><span class="p">]),</span> <span class="n">file_string</span><span class="o">=</span><span class="n">content</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">node</span><span class="p">,</span> <span class="kc">True</span></div>
 
 
@@ -1571,7 +1565,7 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>
                 <span class="c1"># Propose a method</span>
                 <span class="c1"># Try increasing resolution firstly, and try increasing res. and freezing all</span>
-                <span class="c1"># torsions jointly, afterwards. </span>
+                <span class="c1"># torsions jointly, afterwards.</span>
                 <span class="c1"># TODO: If we figure out that solely increasing res. is not effective,</span>
                 <span class="c1"># we can simplify the process to actions = {&#39;inc_res&#39;: None, &#39;freeze&#39;: &#39;all&#39;}</span>
                 <span class="k">if</span> <span class="nb">any</span><span class="p">([</span><span class="s1">&#39;scan_res&#39;</span> <span class="ow">in</span> <span class="n">used_method</span> <span class="k">for</span> <span class="n">used_method</span> <span class="ow">in</span> <span class="n">used_methods</span><span class="p">]):</span>

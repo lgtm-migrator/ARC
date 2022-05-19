@@ -1104,17 +1104,7 @@
     <span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">][</span><span class="n">r_str</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
     <span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">][</span><span class="n">a_str</span><span class="p">]</span> <span class="o">=</span> <span class="mf">90.0</span>
     <span class="k">if</span> <span class="n">d_str</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># Determine the dihedral angle of XCBA to be equal to the dihedral angle of DCBA</span>
-        <span class="c1"># so later the dihedral of DCXB will be either 180 or 0 degrees, depends on the order</span>
-        <span class="c1"># in which DCB are considered (and their relative position on a single straight line).</span>
-        <span class="c1">#</span>
-        <span class="c1">#       X        E</span>
-        <span class="c1">#        \      /</span>
-        <span class="c1">#    B -- C -- D  (original atom)</span>
-        <span class="c1">#   /</span>
-        <span class="c1">#  A</span>
-        <span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">][</span><span class="n">d_str</span><span class="p">]</span> <span class="o">=</span> <span class="n">calculate_dihedral_angle</span><span class="p">(</span>
-            <span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">torsion</span><span class="o">=</span><span class="p">[</span><span class="n">atom_index</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;map&#39;</span><span class="p">][</span><span class="n">atom</span><span class="p">]</span> <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">d_atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">:]])</span>
+        <span class="n">zmat</span><span class="p">[</span><span class="s1">&#39;vars&#39;</span><span class="p">][</span><span class="n">d_str</span><span class="p">]</span> <span class="o">=</span> <span class="mi">180</span>
     <span class="c1"># Update xyz with the dummy atom (useful when this atom is used to define dihedrals of other atoms).</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">_add_nth_atom_to_coords</span><span class="p">(</span><span class="n">zmat</span><span class="o">=</span><span class="n">zmat</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">coords</span><span class="p">),</span> <span class="n">i</span><span class="o">=</span><span class="n">n</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">connectivity</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>

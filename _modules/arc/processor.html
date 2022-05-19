@@ -253,6 +253,8 @@
     <span class="c1"># 1. Rates</span>
     <span class="k">if</span> <span class="n">compute_rates</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">reaction</span> <span class="ow">in</span> <span class="n">reactions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">reaction</span><span class="o">.</span><span class="n">ts_species</span><span class="o">.</span><span class="n">ts_guesses_exhausted</span><span class="p">:</span>
+                <span class="k">continue</span>
             <span class="n">species_converged</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="n">considered_labels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>  <span class="c1"># Species labels considered in this reaction.</span>
             <span class="k">if</span> <span class="n">output_dict</span><span class="p">[</span><span class="n">reaction</span><span class="o">.</span><span class="n">ts_label</span><span class="p">][</span><span class="s1">&#39;convergence&#39;</span><span class="p">]:</span>
@@ -409,7 +411,7 @@
                   <span class="n">T_count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span>
                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Compare the calculates thermo with RMG&#39;s estimations.</span>
+<span class="sd">    Compare the calculates rates with RMG&#39;s estimations.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        rxns_for_kinetics_lib (list): Reactions for which rate coefficients were computed.</span>

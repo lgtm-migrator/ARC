@@ -745,7 +745,8 @@
                                     <span class="n">multiplicity</span><span class="p">,</span>
                                     <span class="n">xyzs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                     <span class="n">num_confs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                                    <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">):</span>
+                                    <span class="n">force_field</span><span class="o">=</span><span class="s1">&#39;MMFF94s&#39;</span><span class="p">,</span>
+                                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">dict</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Generate conformers using RDKit and OpenBabel and optimize them using a force field</span>
 <span class="sd">    Also consider user guesses in `xyzs`.</span>
@@ -783,7 +784,8 @@
             <span class="n">ff_xyzs</span><span class="p">,</span> <span class="n">ff_energies</span> <span class="o">=</span> <span class="n">get_force_field_energies</span><span class="p">(</span><span class="n">label</span><span class="p">,</span>
                                                             <span class="n">mol</span><span class="p">,</span>
                                                             <span class="n">num_confs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">,</span>
-                                                            <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">)</span>
+                                                            <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
+                                                            <span class="p">)</span>
         <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not generate conformers for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">, failed with: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">ff_xyzs</span><span class="p">:</span>
@@ -1150,7 +1152,7 @@
         <span class="k">if</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;n cannot be lower than 1, got: </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Either n or e must be specified&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="s1">&#39;Either `n` or `e` must be specified&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">confs</span> <span class="ow">or</span> <span class="n">confs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;get_lowest_confs() got no conformers for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
@@ -1213,7 +1215,8 @@
                              <span class="n">try_uff</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                              <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                              <span class="n">try_ob</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                             <span class="n">suppress_warning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
+                             <span class="n">suppress_warning</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                             <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Determine force field energies using RDKit.</span>
 <span class="sd">    If ``num_confs`` is given, random 3D geometries will be generated. If xyz is given, it will be directly used instead.</span>
@@ -1228,7 +1231,7 @@
 <span class="sd">        try_uff (bool, optional): Whether to try UFF if MMFF94(s) fails. ``True`` by default.</span>
 <span class="sd">        optimize (bool, optional): Whether to first optimize the conformer using FF. True to optimize.</span>
 <span class="sd">        try_ob (bool, optional): Whether to try OpenBabel if RDKit fails. ``True`` to try, ``True`` by default.</span>
-<span class="sd">        suppress_warning (bool, optional): Wheter to suppress warning of using OpenBabel. ``True`` to suppress, ``False`` by default.</span>
+<span class="sd">        suppress_warning (bool, optional): Whether to suppress OpenBabel warnings. ``False`` by default.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ConformerError: If conformers could not be generated.</span>
@@ -1241,13 +1244,24 @@
     <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">if</span> <span class="n">force_field</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;mmff94&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff94s&#39;</span><span class="p">,</span> <span class="s1">&#39;uff&#39;</span><span class="p">]:</span>
         <span class="n">rd_mol</span> <span class="o">=</span> <span class="n">embed_rdkit</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">)</span>
-        <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">rdkit_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">try_uff</span><span class="o">=</span><span class="n">try_uff</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rd_mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">rdkit_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span>
+                                               <span class="n">rd_mol</span><span class="p">,</span>
+                                               <span class="n">mol</span><span class="p">,</span>
+                                               <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
+                                               <span class="n">try_uff</span><span class="o">=</span><span class="n">try_uff</span><span class="p">,</span>
+                                               <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
+                                               <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyzs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">force_field</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;gaff&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff94&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff94s&#39;</span><span class="p">,</span> <span class="s1">&#39;uff&#39;</span><span class="p">,</span> <span class="s1">&#39;ghemical&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">try_ob</span><span class="p">:</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">suppress_warning</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using OpenBabel (instead of RDKit) as a fall back method to generate conformers for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">. &#39;</span>
                            <span class="sa">f</span><span class="s1">&#39;This is often slower.&#39;</span><span class="p">)</span>
-        <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">openbabel_force_field_on_rdkit_conformers</span><span class="p">(</span>
-                                            <span class="n">label</span><span class="p">,</span> <span class="n">rd_mol</span><span class="p">,</span> <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span> <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">)</span>
+        <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">openbabel_force_field</span><span class="p">(</span><span class="n">label</span><span class="p">,</span>
+                                               <span class="n">mol</span><span class="p">,</span>
+                                               <span class="n">num_confs</span><span class="p">,</span>
+                                               <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span>
+                                               <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
+                                               <span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyzs</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">force_field</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;mmff94&#39;</span><span class="p">,</span> <span class="s1">&#39;mmff94s&#39;</span><span class="p">,</span> <span class="s1">&#39;uff&#39;</span><span class="p">,</span> <span class="s1">&#39;gaff&#39;</span><span class="p">,</span> <span class="s1">&#39;ghemical&#39;</span><span class="p">]:</span>
             <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unrecognized force field for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">. Should be either MMFF94, MMFF94s, UFF, &#39;</span>
@@ -1272,6 +1286,9 @@
 <span class="sd">            - Entries are float numbers representing the energies (in kJ/mol).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">rd_mol</span><span class="o">.</span><span class="n">GetNumConformers</span><span class="p">():</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not generate conformers for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> via OpenBabel&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span>
     <span class="c1"># Set up Openbabel input and output format</span>
     <span class="n">obconversion</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBConversion</span><span class="p">()</span>
     <span class="n">obconversion</span><span class="o">.</span><span class="n">SetInAndOutFormats</span><span class="p">(</span><span class="s1">&#39;xyz&#39;</span><span class="p">,</span> <span class="s1">&#39;xyz&#39;</span><span class="p">)</span>
@@ -1328,6 +1345,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
     <span class="n">rd_mol</span> <span class="o">=</span> <span class="n">embed_rdkit</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">xyz</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">rd_mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span>
     <span class="n">unoptimized_xyzs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rd_mol</span><span class="o">.</span><span class="n">GetNumConformers</span><span class="p">()):</span>
         <span class="n">conf</span><span class="p">,</span> <span class="n">xyz</span> <span class="o">=</span> <span class="n">rd_mol</span><span class="o">.</span><span class="n">GetConformer</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="nb">list</span><span class="p">()</span>
@@ -1378,10 +1397,9 @@
     <span class="n">ff</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBForceField</span><span class="o">.</span><span class="n">FindForceField</span><span class="p">(</span><span class="n">force_field</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="c1"># generate an OpenBabel molecule</span>
         <span class="n">obmol</span> <span class="o">=</span> <span class="n">ob</span><span class="o">.</span><span class="n">OBMol</span><span class="p">()</span>
         <span class="n">atoms</span> <span class="o">=</span> <span class="n">mol</span><span class="o">.</span><span class="n">vertices</span>
-        <span class="n">ob_atom_ids</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>  <span class="c1"># dictionary of OB atom IDs</span>
+        <span class="n">ob_atom_ids</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">atoms</span><span class="p">):</span>
             <span class="n">a</span> <span class="o">=</span> <span class="n">obmol</span><span class="o">.</span><span class="n">NewAtom</span><span class="p">()</span>
             <span class="n">a</span><span class="o">.</span><span class="n">SetAtomicNum</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">number</span><span class="p">)</span>
@@ -1407,7 +1425,6 @@
         <span class="n">ff</span><span class="o">.</span><span class="n">SetElectrostaticCutOff</span><span class="p">(</span><span class="mf">10.0</span><span class="p">)</span>  <span class="c1"># The Electrostatic cut-off distance (default=10.0)</span>
         <span class="n">ff</span><span class="o">.</span><span class="n">SetUpdateFrequency</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>  <span class="c1"># The frequency to update the non-bonded pairs (default=10)</span>
         <span class="n">ff</span><span class="o">.</span><span class="n">EnableCutOff</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Use cut-off (default=don&#39;t use cut-off)</span>
-        <span class="c1"># ff.SetLineSearchType(&#39;Newton2Num&#39;)</span>
         <span class="n">ff</span><span class="o">.</span><span class="n">SteepestDescentInitialize</span><span class="p">()</span>  <span class="c1"># ConjugateGradientsInitialize</span>
         <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span>
         <span class="k">while</span> <span class="n">v</span><span class="p">:</span>
@@ -1448,7 +1465,6 @@
         <span class="n">ff</span><span class="o">.</span><span class="n">Setup</span><span class="p">(</span><span class="n">obmol</span><span class="p">)</span>
         <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">obconversion</span><span class="o">.</span><span class="n">WriteString</span><span class="p">(</span><span class="n">obmol</span><span class="p">)</span><span class="o">.</span><span class="n">splitlines</span><span class="p">()[</span><span class="mi">2</span><span class="p">:])</span>
         <span class="n">xyz_dict</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">)</span>
-        <span class="c1"># reorder:</span>
         <span class="n">xyz_dict</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">][</span><span class="n">ob_atom_ids</span><span class="p">[</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="n">j</span><span class="p">]]]</span>
                                    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">])))</span>
         <span class="n">xyzs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">)</span>
@@ -1467,7 +1483,7 @@
 <span class="sd">        xyz (dict, optional): The 3D coordinates.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        RDMol: An RDKIt molecule with embedded conformers.</span>
+<span class="sd">        Optional[RDMol]: An RDKIt molecule with embedded conformers.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">num_confs</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Either num_confs or xyz must be set when calling embed_rdkit() for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -1479,8 +1495,11 @@
         <span class="k">raise</span> <span class="n">ConformerError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Argument mol can be either an RMG Molecule or an RDKit RDMol object. &#39;</span>
                              <span class="sa">f</span><span class="s1">&#39;Got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">mol</span><span class="p">)</span><span class="si">}</span><span class="s1"> for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">num_confs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">Chem</span><span class="o">.</span><span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMultipleConfs</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span> <span class="n">numConfs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">,</span> <span class="n">randomSeed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">enforceChirality</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="c1"># Chem.AllChem.EmbedMultipleConfs(rd_mol, numConfs=num_confs, randomSeed=15, enforceChirality=False)</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">Chem</span><span class="o">.</span><span class="n">AllChem</span><span class="o">.</span><span class="n">EmbedMultipleConfs</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span> <span class="n">numConfs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">,</span> <span class="n">randomSeed</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">enforceChirality</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not embed conformers using RDKit for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
     <span class="k">elif</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">rd_conf</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">Conformer</span><span class="p">(</span><span class="n">rd_mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">())</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rd_mol</span><span class="o">.</span><span class="n">GetNumAtoms</span><span class="p">()):</span>
@@ -1550,7 +1569,7 @@
                       <span class="n">force_field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;MMFF94s&#39;</span><span class="p">,</span>
                       <span class="n">try_uff</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                       <span class="n">optimize</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
-                      <span class="n">try_ob</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                      <span class="n">try_ob</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                       <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">list</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Optimize RDKit conformers using a force field (MMFF94 or MMFF94s are recommended).</span>
@@ -1576,13 +1595,17 @@
         <span class="k">if</span> <span class="n">optimize</span><span class="p">:</span>
             <span class="n">v</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
             <span class="k">while</span> <span class="n">v</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">:</span>  <span class="c1"># v == 1: continue, v == 0: enough steps, v == -1: unable to set up</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFOptimizeMolecule</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span>
-                                                      <span class="n">mmffVariant</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
-                                                      <span class="n">confId</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
-                                                      <span class="n">maxIters</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
-                                                      <span class="n">ignoreInterfragInteractions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                                      <span class="p">)</span>
-                <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">v</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFOptimizeMolecule</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span>
+                                                          <span class="n">mmffVariant</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
+                                                          <span class="n">confId</span><span class="o">=</span><span class="n">i</span><span class="p">,</span>
+                                                          <span class="n">maxIters</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+                                                          <span class="n">ignoreInterfragInteractions</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                                          <span class="p">)</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">j</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">mol_properties</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFGetMoleculeProperties</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span> <span class="n">mmffVariant</span><span class="o">=</span><span class="n">force_field</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">mol_properties</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">ff</span> <span class="o">=</span> <span class="n">Chem</span><span class="o">.</span><span class="n">AllChem</span><span class="o">.</span><span class="n">MMFFGetMoleculeForceField</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span> <span class="n">mol_properties</span><span class="p">,</span> <span class="n">confId</span><span class="o">=</span><span class="n">i</span><span class="p">)</span>
@@ -1597,15 +1620,16 @@
                                                                <span class="n">maxIters</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
                                                                <span class="n">ignoreInterfragInteractions</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                                                                <span class="p">)</span>
-            <span class="k">except</span> <span class="ne">RuntimeError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using OpenBabel (instead of RDKit) as a fall back method to generate conformers &#39;</span>
-                               <span class="sa">f</span><span class="s1">&#39;for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">. This is often slower.&#39;</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">try_ob</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using OpenBabel (instead of RDKit) as a fall back method to generate conformers &#39;</span>
+                                   <span class="sa">f</span><span class="s1">&#39;for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">. This is often slower.&#39;</span><span class="p">)</span>
                     <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span> <span class="o">=</span> <span class="n">openbabel_force_field_on_rdkit_conformers</span><span class="p">(</span><span class="n">label</span><span class="p">,</span>
-                                                                               <span class="n">mol</span><span class="p">,</span>
+                                                                               <span class="n">rd_mol</span><span class="p">,</span>
                                                                                <span class="n">force_field</span><span class="o">=</span><span class="n">force_field</span><span class="p">,</span>
                                                                                <span class="n">optimize</span><span class="o">=</span><span class="n">optimize</span><span class="p">,</span>
                                                                                <span class="p">)</span>
+                    <span class="k">return</span> <span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rd_mol</span><span class="o">.</span><span class="n">GetNumConformers</span><span class="p">()):</span>
             <span class="k">if</span> <span class="n">output</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># The optimization converged.</span>
                 <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">])</span>
@@ -2175,6 +2199,9 @@
             <span class="k">continue</span>
         <span class="n">new_xyz</span> <span class="o">=</span> <span class="n">replace_n_with_c_in_xyz</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="p">,</span> <span class="n">conformer</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">],</span> <span class="n">chiral_nitrogen_centers</span><span class="p">,</span> <span class="n">elements_to_insert</span><span class="p">)</span>
         <span class="n">rd_mol</span> <span class="o">=</span> <span class="n">embed_rdkit</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">new_mol</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="n">new_xyz</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">rd_mol</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">rd_mol</span><span class="o">.</span><span class="n">GetNumConformers</span><span class="p">():</span>
+            <span class="k">continue</span>
+        <span class="n">rd_mol</span><span class="o">.</span><span class="n">UpdatePropertyCache</span><span class="p">(</span><span class="n">strict</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">Chem</span><span class="o">.</span><span class="n">rdmolops</span><span class="o">.</span><span class="n">AssignStereochemistryFrom3D</span><span class="p">(</span><span class="n">rd_mol</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">rd_atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">rd_mol</span><span class="o">.</span><span class="n">GetAtoms</span><span class="p">()):</span>
             <span class="n">rd_atom_props_dict</span> <span class="o">=</span> <span class="n">rd_atom</span><span class="o">.</span><span class="n">GetPropsAsDict</span><span class="p">()</span>

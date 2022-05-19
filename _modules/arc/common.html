@@ -216,13 +216,6 @@
 
 <span class="n">VERSION</span> <span class="o">=</span> <span class="s1">&#39;1.1.0&#39;</span>
 
-<span class="c1"># define default values for using the optional GCN to predict TS guesses</span>
-<span class="c1"># default assumption is that TS-GCN is installed in the same parent folder as the ARC repository</span>
-<span class="n">TS_GCN_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">ARC_PATH</span><span class="p">),</span> <span class="s1">&#39;TS-GCN&#39;</span><span class="p">)</span>
-<span class="c1"># default environment name for this repo is `ts_gcn`</span>
-<span class="n">TS_GCN_PYTHON</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">))),</span>
-                             <span class="s1">&#39;ts_gcn&#39;</span><span class="p">,</span> <span class="s1">&#39;bin&#39;</span><span class="p">,</span> <span class="s1">&#39;python&#39;</span><span class="p">)</span>
-
 
 <span class="n">default_job_types</span><span class="p">,</span> <span class="n">servers</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;default_job_types&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;servers&#39;</span><span class="p">]</span>
 
@@ -740,7 +733,7 @@
                            <span class="n">charge_2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
                            <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Get the an approximate for a single bond length between two elements.</span>
+<span class="sd">    Get an approximate for a single bond length between two elements.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        symbol_1 (str): Symbol 1.</span>
@@ -760,6 +753,57 @@
     <span class="k">if</span> <span class="n">bond2</span> <span class="ow">in</span> <span class="n">SINGLE_BOND_LENGTH</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">SINGLE_BOND_LENGTH</span><span class="p">[</span><span class="n">bond2</span><span class="p">]</span>
     <span class="k">return</span> <span class="mf">2.5</span></div>
+
+
+<div class="viewcode-block" id="get_bonds_from_dmat"><a class="viewcode-back" href="../../api/common.html#arc.common.get_bonds_from_dmat">[docs]</a><span class="k">def</span> <span class="nf">get_bonds_from_dmat</span><span class="p">(</span><span class="n">dmat</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+                        <span class="n">elements</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]],</span>
+                        <span class="n">charges</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                        <span class="n">tolerance</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.2</span><span class="p">,</span>
+                        <span class="n">bond_lone_hydrogens</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                        <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Guess the connectivity of a molecule from its distance matrix representation.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        dmat (np.ndarray): An NxN matrix of atom distances in Angstrom.</span>
+<span class="sd">        elements (List[str]): The corresponding element list in the same atomic order.</span>
+<span class="sd">        charges (List[int], optional): A corresponding list of formal atomic charges.</span>
+<span class="sd">        tolerance (float, optional): A factor by which the single bond length threshold is multiplied for the check.</span>
+<span class="sd">        bond_lone_hydrogens (bool, optional): Whether to assign a bond to hydrogen atoms which were not identified</span>
+<span class="sd">                                              as bonded. If so, the closest atom will be considered.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        List[Tuple[int, int]]:</span>
+<span class="sd">            A list of tuple entries, each represents a bond and contains sorted atom indices.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span> <span class="o">!=</span> <span class="n">dmat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span> <span class="o">!=</span> <span class="n">dmat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">dmat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The dimensions of the DMat </span><span class="si">{</span><span class="n">dmat</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s1"> must be equal to the number of elements </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">bonds</span><span class="p">,</span> <span class="n">bonded_hydrogens</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">charges</span> <span class="o">=</span> <span class="n">charges</span> <span class="ow">or</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">elements</span><span class="p">)</span>
+    <span class="c1"># Heavy atoms</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e_1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">elements</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">e_2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">elements</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">e_1</span> <span class="o">!=</span> <span class="s1">&#39;H&#39;</span> <span class="ow">and</span> <span class="n">e_2</span> <span class="o">!=</span> <span class="s1">&#39;H&#39;</span> <span class="ow">and</span> <span class="n">dmat</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">tolerance</span> <span class="o">*</span> \
+                    <span class="n">get_single_bond_length</span><span class="p">(</span><span class="n">symbol_1</span><span class="o">=</span><span class="n">e_1</span><span class="p">,</span>
+                                           <span class="n">symbol_2</span><span class="o">=</span><span class="n">e_2</span><span class="p">,</span>
+                                           <span class="n">charge_1</span><span class="o">=</span><span class="n">charges</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+                                           <span class="n">charge_2</span><span class="o">=</span><span class="n">charges</span><span class="p">[</span><span class="n">j</span><span class="p">]):</span>
+                <span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])))</span>
+    <span class="c1"># Hydrogen atoms except for H--H bonds, make sure each H has only one bond (the closest heavy atom).</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e_1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">elements</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">e_1</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span><span class="p">:</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">get_extremum_index</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">dmat</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">return_min</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_values</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="p">(</span><span class="n">elements</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;H&#39;</span><span class="p">):</span>
+                <span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">])))</span>
+                <span class="n">bonded_hydrogens</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+    <span class="c1"># Lone hydrogens, also important for the H2 molecule.</span>
+    <span class="k">if</span> <span class="n">bond_lone_hydrogens</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">e_1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">elements</span><span class="p">):</span>
+            <span class="n">j</span> <span class="o">=</span> <span class="n">get_extremum_index</span><span class="p">(</span><span class="n">lst</span><span class="o">=</span><span class="n">dmat</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">return_min</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">skip_values</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="n">bond</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">([</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]))</span>
+            <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span> <span class="ow">and</span> <span class="n">e_1</span> <span class="o">==</span> <span class="s1">&#39;H&#39;</span> <span class="ow">and</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bonded_hydrogens</span> <span class="ow">and</span> <span class="n">j</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bonded_hydrogens</span> <span class="ow">and</span> <span class="n">bond</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">bonds</span><span class="p">:</span>
+                <span class="n">bonds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bond</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">bonds</span></div>
 
 
 <div class="viewcode-block" id="determine_symmetry"><a class="viewcode-back" href="../../api/common.html#arc.common.determine_symmetry">[docs]</a><span class="k">def</span> <span class="nf">determine_symmetry</span><span class="p">(</span><span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
@@ -837,26 +881,63 @@
                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    A helper function for finding the extremum (either minimum or maximum) of a list of numbers (int/float)</span>
-<span class="sd">    where some of the entries might be ``None``.</span>
+<span class="sd">    where some entries could be ``None``.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        lst (list): The list.</span>
 <span class="sd">        return_min (bool, optional): Whether to return the minimum or the maximum.</span>
 <span class="sd">                                    ``True`` for minimum, ``False`` for maximum, ``True`` by default.</span>
 
-<span class="sd">    Returns: int</span>
+<span class="sd">    Returns: Optional[Union[int, None]]</span>
 <span class="sd">        The entry with the minimal/maximal value.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]):</span>
         <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">lst</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">return_min</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">min</span><span class="p">([</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">max</span><span class="p">([</span><span class="n">entry</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span> <span class="k">if</span> <span class="n">entry</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="get_extremum_index"><a class="viewcode-back" href="../../api/common.html#arc.common.get_extremum_index">[docs]</a><span class="k">def</span> <span class="nf">get_extremum_index</span><span class="p">(</span><span class="n">lst</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span>
+                       <span class="n">return_min</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                       <span class="n">skip_values</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">list</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+                       <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A helper function for finding the extremum (either minimum or maximum) of a list of numbers (int/float)</span>
+<span class="sd">    where some entries could be ``None``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        lst (list): The list.</span>
+<span class="sd">        return_min (bool, optional): Whether to return the minimum or the maximum.</span>
+<span class="sd">                                    ``True`` for minimum, ``False`` for maximum, ``True`` by default.</span>
+<span class="sd">        skip_values (list, optional): Values to skip when checking for extermum, e.g., 0.</span>
+
+<span class="sd">    Returns: Optional[Union[int, None]]</span>
+<span class="sd">        The index of an entry with the minimal/maximal value.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="nb">all</span><span class="p">([</span><span class="n">entry</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">lst</span><span class="p">]):</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">lst</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="n">skip_values</span> <span class="o">=</span> <span class="n">skip_values</span> <span class="o">+</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="k">if</span> <span class="n">skip_values</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+    <span class="n">extremum_index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">entry</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">lst</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">skip_values</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">return_min</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">entry</span> <span class="o">&lt;</span> <span class="n">lst</span><span class="p">[</span><span class="n">extremum_index</span><span class="p">]:</span>
+                <span class="n">extremum_index</span> <span class="o">=</span> <span class="n">i</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">entry</span> <span class="o">&gt;</span> <span class="n">lst</span><span class="p">[</span><span class="n">extremum_index</span><span class="p">]:</span>
+                <span class="n">extremum_index</span> <span class="o">=</span> <span class="n">i</span>
+    <span class="k">return</span> <span class="n">extremum_index</span></div>
 
 
 <div class="viewcode-block" id="sort_two_lists_by_the_first"><a class="viewcode-back" href="../../api/common.html#arc.common.sort_two_lists_by_the_first">[docs]</a><span class="k">def</span> <span class="nf">sort_two_lists_by_the_first</span><span class="p">(</span><span class="n">list1</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]],</span>
@@ -904,6 +985,26 @@
     <span class="k">for</span> <span class="n">counter</span><span class="p">,</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">sorted_indices</span><span class="p">):</span>
         <span class="n">sorted_list2</span><span class="p">[</span><span class="n">counter</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_list2</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">sorted_list1</span><span class="p">,</span> <span class="n">sorted_list2</span></div>
+
+
+<div class="viewcode-block" id="check_that_all_entries_are_in_list"><a class="viewcode-back" href="../../api/common.html#arc.common.check_that_all_entries_are_in_list">[docs]</a><span class="k">def</span> <span class="nf">check_that_all_entries_are_in_list</span><span class="p">(</span><span class="n">list_1</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">],</span> <span class="n">list_2</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check that all entries from ``list_2`` are in ``list_1``, and that the lists are the same length.</span>
+<span class="sd">    Useful for testing that two lists are equal regardless of entry order.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        list_1 (list, tuple): Entries are floats or ints (could also be None).</span>
+<span class="sd">        list_2 (list, tuple): Entries could be anything.</span>
+
+<span class="sd">    Returns: bool</span>
+<span class="sd">        Whether all entries from ``list_2`` are in ``list_1`` and the lists are the same length.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_1</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">list_2</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="n">entry</span> <span class="ow">in</span> <span class="n">list_2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">entry</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">list_1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="kc">True</span></div>
 
 
 <div class="viewcode-block" id="key_by_val"><a class="viewcode-back" href="../../api/common.html#arc.common.key_by_val">[docs]</a><span class="k">def</span> <span class="nf">key_by_val</span><span class="p">(</span><span class="n">dictionary</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
@@ -967,7 +1068,7 @@
                         <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-08</span><span class="p">,</span>
                         <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    A helper function for checking whether two xyz&#39;s are almost equal.</span>
+<span class="sd">    A helper function for checking whether two xyz&#39;s are almost equal. Also checks equal symbols.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        xyz1 (dict): Cartesian coordinates.</span>
@@ -980,6 +1081,10 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz1</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz2</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;xyz1 and xyz2 must be dictionaries, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">xyz1</span><span class="p">)</span><span class="si">}</span><span class="s1"> and </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">xyz2</span><span class="p">)</span><span class="si">}</span><span class="s1">:</span><span class="se">\n</span><span class="si">{</span><span class="n">xyz1</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">xyz2</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">symbol_1</span><span class="p">,</span> <span class="n">symbol_2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xyz1</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">],</span> <span class="n">xyz2</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">symbol_1</span> <span class="o">!=</span> <span class="n">symbol_2</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot compare coords, xyz1 and xyz2 have different symbols:&quot;</span>
+                           <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">xyz1</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s2">and:</span><span class="se">\n</span><span class="si">{</span><span class="n">xyz2</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">xyz_coord1</span><span class="p">,</span> <span class="n">xyz_coord2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xyz1</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">],</span> <span class="n">xyz2</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">]):</span>
         <span class="k">for</span> <span class="n">xyz1_c</span><span class="p">,</span> <span class="n">xyz2_c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xyz_coord1</span><span class="p">,</span> <span class="n">xyz_coord2</span><span class="p">):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="n">xyz1_c</span><span class="p">],</span> <span class="p">[</span><span class="n">xyz2_c</span><span class="p">],</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">):</span>
