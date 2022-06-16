@@ -363,6 +363,18 @@ Ensures positive values in the resulting list.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="arc.common.delete_check_files">
+<span class="sig-prename descclassname"><span class="pre">arc.common.</span></span><span class="sig-name descname"><span class="pre">delete_check_files</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">project_directory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/common.html#delete_check_files"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.common.delete_check_files" title="Permalink to this definition">¶</a></dt>
+<dd><p>Delete ESS checkfiles. They usually take up lots of space and are not needed after ARC terminates.
+Pass <code class="docutils literal notranslate"><span class="pre">True</span></code> to the <code class="docutils literal notranslate"><span class="pre">keep_checks</span></code> flag in ARC to avoid deleting check files.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>project_directory</strong> (<em>str</em>) – The path to the ARC project folder.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="arc.common.determine_ess">
 <span class="sig-prename descclassname"><span class="pre">arc.common.</span></span><span class="sig-name descname"><span class="pre">determine_ess</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_file</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/arc/common.html#determine_ess"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.common.determine_ess" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the ESS to which the log file belongs.</p>

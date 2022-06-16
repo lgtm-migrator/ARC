@@ -645,6 +645,25 @@
     <span class="k">return</span> <span class="n">string</span></div>
 
 
+<div class="viewcode-block" id="delete_check_files"><a class="viewcode-back" href="../../api/common.html#arc.common.delete_check_files">[docs]</a><span class="k">def</span> <span class="nf">delete_check_files</span><span class="p">(</span><span class="n">project_directory</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Delete ESS checkfiles. They usually take up lots of space and are not needed after ARC terminates.</span>
+<span class="sd">    Pass ``True`` to the ``keep_checks`` flag in ARC to avoid deleting check files.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        project_directory (str): The path to the ARC project folder.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logged</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">calcs_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">project_directory</span><span class="p">,</span> <span class="s1">&#39;calcs&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">calcs_path</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">file_</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file_</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;.chk&#39;</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file_</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">logged</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">deleting all check files...</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="n">logged</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">file_</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="string_representer"><a class="viewcode-back" href="../../api/common.html#arc.common.string_representer">[docs]</a><span class="k">def</span> <span class="nf">string_representer</span><span class="p">(</span><span class="n">dumper</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Add a custom string representer to use block literals for multiline strings.</span>

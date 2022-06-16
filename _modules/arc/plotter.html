@@ -1243,25 +1243,25 @@
     <span class="k">return</span> <span class="n">num_comb</span></div>
 
 
-<div class="viewcode-block" id="plot_1d_rotor_scan"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.plot_1d_rotor_scan">[docs]</a><span class="k">def</span> <span class="nf">plot_1d_rotor_scan</span><span class="p">(</span><span class="n">angles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">energies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">results</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">scan</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-                       <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span>
-                       <span class="n">units</span><span class="o">=</span><span class="s1">&#39;degrees&#39;</span><span class="p">,</span>
-                       <span class="n">original_dihedral</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="plot_1d_rotor_scan"><a class="viewcode-back" href="../../api/plotter.html#arc.plotter.plot_1d_rotor_scan">[docs]</a><span class="k">def</span> <span class="nf">plot_1d_rotor_scan</span><span class="p">(</span><span class="n">angles</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">energies</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">results</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">scan</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                       <span class="n">comment</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                       <span class="n">units</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;degrees&#39;</span><span class="p">,</span>
+                       <span class="n">original_dihedral</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                        <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                        <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Plots a 1D rotor PES for energy vs. angles. Either ``angles`` and ``energies`` or ``results`` must be given.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        angles (list, tuple, np.array, optional): Dihedral angles.</span>
-<span class="sd">        energies (list, tuple, np.array, optional): The energies in kJ/mol.</span>
+<span class="sd">        angles (Union[list, tuple, np.array], optional): Dihedral angles.</span>
+<span class="sd">        energies (Union[list, tuple, np.array], optional): The energies in kJ/mol.</span>
 <span class="sd">        results (dict, optional): The results dictionary, dihedrals are assumed to be in degrees (not radians).</span>
 <span class="sd">        path (str, optional): The folder path for saving the rotor scan image and comments.</span>
-<span class="sd">        scan (list, tuple, optional): The pivotal atoms of the scan.</span>
+<span class="sd">        scan (Union[list, tuple], optional): The pivotal atoms of the scan.</span>
 <span class="sd">        comment (str, optional): Reason for invalidating this rotor.</span>
 <span class="sd">        units (str, optional): The ``angle`` units, either &#39;degrees&#39; or &#39;radians&#39;.</span>
 <span class="sd">        original_dihedral (float, optional): The actual dihedral angle of this torsion before the scan.</span>
