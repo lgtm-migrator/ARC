@@ -818,6 +818,18 @@ Returns <code class="docutils literal notranslate"><span class="pre">True</span>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="arc.scheduler.Scheduler.check_rxn_e0_by_spc">
+<span class="sig-name descname"><span class="pre">check_rxn_e0_by_spc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_rxn_e0_by_spc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_rxn_e0_by_spc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check the E0 (electronic energy + ZPE) of reactions related to a specific species.
+Requires all opt + freq computations to be converged for all apecies (and TS) participating in each reaction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – A label representing a species.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="arc.scheduler.Scheduler.check_scan_job">
 <span class="sig-name descname"><span class="pre">check_scan_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">JobAdapter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_scan_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_scan_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check that a rotor scan job converged successfully. Also checks (QA) whether the scan is relatively “smooth”,
@@ -976,7 +988,7 @@ If <code class="docutils literal notranslate"><span class="pre">label</span></co
 <dl class="py method">
 <dt class="sig sig-object py" id="arc.scheduler.Scheduler.make_reaction_labels_info_file">
 <span class="sig-name descname"><span class="pre">make_reaction_labels_info_file</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.make_reaction_labels_info_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.Scheduler.make_reaction_labels_info_file" title="Permalink to this definition">¶</a></dt>
-<dd><p>A helper function for creating the <cite>reactions labels.info</cite> file</p>
+<dd><p>A helper function for creating the <cite>reactions labels.info</cite> file.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -1313,7 +1325,7 @@ Don’t spawn TS jobs if the multiplicity of the reaction could not be determine
 <dl class="py method">
 <dt class="sig sig-object py" id="arc.scheduler.Scheduler.switch_ts">
 <span class="sig-name descname"><span class="pre">switch_ts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.switch_ts"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.Scheduler.switch_ts" title="Permalink to this definition">¶</a></dt>
-<dd><p>Try the next optimized TS guess in line if a TS was found to be faulty.</p>
+<dd><p>Try the next optimized TS guess in line if a previous TS guess was found to be wrong.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The TS species label.</p>
@@ -1408,6 +1420,51 @@ Using the following methods:
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arc.scheduler.species_has_freq">
+<span class="sig-prename descclassname"><span class="pre">arc.scheduler.</span></span><span class="sig-name descname"><span class="pre">species_has_freq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species_output_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/arc/scheduler.html#species_has_freq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.species_has_freq" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a species has valid converged frequencies using it’s output dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>species_output_dict</strong> (<em>dict</em>) – The species output dict (i.e., Scheduler.output[label]).</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns: bool</dt><dd><p>Whether a species has valid converged frequencies.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arc.scheduler.species_has_geo">
+<span class="sig-prename descclassname"><span class="pre">arc.scheduler.</span></span><span class="sig-name descname"><span class="pre">species_has_geo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species_output_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/arc/scheduler.html#species_has_geo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.species_has_geo" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a species has a valid converged geometry using it’s output dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>species_output_dict</strong> (<em>dict</em>) – The species output dict (i.e., Scheduler.output[label]).</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns: bool</dt><dd><p>Whether a species has a valid converged geometry.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arc.scheduler.species_has_sp">
+<span class="sig-prename descclassname"><span class="pre">arc.scheduler.</span></span><span class="sig-name descname"><span class="pre">species_has_sp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">species_output_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/arc/scheduler.html#species_has_sp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.species_has_sp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks whether a species has a valid converged single-point energy using it’s output dict.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>species_output_dict</strong> (<em>dict</em>) – The species output dict (i.e., Scheduler.output[label]).</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>Returns: bool</dt><dd><p>Whether a species has a valid converged single-point energy.</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

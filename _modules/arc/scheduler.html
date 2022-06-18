@@ -484,8 +484,6 @@
                 <span class="n">family_text</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
                 <span class="k">if</span> <span class="n">rxn</span><span class="o">.</span><span class="n">family</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="n">family_text</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;identified as belonging to RMG family </span><span class="si">{</span><span class="n">rxn</span><span class="o">.</span><span class="n">family</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span>
-                    <span class="k">if</span> <span class="n">rxn</span><span class="o">.</span><span class="n">family_own_reverse</span><span class="p">:</span>
-                        <span class="n">family_text</span> <span class="o">+=</span> <span class="s2">&quot;, which is its own reverse&quot;</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Considering reaction: </span><span class="si">{</span><span class="n">rxn</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">family_text</span><span class="p">:</span>
                     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;(</span><span class="si">{</span><span class="n">family_text</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
@@ -1330,7 +1328,7 @@
                 <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Unable to set the path for the sp job for species </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
             <span class="k">return</span>
-        <span class="k">if</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>  <span class="c1"># Check whether single point jobs have been spawned yet.</span>
+        <span class="k">if</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]:</span>  <span class="c1"># Check whether single-point energy jobs have been spawned yet.</span>
             <span class="c1"># We&#39;re spawning the first sp job for this species.</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">job_dict</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;sp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">:</span>
@@ -1996,7 +1994,7 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Energy for conformer </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> of </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> is None&#39;</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Conformer </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1"> for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> did not converge.&#39;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">times_rerun</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">times_rerun</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh_ess_jobs</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_run_a_job</span><span class="p">(</span><span class="n">job</span><span class="o">=</span><span class="n">job</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">rerun</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Scheduler.determine_most_stable_conformer"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.determine_most_stable_conformer">[docs]</a>    <span class="k">def</span> <span class="nf">determine_most_stable_conformer</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
@@ -2306,6 +2304,8 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;isomorphism&#39;</span><span class="p">]</span> <span class="o">+=</span> <span class="s1">&#39;composite did not pass isomorphism check; &#39;</span>
                     <span class="n">success</span> <span class="o">&amp;=</span> <span class="n">is_isomorphic</span>
+                <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">check_rxn_e0_by_spc</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">success</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">is_ts</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh_ess_jobs</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">troubleshoot_negative_freq</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">job</span><span class="o">=</span><span class="n">job</span><span class="p">)</span>
@@ -2381,6 +2381,7 @@
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh_ess_jobs</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">troubleshoot_opt_jobs</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_rxn_e0_by_spc</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
             <span class="k">return</span> <span class="kc">True</span>  <span class="c1"># run freq / sp / scan jobs on this optimized geometry</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">False</span>  <span class="c1"># return ``False``, so no freq / sp / scan jobs are initiated for this unoptimized geometry</span></div>
@@ -2397,7 +2398,7 @@
 <span class="sd">            label (str): The species label.</span>
 <span class="sd">            job (JobAdapter): The frequency job object instance.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">freq_ok</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="n">freq_ok</span><span class="p">,</span> <span class="n">switch_ts</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
         <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;done&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">job</span><span class="o">.</span><span class="n">local_path_to_output_file</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="n">SchedulerError</span><span class="p">(</span><span class="s1">&#39;Called check_freq_job with no output file&#39;</span><span class="p">)</span>
@@ -2432,29 +2433,14 @@
                                     <span class="sa">f</span><span class="s1">&#39;Status is:</span><span class="se">\n</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">ts_checks</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
                                     <span class="sa">f</span><span class="s1">&#39;Searching for a better TS conformer...&#39;</span><span class="p">)</span>
                         <span class="bp">self</span><span class="o">.</span><span class="n">switch_ts</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                        <span class="n">switch_ts</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">is_ts</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">trsh_ess_jobs</span><span class="p">:</span>
                 <span class="c1"># Only trsh neg freq here for non TS species, trsh TS species is done in check_negative_freq().</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">troubleshoot_negative_freq</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">job</span><span class="o">=</span><span class="n">job</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">!=</span> <span class="s1">&#39;done&#39;</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">freq_ok</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">is_ts</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">troubleshoot_ess</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">job</span><span class="o">=</span><span class="n">job</span><span class="p">,</span> <span class="n">level_of_theory</span><span class="o">=</span><span class="n">job</span><span class="o">.</span><span class="n">level</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;done&#39;</span> <span class="ow">and</span> <span class="n">freq_ok</span><span class="p">:</span>
-            <span class="c1"># Check E0 of related reactions.</span>
-            <span class="k">for</span> <span class="n">rxn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rxn_list</span><span class="p">:</span>
-                <span class="n">labels</span> <span class="o">=</span> <span class="n">rxn</span><span class="o">.</span><span class="n">reactants</span> <span class="o">+</span> <span class="n">rxn</span><span class="o">.</span><span class="n">products</span> <span class="o">+</span> <span class="p">[</span><span class="n">rxn</span><span class="o">.</span><span class="n">ts_label</span><span class="p">]</span>
-                <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">([</span><span class="n">output_dict</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;freq&#39;</span><span class="p">]</span>
-                                            <span class="k">for</span> <span class="n">spc_label</span><span class="p">,</span> <span class="n">output_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">spc_label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]):</span>
-                    <span class="n">switch_ts</span> <span class="o">=</span> <span class="n">check_rxn_e0</span><span class="p">(</span><span class="n">reaction</span><span class="o">=</span><span class="n">rxn</span><span class="p">,</span>
-                                             <span class="n">species_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">,</span>
-                                             <span class="n">project_directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span>
-                                             <span class="n">kinetics_adapter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kinetics_adapter</span><span class="p">,</span>
-                                             <span class="n">output</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
-                                             <span class="n">sp_level</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sp_level</span><span class="p">,</span>
-                                             <span class="n">freq_scale_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_scale_factor</span><span class="p">,</span>
-                                             <span class="p">)</span>
-                    <span class="k">if</span> <span class="n">switch_ts</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-                        <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not calculate a rate coefficient for reaction </span><span class="si">{</span><span class="n">rxn</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">. &#39;</span>
-                                     <span class="sa">f</span><span class="s1">&#39;Check status is:</span><span class="se">\n</span><span class="si">{</span><span class="n">rxn</span><span class="o">.</span><span class="n">ts_species</span><span class="o">.</span><span class="n">ts_checks</span><span class="si">}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">Switching TS.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">switch_ts</span><span class="p">(</span><span class="n">rxn</span><span class="o">.</span><span class="n">ts_label</span><span class="p">)</span></div>
+        <span class="k">if</span> <span class="n">job</span><span class="o">.</span><span class="n">job_status</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;status&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;done&#39;</span> <span class="ow">and</span> <span class="n">freq_ok</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">switch_ts</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_rxn_e0_by_spc</span><span class="p">(</span><span class="n">label</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Scheduler.check_negative_freq"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.check_negative_freq">[docs]</a>    <span class="k">def</span> <span class="nf">check_negative_freq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                             <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
@@ -2540,9 +2526,35 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">ts_checks</span><span class="p">[</span><span class="s1">&#39;freq&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="k">return</span> <span class="kc">True</span></div>
 
+<div class="viewcode-block" id="Scheduler.check_rxn_e0_by_spc"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.check_rxn_e0_by_spc">[docs]</a>    <span class="k">def</span> <span class="nf">check_rxn_e0_by_spc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check the E0 (electronic energy + ZPE) of reactions related to a specific species.</span>
+<span class="sd">        Requires all opt + freq computations to be converged for all apecies (and TS) participating in each reaction.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label (str): A label representing a species.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">rxn</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rxn_list</span><span class="p">:</span>
+            <span class="n">labels</span> <span class="o">=</span> <span class="n">rxn</span><span class="o">.</span><span class="n">reactants</span> <span class="o">+</span> <span class="n">rxn</span><span class="o">.</span><span class="n">products</span> <span class="o">+</span> <span class="p">[</span><span class="n">rxn</span><span class="o">.</span><span class="n">ts_label</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">rxn</span><span class="o">.</span><span class="n">ts_species</span><span class="o">.</span><span class="n">ts_checks</span><span class="p">[</span><span class="s1">&#39;E0&#39;</span><span class="p">]</span> \
+                    <span class="ow">and</span> <span class="nb">all</span><span class="p">([</span><span class="n">species_has_sp</span><span class="p">(</span><span class="n">output_dict</span><span class="p">)</span> <span class="ow">and</span> <span class="n">species_has_freq</span><span class="p">(</span><span class="n">output_dict</span><span class="p">)</span>
+                             <span class="k">for</span> <span class="n">spc_label</span><span class="p">,</span> <span class="n">output_dict</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">spc_label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]):</span>
+                <span class="n">switch_ts</span> <span class="o">=</span> <span class="n">check_rxn_e0</span><span class="p">(</span><span class="n">reaction</span><span class="o">=</span><span class="n">rxn</span><span class="p">,</span>
+                                         <span class="n">species_dict</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">,</span>
+                                         <span class="n">project_directory</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span>
+                                         <span class="n">kinetics_adapter</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">kinetics_adapter</span><span class="p">,</span>
+                                         <span class="n">output</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span>
+                                         <span class="n">sp_level</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sp_level</span> <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">composite_method</span><span class="p">,</span>
+                                         <span class="n">freq_scale_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">freq_scale_factor</span><span class="p">,</span>
+                                         <span class="p">)</span>
+                <span class="k">if</span> <span class="n">switch_ts</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
+                    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;TS status for reaction </span><span class="si">{</span><span class="n">rxn</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1"> is:</span><span class="se">\n</span><span class="si">{</span><span class="n">rxn</span><span class="o">.</span><span class="n">ts_species</span><span class="o">.</span><span class="n">ts_checks</span><span class="si">}</span><span class="s1">.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                <span class="sa">f</span><span class="s1">&#39;Switching TS.</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">switch_ts</span><span class="p">(</span><span class="n">rxn</span><span class="o">.</span><span class="n">ts_label</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="Scheduler.switch_ts"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.switch_ts">[docs]</a>    <span class="k">def</span> <span class="nf">switch_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Try the next optimized TS guess in line if a TS was found to be faulty.</span>
+<span class="sd">        Try the next optimized TS guess in line if a previous TS guess was found to be wrong.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            label (str): The TS species label.</span>
@@ -2550,6 +2562,10 @@
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Switching a TS guess for </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">...&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">determine_most_likely_ts_conformer</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>  <span class="c1"># Look for a different TS guess.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">delete_all_species_jobs</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>  <span class="c1"># Delete other currently running jobs for this TS.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;geo&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;freq&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;sp&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">[</span><span class="n">label</span><span class="p">][</span><span class="s1">&#39;composite&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="n">freq_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="s1">&#39;rxns&#39;</span><span class="p">,</span> <span class="n">label</span><span class="p">,</span> <span class="s1">&#39;geometry&#39;</span><span class="p">,</span> <span class="s1">&#39;freq.out&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">freq_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">freq_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">populate_ts_checks</span><span class="p">()</span>  <span class="c1"># Restart the TS checks dict.</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">ts_guesses_exhausted</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">species_dict</span><span class="p">[</span><span class="n">label</span><span class="p">]</span><span class="o">.</span><span class="n">chosen_ts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Optimizing species </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> again using a different TS guess: &#39;</span>
@@ -3510,7 +3526,9 @@
             <span class="n">save_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">restart_path</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">restart_dict</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Scheduler.make_reaction_labels_info_file"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.Scheduler.make_reaction_labels_info_file">[docs]</a>    <span class="k">def</span> <span class="nf">make_reaction_labels_info_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;A helper function for creating the `reactions labels.info` file&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A helper function for creating the `reactions labels.info` file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rxn_info_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="s1">&#39;rxns&#39;</span><span class="p">,</span> <span class="s1">&#39;reaction labels.info&#39;</span><span class="p">)</span>
         <span class="n">old_file_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="s1">&#39;rxns&#39;</span><span class="p">,</span> <span class="s1">&#39;reaction labels.old.info&#39;</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">rxn_info_path</span><span class="p">):</span>
@@ -3662,6 +3680,52 @@
         <span class="n">path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_directory</span><span class="p">,</span> <span class="s1">&#39;output&#39;</span><span class="p">,</span> <span class="s1">&#39;rxns&#39;</span><span class="p">,</span> <span class="s1">&#39;TS_guess_report.yml&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">content</span><span class="p">:</span>
             <span class="n">save_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="species_has_freq"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.species_has_freq">[docs]</a><span class="k">def</span> <span class="nf">species_has_freq</span><span class="p">(</span><span class="n">species_output_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether a species has valid converged frequencies using it&#39;s output dict.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        species_output_dict (dict): The species output dict (i.e., Scheduler.output[label]).</span>
+
+<span class="sd">    Returns: bool</span>
+<span class="sd">        Whether a species has valid converged frequencies.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">species_output_dict</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;freq&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">species_output_dict</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;composite&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="species_has_geo"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.species_has_geo">[docs]</a><span class="k">def</span> <span class="nf">species_has_geo</span><span class="p">(</span><span class="n">species_output_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether a species has a valid converged geometry using it&#39;s output dict.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        species_output_dict (dict): The species output dict (i.e., Scheduler.output[label]).</span>
+
+<span class="sd">    Returns: bool</span>
+<span class="sd">        Whether a species has a valid converged geometry.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">species_output_dict</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;geo&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">species_output_dict</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;composite&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="species_has_sp"><a class="viewcode-back" href="../../api/scheduler.html#arc.scheduler.species_has_sp">[docs]</a><span class="k">def</span> <span class="nf">species_has_sp</span><span class="p">(</span><span class="n">species_output_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Checks whether a species has a valid converged single-point energy using it&#39;s output dict.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        species_output_dict (dict): The species output dict (i.e., Scheduler.output[label]).</span>
+
+<span class="sd">    Returns: bool</span>
+<span class="sd">        Whether a species has a valid converged single-point energy.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">species_output_dict</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;sp&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="n">species_output_dict</span><span class="p">[</span><span class="s1">&#39;paths&#39;</span><span class="p">][</span><span class="s1">&#39;composite&#39;</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
 </pre></div>
 
            </div>

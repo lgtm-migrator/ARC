@@ -197,7 +197,7 @@
 <span class="kn">from</span> <span class="nn">rmgpy.qm.symmetry</span> <span class="kn">import</span> <span class="n">PointGroupCalculator</span>
 
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">SettingsError</span>
-<span class="kn">from</span> <span class="nn">arc.imports</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">arc.imports</span> <span class="kn">import</span> <span class="n">home</span><span class="p">,</span> <span class="n">settings</span>
 
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
@@ -206,6 +206,7 @@
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;arc&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;matplotlib.font_manager&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
 
 <span class="c1"># Absolute path to the ARC folder.</span>
 <span class="n">ARC_PATH</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
@@ -220,7 +221,7 @@
 <span class="n">default_job_types</span><span class="p">,</span> <span class="n">servers</span> <span class="o">=</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;default_job_types&#39;</span><span class="p">],</span> <span class="n">settings</span><span class="p">[</span><span class="s1">&#39;servers&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="initialize_job_types"><a class="viewcode-back" href="../../api/common.html#arc.common.initialize_job_types">[docs]</a><span class="k">def</span> <span class="nf">initialize_job_types</span><span class="p">(</span><span class="n">job_types</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<div class="viewcode-block" id="initialize_job_types"><a class="viewcode-back" href="../../api/common.html#arc.common.initialize_job_types">[docs]</a><span class="k">def</span> <span class="nf">initialize_job_types</span><span class="p">(</span><span class="n">job_types</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                          <span class="n">specific_job_type</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
                          <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -228,8 +229,8 @@
 <span class="sd">    Returns the comprehensive (default values for missing job types) job types for ARC.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        job_types (dict): Keys are job types, values are booleans of whether or not to consider this job type.</span>
-<span class="sd">        specific_job_type (str): Specific job type to execute. Legal strings are job types (keys of job_types dict).</span>
+<span class="sd">        job_types (dict, optional): Keys are job types, values are booleans of whether or not to consider this job type.</span>
+<span class="sd">        specific_job_type (str, optional): Specific job type to execute. Legal strings are job types (keys of job_types dict).</span>
 
 <span class="sd">    Returns: dict</span>
 <span class="sd">        An updated (comprehensive) job type dictionary.</span>
@@ -246,8 +247,10 @@
             <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Specified job type </span><span class="si">{</span><span class="n">specific_job_type</span><span class="si">}</span><span class="s1"> is not supported.&#39;</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">specific_job_type</span> <span class="o">==</span> <span class="s1">&#39;bde&#39;</span><span class="p">:</span>
-        <span class="n">bde_default</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;fine_grid&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
+        <span class="n">bde_default</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;opt&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;fine&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">}</span>
         <span class="n">job_types</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">bde_default</span><span class="p">)</span>
+        <span class="k">if</span> <span class="s1">&#39;fine_grid&#39;</span> <span class="ow">in</span> <span class="n">job_types</span><span class="p">:</span>
+            <span class="k">del</span> <span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;fine_grid&#39;</span><span class="p">]</span>
 
     <span class="n">defaults_to_true</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;conformers&#39;</span><span class="p">,</span> <span class="s1">&#39;fine&#39;</span><span class="p">,</span> <span class="s1">&#39;freq&#39;</span><span class="p">,</span> <span class="s1">&#39;irc&#39;</span><span class="p">,</span> <span class="s1">&#39;opt&#39;</span><span class="p">,</span> <span class="s1">&#39;rotors&#39;</span><span class="p">,</span> <span class="s1">&#39;sp&#39;</span><span class="p">]</span>
     <span class="n">defaults_to_false</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;bde&#39;</span><span class="p">,</span> <span class="s1">&#39;onedmin&#39;</span><span class="p">,</span> <span class="s1">&#39;orbitals&#39;</span><span class="p">]</span>
@@ -842,7 +845,7 @@
     <span class="c1"># Coords is an N x 3 numpy.ndarray of atomic coordinates in the same order as `atom_numbers`.</span>
     <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;coords&#39;</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
     <span class="n">unique_id</span> <span class="o">=</span> <span class="s1">&#39;0&#39;</span>  <span class="c1"># Just some name that the SYMMETRY code gives to one of its jobs.</span>
-    <span class="n">scr_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;/tmp&#39;</span><span class="p">,</span> <span class="s1">&#39;symmetry_scratch&#39;</span><span class="p">)</span>  <span class="c1"># Scratch directory that the SYMMETRY code writes its files in.</span>
+    <span class="n">scr_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">home</span><span class="p">,</span> <span class="s1">&#39;tmp&#39;</span><span class="p">,</span> <span class="s1">&#39;symmetry_scratch&#39;</span><span class="p">)</span>  <span class="c1"># Scratch directory that the SYMMETRY code writes its files in.</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">scr_dir</span><span class="p">):</span>
         <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">scr_dir</span><span class="p">)</span>
     <span class="n">symmetry</span> <span class="o">=</span> <span class="n">optical_isomers</span> <span class="o">=</span> <span class="mi">1</span>
