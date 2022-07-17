@@ -1092,6 +1092,20 @@
             <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">1</span>
         <span class="k">return</span> <span class="kc">None</span></div>
 
+<div class="viewcode-block" id="ARCSpecies.is_diatomic"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.is_diatomic">[docs]</a>    <span class="k">def</span> <span class="nf">is_diatomic</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine whether the species is diatomic.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Optional[bool]: Whether the species is diatomic.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
 <div class="viewcode-block" id="ARCSpecies.is_isomorphic"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.is_isomorphic">[docs]</a>    <span class="k">def</span> <span class="nf">is_isomorphic</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;ARCSpecies&#39;</span><span class="p">,</span> <span class="n">Species</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Determine whether the species is isomorphic with ``other``.</span>
@@ -1181,12 +1195,17 @@
 <div class="viewcode-block" id="ARCSpecies.get_cheap_conformer"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_cheap_conformer">[docs]</a>    <span class="k">def</span> <span class="nf">get_cheap_conformer</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Cheaply (limiting the number of possible conformers) get a reasonable conformer,</span>
-<span class="sd">        this could very well not be the best (lowest) one.</span>
+<span class="sd">        this could very well not be the best (lowest energy) one.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># a quick bypass for mono-atomic species:</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_atoms</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_monoatomic</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="o">=</span> \
                 <span class="n">conformers</span><span class="o">.</span><span class="n">generate_monoatomic_conformer</span><span class="p">(</span><span class="n">symbol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span><span class="p">)[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">final_xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_diatomic</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="o">=</span> \
+                <span class="n">conformers</span><span class="o">.</span><span class="n">generate_diatomic_conformer</span><span class="p">(</span><span class="n">symbol_1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span>
+                                                       <span class="n">symbol_2</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">atoms</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span>
+                                                       <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">)[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">num_confs</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">*</span> <span class="mi">3</span><span class="p">))</span>
             <span class="n">rd_mol</span> <span class="o">=</span> <span class="n">conformers</span><span class="o">.</span><span class="n">embed_rdkit</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="p">,</span> <span class="n">mol</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="p">,</span> <span class="n">num_confs</span><span class="o">=</span><span class="n">num_confs</span><span class="p">)</span>
@@ -1206,7 +1225,8 @@
                 <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not generate a cheap conformer for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">cheap_conformer</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.get_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">generate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+<div class="viewcode-block" id="ARCSpecies.get_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">generate</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
                 <span class="n">return_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;dict&#39;</span><span class="p">,</span>
                 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1566,7 +1586,7 @@
                               <span class="sa">f</span><span class="s1">&#39;optimization: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts_method</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.mol_from_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.mol_from_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">mol_from_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                     <span class="n">xyz</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                     <span class="n">xyz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                      <span class="n">get_cheap</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                      <span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -1581,7 +1601,14 @@
 <span class="sd">            get_cheap (bool, optional): Whether to generate conformers if the species has no xyz data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">generate</span><span class="o">=</span><span class="n">get_cheap</span><span class="p">)</span>
+            <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(</span><span class="n">generate</span><span class="o">=</span><span class="n">get_cheap</span><span class="p">,</span> <span class="n">return_format</span><span class="o">=</span><span class="s1">&#39;dict&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">])</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> \
+                <span class="ow">and</span> <span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;O&#39;</span><span class="p">,</span> <span class="s1">&#39;S&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="c1"># Hard-coded for triplet O2 and S2: Don&#39;t perceive mol.</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">[</span><span class="s1">&#39;symbols&#39;</span><span class="p">]):</span>
@@ -2515,11 +2542,11 @@
                 <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                 <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Check whether a species (or reaction) label is illegal, modify it if needed.</span>
+<span class="sd">    Check whether a species (or reaction) label is legal, modify it if needed.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        label (str): A label.</span>
-<span class="sd">        is_ts (bool, optional): Whether the species label belongs to a TS.</span>
+<span class="sd">        is_ts (bool, optional): Whether the species label belongs to a transition state.</span>
 <span class="sd">        verbose (bool, optional): Whether to log errors.</span>
 
 <span class="sd">    Raises:</span>

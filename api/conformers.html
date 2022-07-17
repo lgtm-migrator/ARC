@@ -735,6 +735,28 @@ Useful when run outside of ARC. True to print.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="arc.species.conformers.generate_diatomic_conformer">
+<span class="sig-prename descclassname"><span class="pre">arc.species.conformers.</span></span><span class="sig-name descname"><span class="pre">generate_diatomic_conformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">symbol_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicity</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_diatomic_conformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.conformers.generate_diatomic_conformer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a conformer for a diatomic species.
+Data from CCCBDB.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>symbol_1</strong> (<em>str</em>) – The atomic symbol of atom 1.</p></li>
+<li><p><strong>symbol_2</strong> (<em>str</em>) – The atomic symbol of atom 2.</p></li>
+<li><p><strong>multiplicity</strong> (<em>int</em><em>, </em><em>optional</em>) – The diatomic species multiplicity</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The diatomic conformer.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="arc.species.conformers.generate_force_field_conformers">
 <span class="sig-prename descclassname"><span class="pre">arc.species.conformers.</span></span><span class="sig-name descname"><span class="pre">generate_force_field_conformers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mol_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">torsion_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">multiplicity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyzs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_confs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MMFF94s'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_force_field_conformers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.conformers.generate_force_field_conformers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate conformers using RDKit and OpenBabel and optimize them using a force field
@@ -766,7 +788,7 @@ Also consider user guesses in <cite>xyzs</cite>.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="arc.species.conformers.generate_monoatomic_conformer">
-<span class="sig-prename descclassname"><span class="pre">arc.species.conformers.</span></span><span class="sig-name descname"><span class="pre">generate_monoatomic_conformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_monoatomic_conformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.conformers.generate_monoatomic_conformer" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">arc.species.conformers.</span></span><span class="sig-name descname"><span class="pre">generate_monoatomic_conformer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">symbol</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/arc/species/conformers.html#generate_monoatomic_conformer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.species.conformers.generate_monoatomic_conformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a conformer for a monoatomic species.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
