@@ -190,6 +190,7 @@
 
 <span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">ess_factory</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">TeraChemLog</span>
 <span class="kn">import</span> <span class="nn">rmgpy</span>
+<span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="kn">import</span> <span class="n">AtomTypeError</span><span class="p">,</span> <span class="n">ILPSolutionError</span><span class="p">,</span> <span class="n">ResonanceError</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.atomtype</span> <span class="kn">import</span> <span class="n">ATOMTYPES</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="kn">import</span> <span class="n">get_element</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.molecule</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Bond</span><span class="p">,</span> <span class="n">Molecule</span>
@@ -202,6 +203,7 @@
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">rmgpy.reaction</span> <span class="kn">import</span> <span class="n">Reaction</span>
+    <span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="kn">import</span> <span class="n">Species</span>
     <span class="kn">from</span> <span class="nn">arc.reaction</span> <span class="kn">import</span> <span class="n">ARCReaction</span>
 
 
@@ -1612,6 +1614,37 @@
         <span class="n">mol</span><span class="o">.</span><span class="n">identify_ring_membership</span><span class="p">()</span>
         <span class="n">mol</span><span class="o">.</span><span class="n">update_connectivity_values</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">mol</span></div>
+
+
+<div class="viewcode-block" id="generate_resonance_structures"><a class="viewcode-back" href="../../api/common.html#arc.common.generate_resonance_structures">[docs]</a><span class="k">def</span> <span class="nf">generate_resonance_structures</span><span class="p">(</span><span class="n">object_</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">],</span>
+                                  <span class="n">keep_isomorphic</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                                  <span class="n">filter_structures</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                                  <span class="n">save_order</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                                  <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Molecule</span><span class="p">]]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Safely generate resonance structures for either an RMG Molecule or an RMG Species object instances.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        object_ (Species, Molecule): The object to generate resonance structures for.</span>
+<span class="sd">        keep_isomorphic (bool, optional): Whether to keep isomorphic isomers.</span>
+<span class="sd">        filter_structures (bool, optional): Whether to filter resonance structures.</span>
+<span class="sd">        save_order (bool, optional): Whether to make sure atom order is preserved.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[List[Molecule]]: If a ``Molecule`` object instance was given, the function returns a list of resonance</span>
+<span class="sd">                                  structures (each is a ``Molecule`` object instance). If a ``Species`` object instance</span>
+<span class="sd">                                  is given, the resonance structures are stored within the given object</span>
+<span class="sd">                                  (in a .molecule attribute), and the function returns ``None``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">object_</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="n">keep_isomorphic</span><span class="p">,</span>
+                                                       <span class="n">filter_structures</span><span class="o">=</span><span class="n">filter_structures</span><span class="p">,</span>
+                                                       <span class="n">save_order</span><span class="o">=</span><span class="n">save_order</span><span class="p">,</span>
+                                                       <span class="p">)</span>
+    <span class="k">except</span> <span class="p">(</span><span class="n">AtomTypeError</span><span class="p">,</span> <span class="n">ILPSolutionError</span><span class="p">,</span> <span class="n">ResonanceError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">result</span></div>
 
 
 <div class="viewcode-block" id="calc_rmsd"><a class="viewcode-back" href="../../api/common.html#arc.common.calc_rmsd">[docs]</a><span class="k">def</span> <span class="nf">calc_rmsd</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">],</span>

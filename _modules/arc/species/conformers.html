@@ -212,7 +212,6 @@
 <span class="kn">from</span> <span class="nn">rdkit.Chem.rdchem</span> <span class="kn">import</span> <span class="n">EditableMol</span> <span class="k">as</span> <span class="n">RDMol</span>
 
 <span class="kn">import</span> <span class="nn">rmgpy.molecule.group</span> <span class="k">as</span> <span class="nn">gr</span>
-<span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="kn">import</span> <span class="n">ILPSolutionError</span><span class="p">,</span> <span class="n">ResonanceError</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.converter</span> <span class="kn">import</span> <span class="n">to_ob_mol</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.molecule</span> <span class="kn">import</span> <span class="n">Atom</span><span class="p">,</span> <span class="n">Bond</span><span class="p">,</span> <span class="n">Molecule</span>
 <span class="kn">from</span> <span class="nn">rmgpy.molecule.element</span> <span class="kn">import</span> <span class="n">C</span> <span class="k">as</span> <span class="n">C_ELEMENT</span><span class="p">,</span> <span class="n">H</span> <span class="k">as</span> <span class="n">H_ELEMENT</span><span class="p">,</span> <span class="n">F</span> <span class="k">as</span> <span class="n">F_ELEMENT</span><span class="p">,</span> <span class="n">Cl</span> <span class="k">as</span> <span class="n">Cl_ELEMENT</span><span class="p">,</span> <span class="n">I</span> <span class="k">as</span> <span class="n">I_ELEMENT</span>
@@ -220,6 +219,7 @@
 <span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="p">(</span><span class="n">convert_list_index_0_to_1</span><span class="p">,</span>
                         <span class="n">determine_top_group_indices</span><span class="p">,</span>
                         <span class="n">get_single_bond_length</span><span class="p">,</span>
+                        <span class="n">generate_resonance_structures</span><span class="p">,</span>
                         <span class="n">logger</span><span class="p">,</span>
                         <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">ConformerError</span><span class="p">,</span> <span class="n">InputError</span>
@@ -339,18 +339,15 @@
                 <span class="k">return</span> <span class="p">[</span><span class="n">CHEAT_SHEET</span><span class="p">[</span><span class="n">smiles</span><span class="p">]],</span> <span class="p">[</span><span class="n">CHEAT_SHEET</span><span class="p">[</span><span class="n">smiles</span><span class="p">]]</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">CHEAT_SHEET</span><span class="p">[</span><span class="n">smiles</span><span class="p">]]</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mol_list</span><span class="p">,</span> <span class="n">Molecule</span><span class="p">):</span>
-        <span class="c1"># try generating resonance structures, but strictly keep atom order</span>
+        <span class="c1"># Try generating resonance structures, but strictly keep atom order.</span>
         <span class="n">success</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="n">mol_copy</span> <span class="o">=</span> <span class="n">mol_list</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">mol_copy</span><span class="o">.</span><span class="n">reactive</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">new_mol_list</span> <span class="o">=</span> <span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">mol_copy</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">new_mol_list</span> <span class="o">=</span> <span class="n">mol_copy</span><span class="o">.</span><span class="n">generate_resonance_structures</span><span class="p">(</span><span class="n">keep_isomorphic</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                                                                  <span class="n">filter_structures</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                                  <span class="n">save_order</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                                                                  <span class="p">)</span>
             <span class="n">success</span> <span class="o">=</span> <span class="n">converter</span><span class="o">.</span><span class="n">order_atoms_in_mol_list</span><span class="p">(</span><span class="n">ref_mol</span><span class="o">=</span><span class="n">mol_list</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">mol_list</span><span class="o">=</span><span class="n">new_mol_list</span><span class="p">)</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">ILPSolutionError</span><span class="p">,</span> <span class="n">ResonanceError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not generate resonance structures for species </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1">. Got: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="k">pass</span>
         <span class="k">if</span> <span class="n">success</span><span class="p">:</span>
             <span class="n">mol_list</span> <span class="o">=</span> <span class="n">new_mol_list</span>
         <span class="k">else</span><span class="p">:</span>

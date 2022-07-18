@@ -487,6 +487,34 @@ where some entries could be <code class="docutils literal notranslate"><span cla
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="arc.common.generate_resonance_structures">
+<span class="sig-prename descclassname"><span class="pre">arc.common.</span></span><span class="sig-name descname"><span class="pre">generate_resonance_structures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">object_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Species</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">rmgpy.molecule.molecule.Molecule</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep_isomorphic</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filter_structures</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_order</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">rmgpy.molecule.molecule.Molecule</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/common.html#generate_resonance_structures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.common.generate_resonance_structures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Safely generate resonance structures for either an RMG Molecule or an RMG Species object instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>object</strong> (<em>Species</em><em>, </em><em>Molecule</em>) – The object to generate resonance structures for.</p></li>
+<li><p><strong>keep_isomorphic</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep isomorphic isomers.</p></li>
+<li><p><strong>filter_structures</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to filter resonance structures.</p></li>
+<li><p><strong>save_order</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to make sure atom order is preserved.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>If a <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> object instance was given, the function returns a list of resonance</dt><dd><p>structures (each is a <code class="docutils literal notranslate"><span class="pre">Molecule</span></code> object instance). If a <code class="docutils literal notranslate"><span class="pre">Species</span></code> object instance
+is given, the resonance structures are stored within the given object
+(in a .molecule attribute), and the function returns <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Optional[List[Molecule]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="arc.common.get_angle_in_180_range">
 <span class="sig-prename descclassname"><span class="pre">arc.common.</span></span><span class="sig-name descname"><span class="pre">get_angle_in_180_range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">round_to</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="reference internal" href="../_modules/arc/common.html#get_angle_in_180_range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.common.get_angle_in_180_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the corresponding angle in the -180 to +180 degree range.</p>
