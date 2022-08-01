@@ -205,10 +205,10 @@ as self.reactants, self.products, and self.ts_label, respectively.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – The reaction’s label in the format <cite>r1 + r2 &lt;=&gt; p1 + p2</cite>
 (or unimolecular on either side, as appropriate).</p></li>
-<li><p><strong>reactants</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of reactant <em>labels</em> corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p></li>
-<li><p><strong>products</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of product <em>labels</em> corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p></li>
-<li><p><strong>r_species</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of reactants <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p></li>
-<li><p><strong>p_species</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of products <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p></li>
+<li><p><strong>reactants</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – A list of reactant <em>labels</em> corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p></li>
+<li><p><strong>products</strong> (<em>List</em><em>[</em><em>str</em><em>]</em><em>, </em><em>optional</em>) – A list of product <em>labels</em> corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p></li>
+<li><p><strong>r_species</strong> (<em>List</em><em>[</em><a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>]</em><em>, </em><em>optional</em>) – A list of reactants <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p></li>
+<li><p><strong>p_species</strong> (<em>List</em><em>[</em><a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies"><em>ARCSpecies</em></a><em>]</em><em>, </em><em>optional</em>) – A list of products <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p></li>
 <li><p><strong>ts_label</strong> (<em>str</em><em>, </em><em>optional</em>) – The <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> label of the respective TS.</p></li>
 <li><p><strong>rmg_reaction</strong> (<em>Reaction</em><em>, </em><em>optional</em>) – An RMG Reaction class.</p></li>
 <li><p><strong>ts_xyz_guess</strong> (<em>list</em><em>, </em><em>optional</em>) – A list of TS XYZ user guesses, each in a string format.</p></li>
@@ -263,7 +263,7 @@ preserved. Used for identification of rotors which break a TS.</p></li>
 <dd><p>A list of reactants labels corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>List[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -274,7 +274,7 @@ preserved. Used for identification of rotors which break a TS.</p></li>
 <dd><p>A list of products labels corresponding to an <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>List[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -285,7 +285,7 @@ preserved. Used for identification of rotors which break a TS.</p></li>
 <dd><p>A list of reactants <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>List[<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies">ARCSpecies</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -296,7 +296,7 @@ preserved. Used for identification of rotors which break a TS.</p></li>
 <dd><p>A list of products <a class="reference internal" href="species.html#species"><span class="std std-ref">ARCSpecies</span></a> objects.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
-<dd class="field-odd"><p>list</p>
+<dd class="field-odd"><p>List[<a class="reference internal" href="species.html#arc.species.species.ARCSpecies" title="arc.species.species.ARCSpecies">ARCSpecies</a>]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -597,8 +597,22 @@ A wrapper for the rmgdb determine_reaction_family() function.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="arc.reaction.ARCReaction.get_element_mass">
+<span class="sig-name descname"><span class="pre">get_element_mass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.get_element_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.reaction.ARCReaction.get_element_mass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the mass of all elements of a reaction. Uses the ato order of the reactants.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The RMS of the normal mode displacements.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="arc.reaction.ARCReaction.get_expected_changing_bonds">
-<span class="sig-name descname"><span class="pre">get_expected_changing_bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_label_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.get_expected_changing_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.reaction.ARCReaction.get_expected_changing_bonds" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_expected_changing_bonds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">r_label_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.get_expected_changing_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.reaction.ARCReaction.get_expected_changing_bonds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the expected forming and breaking bonds from the RMG reaction template.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -609,7 +623,7 @@ of atoms in a TemplateReaction.</p>
 <dd class="field-even"><p>A list of tuples of atom indices representing breaking and forming bonds.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>Tuple[List[Tuple[int, …]], List[Tuple[int, …]]]</p>
+<dd class="field-odd"><p>Tuple[List[Tuple[int, int]], List[Tuple[int, int]]]</p>
 </dd>
 </dl>
 </dd></dl>

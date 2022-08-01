@@ -167,6 +167,7 @@
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
+<span class="kn">from</span> <span class="nn">arkane.common</span> <span class="kn">import</span> <span class="n">get_element_mass</span>
 <span class="kn">from</span> <span class="nn">rmgpy.reaction</span> <span class="kn">import</span> <span class="n">Reaction</span>
 <span class="kn">from</span> <span class="nn">rmgpy.species</span> <span class="kn">import</span> <span class="n">Species</span>
 
@@ -203,10 +204,10 @@
 <span class="sd">    Args:</span>
 <span class="sd">        label (str, optional): The reaction&#39;s label in the format `r1 + r2 &lt;=&gt; p1 + p2`</span>
 <span class="sd">                               (or unimolecular on either side, as appropriate).</span>
-<span class="sd">        reactants (list, optional): A list of reactant *labels* corresponding to an :ref:`ARCSpecies &lt;species&gt;`.</span>
-<span class="sd">        products (list, optional): A list of product *labels* corresponding to an :ref:`ARCSpecies &lt;species&gt;`.</span>
-<span class="sd">        r_species (list, optional): A list of reactants :ref:`ARCSpecies &lt;species&gt;` objects.</span>
-<span class="sd">        p_species (list, optional): A list of products :ref:`ARCSpecies &lt;species&gt;` objects.</span>
+<span class="sd">        reactants (List[str], optional): A list of reactant *labels* corresponding to an :ref:`ARCSpecies &lt;species&gt;`.</span>
+<span class="sd">        products (List[str], optional): A list of product *labels* corresponding to an :ref:`ARCSpecies &lt;species&gt;`.</span>
+<span class="sd">        r_species (List[ARCSpecies], optional): A list of reactants :ref:`ARCSpecies &lt;species&gt;` objects.</span>
+<span class="sd">        p_species (List[ARCSpecies], optional): A list of products :ref:`ARCSpecies &lt;species&gt;` objects.</span>
 <span class="sd">        ts_label (str, optional): The :ref:`ARCSpecies &lt;species&gt;` label of the respective TS.</span>
 <span class="sd">        rmg_reaction (Reaction, optional): An RMG Reaction class.</span>
 <span class="sd">        ts_xyz_guess (list, optional): A list of TS XYZ user guesses, each in a string format.</span>
@@ -224,10 +225,10 @@
 <span class="sd">                     (or unimolecular on either side, as appropriate).</span>
 <span class="sd">        family (KineticsFamily): The RMG kinetic family, if applicable.</span>
 <span class="sd">        family_own_reverse (bool): Whether the RMG family is its own reverse.</span>
-<span class="sd">        reactants (list): A list of reactants labels corresponding to an :ref:`ARCSpecies &lt;species&gt;`.</span>
-<span class="sd">        products (list): A list of products labels corresponding to an :ref:`ARCSpecies &lt;species&gt;`.</span>
-<span class="sd">        r_species (list): A list of reactants :ref:`ARCSpecies &lt;species&gt;` objects.</span>
-<span class="sd">        p_species (list): A list of products :ref:`ARCSpecies &lt;species&gt;` objects.</span>
+<span class="sd">        reactants (List[str]): A list of reactants labels corresponding to an :ref:`ARCSpecies &lt;species&gt;`.</span>
+<span class="sd">        products (List[str]): A list of products labels corresponding to an :ref:`ARCSpecies &lt;species&gt;`.</span>
+<span class="sd">        r_species (List[ARCSpecies]): A list of reactants :ref:`ARCSpecies &lt;species&gt;` objects.</span>
+<span class="sd">        p_species (List[ARCSpecies]): A list of products :ref:`ARCSpecies &lt;species&gt;` objects.</span>
 <span class="sd">        ts_species (ARCSpecies): The :ref:`ARCSpecies &lt;species&gt;` corresponding to the reaction&#39;s TS.</span>
 <span class="sd">        dh_rxn298 (float): The heat of reaction at 298K.</span>
 <span class="sd">        kinetics (Arrhenius): The high pressure limit rate coefficient calculated by ARC.</span>
@@ -525,18 +526,23 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">products</span> <span class="o">=</span> <span class="n">products</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">plus</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">products</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reactants</span> <span class="o">=</span> <span class="p">[</span><span class="n">reactant</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">reactant</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactants</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">product</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">product</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">products</span><span class="p">]</span>
                 <span class="k">if</span> <span class="n">species_list</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactants</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">products</span><span class="p">):</span>
                         <span class="n">labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">spc</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="n">species_list</span><span class="p">]</span>
+                        <span class="n">original_labels</span> <span class="o">=</span> <span class="p">[</span><span class="n">spc</span><span class="o">.</span><span class="n">original_label</span> <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="n">species_list</span><span class="p">]</span>
                         <span class="k">for</span> <span class="n">spc_label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactants</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">products</span><span class="p">:</span>
-                            <span class="k">if</span> <span class="n">spc_label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="n">spc_label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">labels</span> <span class="o">+</span> <span class="n">original_labels</span><span class="p">:</span>
                                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The species </span><span class="si">{</span><span class="n">spc_label</span><span class="si">}</span><span class="s1"> appears in the reaction label</span><span class="se">\n</span><span class="s1">&#39;</span>
                                                  <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
                                                  <span class="sa">f</span><span class="s1">&#39;Yet no species with a corresponding label was defined in ARC.&#39;</span><span class="p">)</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">r_species</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reactants</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">r_species</span> <span class="o">=</span> <span class="p">[</span><span class="n">spc</span> <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="n">species_list</span> <span class="k">if</span> <span class="n">spc</span><span class="o">.</span><span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactants</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">r_species</span> <span class="o">=</span> <span class="p">[</span><span class="n">spc</span> <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="n">species_list</span> <span class="k">if</span> <span class="n">spc</span><span class="o">.</span><span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactants</span>
+                                          <span class="ow">or</span> <span class="n">spc</span><span class="o">.</span><span class="n">original_label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">reactants</span><span class="p">]</span>
                     <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">p_species</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">products</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">p_species</span> <span class="o">=</span> <span class="p">[</span><span class="n">spc</span> <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="n">species_list</span> <span class="k">if</span> <span class="n">spc</span><span class="o">.</span><span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">products</span><span class="p">]</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">p_species</span> <span class="o">=</span> <span class="p">[</span><span class="n">spc</span> <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="n">species_list</span> <span class="k">if</span> <span class="n">spc</span><span class="o">.</span><span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">products</span>
+                                          <span class="ow">or</span> <span class="n">spc</span><span class="o">.</span><span class="n">original_label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">products</span><span class="p">]</span>
             <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">reactants</span> <span class="o">=</span> <span class="p">[</span><span class="n">r</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">reactants</span><span class="p">]</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">products</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">products</span><span class="p">]</span>
@@ -927,7 +933,7 @@
 
 <div class="viewcode-block" id="ARCReaction.get_expected_changing_bonds"><a class="viewcode-back" href="../../api/reaction.html#arc.reaction.ARCReaction.get_expected_changing_bonds">[docs]</a>    <span class="k">def</span> <span class="nf">get_expected_changing_bonds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                     <span class="n">r_label_dict</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span>
-                                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="o">...</span><span class="p">]]]]:</span>
+                                    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">]]]]:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Get the expected forming and breaking bonds from the RMG reaction template.</span>
 
@@ -936,7 +942,7 @@
 <span class="sd">                                           of atoms in a TemplateReaction.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Tuple[List[Tuple[int, ...]], List[Tuple[int, ...]]]:</span>
+<span class="sd">            Tuple[List[Tuple[int, int]], List[Tuple[int, int]]]:</span>
 <span class="sd">                A list of tuples of atom indices representing breaking and forming bonds.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -1051,7 +1057,20 @@
         <span class="n">xyz_dict</span> <span class="o">=</span> <span class="n">sort_xyz_using_indices</span><span class="p">(</span><span class="n">xyz_dict</span><span class="o">=</span><span class="n">xyz_dict</span><span class="p">,</span> <span class="n">indices</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">atom_map</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">return_format</span> <span class="o">==</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
             <span class="n">xyz_dict</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="n">xyz_dict</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">xyz_dict</span></div></div>
+        <span class="k">return</span> <span class="n">xyz_dict</span></div>
+
+<div class="viewcode-block" id="ARCReaction.get_element_mass"><a class="viewcode-back" href="../../api/reaction.html#arc.reaction.ARCReaction.get_element_mass">[docs]</a>    <span class="k">def</span> <span class="nf">get_element_mass</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the mass of all elements of a reaction. Uses the ato order of the reactants.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            List[float]: The RMS of the normal mode displacements.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">masses</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">reactant</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">r_species</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">atom</span> <span class="ow">in</span> <span class="n">reactant</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">:</span>
+                <span class="n">masses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">get_element_mass</span><span class="p">(</span><span class="n">atom</span><span class="o">.</span><span class="n">element</span><span class="o">.</span><span class="n">symbol</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">masses</span></div></div>
 
 
 <div class="viewcode-block" id="remove_dup_species"><a class="viewcode-back" href="../../api/reaction.html#arc.reaction.remove_dup_species">[docs]</a><span class="k">def</span> <span class="nf">remove_dup_species</span><span class="p">(</span><span class="n">species_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">ARCSpecies</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">ARCSpecies</span><span class="p">]:</span>

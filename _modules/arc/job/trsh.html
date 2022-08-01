@@ -407,7 +407,7 @@
                                 <span class="c1"># e.g., Please increase MaxCore to more than: 289 MB</span>
                                 <span class="n">estimated_mem</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">info</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">2</span><span class="p">])</span> <span class="o">+</span> <span class="mi">500</span>
                             <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
-                                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Insufficient Orca job memory. ARC will estimate the amount of memory required.&#39;</span>
+                                <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Insufficient job memory.&#39;</span>
                                 <span class="n">keywords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Memory&#39;</span><span class="p">)</span>
                                 <span class="k">break</span>
                             <span class="n">keywords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Memory&#39;</span><span class="p">)</span>
@@ -434,8 +434,7 @@
                                     <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
                                         <span class="c1"># e.g., Please increase MaxCore</span>
                                         <span class="c1"># In old Orca versions, there is no indication on the minimum memory requirement</span>
-                                        <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Insufficient Orca job memory. ARC will estimate the amount of &#39;</span> \
-                                                <span class="s1">&#39;memory required.&#39;</span>
+                                        <span class="n">error</span> <span class="o">=</span> <span class="s1">&#39;Insufficient job memory.&#39;</span>
                                         <span class="k">break</span>
                                     <span class="n">estimated_mem_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">estimated_mem</span><span class="p">)</span>
                             <span class="k">if</span> <span class="n">estimated_mem_list</span><span class="p">:</span>
@@ -576,7 +575,9 @@
                              <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;[&#39;</span><span class="p">,</span> <span class="s1">&#39;(&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;]&#39;</span><span class="p">,</span> <span class="s1">&#39;)&#39;</span><span class="p">))</span>
             <span class="n">error</span> <span class="o">=</span> <span class="n">error</span> <span class="k">if</span> <span class="n">error</span> <span class="k">else</span> <span class="s1">&#39;TeraChem job terminated for an unknown reason.&#39;</span>
             <span class="n">keywords</span> <span class="o">=</span> <span class="n">keywords</span> <span class="k">if</span> <span class="n">keywords</span> <span class="k">else</span> <span class="p">[</span><span class="s1">&#39;Unknown&#39;</span><span class="p">]</span>
-            <span class="k">return</span> <span class="s1">&#39;errored&#39;</span><span class="p">,</span> <span class="n">keywords</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">line</span></div>
+            <span class="k">return</span> <span class="s1">&#39;errored&#39;</span><span class="p">,</span> <span class="n">keywords</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="n">line</span>
+
+    <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="nb">list</span><span class="p">(),</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span></div>
 
 
 <div class="viewcode-block" id="trsh_negative_freq"><a class="viewcode-back" href="../../../api/trsh.html#arc.job.trsh.trsh_negative_freq">[docs]</a><span class="k">def</span> <span class="nf">trsh_negative_freq</span><span class="p">(</span><span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>

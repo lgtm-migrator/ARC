@@ -237,6 +237,8 @@
 </li>
       <li><a href="api/common.html#arc.common.almost_equal_lists">almost_equal_lists() (in module arc.common)</a>
 </li>
+      <li><a href="api/species.html#arc.species.species.TSGuess.almost_equal_tsgs">almost_equal_tsgs() (arc.species.species.TSGuess method)</a>
+</li>
       <li><a href="api/main.html#arc.main.ARC">ARC (class in arc.main)</a>
 </li>
       <li>
@@ -302,6 +304,8 @@
         <li><a href="api/processor.html#module-arc.processor">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     arc.reaction
 
@@ -309,8 +313,6 @@
         <li><a href="api/reaction.html#module-arc.reaction">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     arc.rmgdb
 
@@ -529,10 +531,10 @@
 </li>
       <li><a href="api/common.html#arc.common.check_torsion_change">check_torsion_change() (in module arc.common)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/species.html#arc.species.species.check_xyz">check_xyz() (in module arc.species.species)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/converter.html#arc.species.converter.check_xyz_dict">check_xyz_dict() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.check_xyz_isomorphism">check_xyz_isomorphism() (arc.species.species.ARCSpecies method)</a>
@@ -557,7 +559,11 @@
 </li>
       <li><a href="api/ssh.html#arc.job.ssh.SSHClient.close">close() (arc.job.ssh.SSHClient method)</a>
 </li>
+      <li><a href="api/species.html#arc.species.species.TSGuess.cluster">cluster (arc.species.species.TSGuess attribute)</a>
+</li>
       <li><a href="api/converter.html#arc.species.converter.cluster_confs_by_rmsd">cluster_confs_by_rmsd() (in module arc.species.converter)</a>
+</li>
+      <li><a href="api/species.html#arc.species.species.ARCSpecies.cluster_tsgs">cluster_tsgs() (arc.species.species.ARCSpecies method)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.colliding_atoms">colliding_atoms() (in module arc.species.species)</a>
 </li>
@@ -937,6 +943,8 @@
 </li>
       <li><a href="api/vectors.html#arc.species.vectors.get_dihedral">get_dihedral() (in module arc.species.vectors)</a>
 </li>
+      <li><a href="api/reaction.html#arc.reaction.ARCReaction.get_element_mass">get_element_mass() (arc.reaction.ARCReaction method)</a>
+</li>
       <li><a href="api/converter.html#arc.species.converter.get_element_mass_from_xyz">get_element_mass_from_xyz() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/reaction.html#arc.reaction.ARCReaction.get_expected_changing_bonds">get_expected_changing_bonds() (arc.reaction.ARCReaction method)</a>
@@ -1012,7 +1020,11 @@
       <li><a href="api/conformers.html#arc.species.conformers.get_wells">get_wells() (in module arc.species.conformers)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.get_xyz">get_xyz() (arc.species.species.ARCSpecies method)</a>
+
+      <ul>
+        <li><a href="api/species.html#arc.species.species.TSGuess.get_xyz">(arc.species.species.TSGuess method)</a>
 </li>
+      </ul></li>
       <li><a href="api/converter.html#arc.species.converter.get_xyz_radius">get_xyz_radius() (in module arc.species.converter)</a>
 </li>
       <li><a href="api/converter.html#arc.species.converter.get_zmat_param_value">get_zmat_param_value() (in module arc.species.converter)</a>
@@ -1046,6 +1058,8 @@
       <ul>
         <li><a href="api/species.html#arc.species.species.TSGuess.initial_xyz">(arc.species.species.TSGuess attribute)</a>
 </li>
+        <li><a href="api/species.html#id0">(arc.species.species.TSGuess property)</a>
+</li>
       </ul></li>
       <li><a href="api/species.html#arc.species.species.ARCSpecies.initialize_directed_rotors">initialize_directed_rotors() (arc.species.species.ARCSpecies method)</a>
 </li>
@@ -1061,15 +1075,15 @@
 </li>
       <li><a href="api/conformers.html#arc.species.conformers.inverse_chirality_symbol">inverse_chirality_symbol() (in module arc.species.conformers)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/main.html#arc.main.ARC.irc_level">irc_level (arc.main.ARC attribute)</a>
 
       <ul>
         <li><a href="api/scheduler.html#arc.scheduler.Scheduler.irc_level">(arc.scheduler.Scheduler attribute)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="api/zmat.html#arc.species.zmat.is_angle_linear">is_angle_linear() (in module arc.species.zmat)</a>
+      <li><a href="api/common.html#arc.common.is_angle_linear">is_angle_linear() (in module arc.common)</a>
 </li>
       <li><a href="api/zmat.html#arc.species.zmat.is_atom_in_new_fragment">is_atom_in_new_fragment() (in module arc.species.zmat)</a>
 </li>
@@ -1323,11 +1337,15 @@
 </li>
       </ul></li>
       <li><a href="api/species.html#arc.species.species.TSGuess.opt_xyz">opt_xyz (arc.species.species.TSGuess attribute)</a>
+
+      <ul>
+        <li><a href="api/species.html#id1">(arc.species.species.TSGuess property)</a>
 </li>
-      <li><a href="api/species.html#arc.species.species.ARCSpecies.optical_isomers">optical_isomers (arc.species.species.ARCSpecies attribute)</a>
-</li>
+      </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="api/species.html#arc.species.species.ARCSpecies.optical_isomers">optical_isomers (arc.species.species.ARCSpecies attribute)</a>
+</li>
       <li><a href="api/main.html#arc.main.ARC.orbitals_level">orbitals_level (arc.main.ARC attribute)</a>
 
       <ul>
@@ -1402,10 +1420,10 @@
 </li>
       <li><a href="api/plotter.html#arc.plotter.plot_1d_rotor_scan">plot_1d_rotor_scan() (in module arc.plotter)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/plotter.html#arc.plotter.plot_2d_rotor_scan">plot_2d_rotor_scan() (in module arc.plotter)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/plotter.html#arc.plotter.plot_2d_scan_bond_dihedral">plot_2d_scan_bond_dihedral() (in module arc.plotter)</a>
 </li>
       <li><a href="api/plotter.html#arc.plotter.plot_3d_mol_as_scatter">plot_3d_mol_as_scatter() (in module arc.plotter)</a>
@@ -1429,6 +1447,8 @@
       <li><a href="api/processor.html#arc.processor.process_arc_project">process_arc_project() (in module arc.processor)</a>
 </li>
       <li><a href="api/processor.html#arc.processor.process_bdes">process_bdes() (in module arc.processor)</a>
+</li>
+      <li><a href="api/species.html#arc.species.species.ARCSpecies.process_completed_tsg_queue_jobs">process_completed_tsg_queue_jobs() (arc.species.species.ARCSpecies method)</a>
 </li>
       <li><a href="api/scheduler.html#arc.scheduler.Scheduler.process_conformers">process_conformers() (arc.scheduler.Scheduler method)</a>
 </li>
@@ -1725,6 +1745,8 @@
       <li><a href="api/species.html#arc.species.species.ARCSpecies.successful_methods">successful_methods (arc.species.species.ARCSpecies attribute)</a>
 </li>
       <li><a href="api/species.html#arc.species.species.TSGuess.successful_normal_mode">successful_normal_mode (arc.species.species.TSGuess attribute)</a>
+</li>
+      <li><a href="api/common.html#arc.common.sum_list_entries">sum_list_entries() (in module arc.common)</a>
 </li>
       <li><a href="api/scale.html#arc.utils.scale.summarize_results">summarize_results() (in module arc.utils.scale)</a>
 </li>

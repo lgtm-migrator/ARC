@@ -311,7 +311,7 @@
 <span class="sd">            ServerError: If the file cannot be uploaded with maximum times to try</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">local_file_path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">file_string</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Cannot not upload file to server. Either `file_string` or `local_file_path`&#39;</span>
+            <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="s1">&#39;Cannot upload file to server. Either `file_string` or `local_file_path`&#39;</span>
                              <span class="s1">&#39; must be specified&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">local_file_path</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">local_file_path</span><span class="p">):</span>
             <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot upload a non-existing file. &#39;</span>

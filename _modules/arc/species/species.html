@@ -169,6 +169,7 @@
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">isclose</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">import</span> <span class="nn">rmgpy.molecule.element</span> <span class="k">as</span> <span class="nn">elements</span>
@@ -182,12 +183,15 @@
 <span class="kn">from</span> <span class="nn">rmgpy.statmech</span> <span class="kn">import</span> <span class="n">NonlinearRotor</span><span class="p">,</span> <span class="n">LinearRotor</span>
 <span class="kn">from</span> <span class="nn">rmgpy.transport</span> <span class="kn">import</span> <span class="n">TransportData</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="p">(</span><span class="n">convert_list_index_0_to_1</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="p">(</span><span class="n">almost_equal_coords</span><span class="p">,</span>
+                        <span class="n">convert_list_index_0_to_1</span><span class="p">,</span>
                         <span class="n">determine_symmetry</span><span class="p">,</span>
                         <span class="n">determine_top_group_indices</span><span class="p">,</span>
                         <span class="n">get_logger</span><span class="p">,</span>
                         <span class="n">get_single_bond_length</span><span class="p">,</span>
                         <span class="n">generate_resonance_structures</span><span class="p">,</span>
+                        <span class="n">is_angle_linear</span><span class="p">,</span>
+                        <span class="n">read_yaml_file</span><span class="p">,</span>
                         <span class="n">rmg_mol_from_dict_repr</span><span class="p">,</span>
                         <span class="n">rmg_mol_to_dict_repr</span><span class="p">,</span>
                         <span class="n">timedelta_from_str</span><span class="p">,</span>
@@ -205,6 +209,7 @@
 <span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="p">(</span><span class="n">check_isomorphism</span><span class="p">,</span>
                                    <span class="n">check_xyz_dict</span><span class="p">,</span>
                                    <span class="n">check_zmat_dict</span><span class="p">,</span>
+                                   <span class="n">compare_confs</span><span class="p">,</span>
                                    <span class="n">get_xyz_radius</span><span class="p">,</span>
                                    <span class="n">modify_coords</span><span class="p">,</span>
                                    <span class="n">molecules_from_xyz</span><span class="p">,</span>
@@ -216,7 +221,7 @@
                                    <span class="n">xyz_from_data</span><span class="p">,</span>
                                    <span class="n">xyz_to_str</span><span class="p">,</span>
                                    <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">arc.species.vectors</span> <span class="kn">import</span> <span class="n">calculate_distance</span><span class="p">,</span> <span class="n">calculate_dihedral_angle</span>
+<span class="kn">from</span> <span class="nn">arc.species.vectors</span> <span class="kn">import</span> <span class="n">calculate_angle</span><span class="p">,</span> <span class="n">calculate_distance</span><span class="p">,</span> <span class="n">calculate_dihedral_angle</span>
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
@@ -493,7 +498,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">run_time</span> <span class="o">=</span> <span class="n">run_time</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="o">=</span> <span class="n">checkfile</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transport_data</span> <span class="o">=</span> <span class="n">TransportData</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">yml_path</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yml_path</span> <span class="o">=</span> <span class="n">yml_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span> <span class="o">=</span> <span class="n">fragments</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">original_label</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1449,6 +1454,10 @@
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot set dihedral without xyz&#39;</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">deg_increment</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">deg_abs</span> <span class="o">=</span> <span class="n">calculate_dihedral_angle</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">torsion</span><span class="o">=</span><span class="n">torsion</span><span class="p">)</span> <span class="o">+</span> <span class="n">deg_increment</span>
+        <span class="k">if</span> <span class="n">is_angle_linear</span><span class="p">(</span><span class="n">calculate_angle</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">torsion</span><span class="p">[:</span><span class="mi">3</span><span class="p">],</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span> \
+                <span class="ow">or</span> <span class="n">is_angle_linear</span><span class="p">(</span><span class="n">calculate_angle</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">xyz</span><span class="p">,</span> <span class="n">atoms</span><span class="o">=</span><span class="n">torsion</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">index</span><span class="o">=</span><span class="mi">0</span><span class="p">)):</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot change a dihedral that contains a linear segment. Got torsion:</span><span class="si">{</span><span class="n">torsion</span><span class="si">}</span><span class="s1">, xyz:</span><span class="se">\n</span><span class="si">{</span><span class="n">xyz</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="n">mol</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mol</span>
         <span class="k">if</span> <span class="n">mol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">mols</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
@@ -1585,8 +1594,49 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">+=</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Methods that were unsuccessfully in generating a TS guess:</span><span class="se">\n</span><span class="s1">&#39;</span>
                 <span class="k">for</span> <span class="n">unsuccessful_method</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">unsuccessful_methods</span><span class="p">:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">+=</span> <span class="n">unsuccessful_method</span> <span class="o">+</span> <span class="s1">&#39;,&#39;</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">The method that generated the best TS guess and its output used for the &#39;</span> \
-                              <span class="sa">f</span><span class="s1">&#39;optimization: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts_method</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses_exhausted</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ts_report</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">The method that generated the best TS guess and its output used for the &#39;</span> \
+                                  <span class="sa">f</span><span class="s1">&#39;optimization: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts_method</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span></div>
+
+<div class="viewcode-block" id="ARCSpecies.cluster_tsgs"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.cluster_tsgs">[docs]</a>    <span class="k">def</span> <span class="nf">cluster_tsgs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cluster TSGuesses.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_ts</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">cluster_tsgs</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">cluster_tsg</span> <span class="ow">in</span> <span class="n">cluster_tsgs</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">cluster_tsg</span><span class="o">.</span><span class="n">almost_equal_tsgs</span><span class="p">(</span><span class="n">tsg</span><span class="p">):</span>
+                    <span class="n">cluster_tsg</span><span class="o">.</span><span class="n">cluster</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tsg</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">tsg</span><span class="o">.</span><span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cluster_tsg</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
+                        <span class="n">cluster_tsg</span><span class="o">.</span><span class="n">method</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; + </span><span class="si">{</span><span class="n">tsg</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s1">&#39;</span>
+                        <span class="n">cluster_tsg</span><span class="o">.</span><span class="n">execution_time</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39; + </span><span class="si">{</span><span class="n">tsg</span><span class="o">.</span><span class="n">execution_time</span><span class="si">}</span><span class="s1">&#39;</span>
+                    <span class="k">break</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tsg</span><span class="o">.</span><span class="n">cluster</span> <span class="o">=</span> <span class="p">[</span><span class="n">tsg</span><span class="o">.</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">cluster_tsgs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tsg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span> <span class="o">=</span> <span class="n">cluster_tsgs</span></div>
+
+<div class="viewcode-block" id="ARCSpecies.process_completed_tsg_queue_jobs"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.process_completed_tsg_queue_jobs">[docs]</a>    <span class="k">def</span> <span class="nf">process_completed_tsg_queue_jobs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yml_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Process YAML files which are the output of running a TS guess job in the queue.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            yml_path (str): The path to the output YAML file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">yml_path</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">yml_path</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">tsg_list</span> <span class="o">=</span> <span class="n">read_yaml_file</span><span class="p">(</span><span class="n">yml_path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">tsg_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">tsg</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="n">tsg_list</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">tsgs</span> <span class="o">=</span> <span class="p">[</span><span class="n">TSGuess</span><span class="p">(</span><span class="n">ts_dict</span><span class="o">=</span><span class="n">tsg_dict</span><span class="p">)</span> <span class="k">for</span> <span class="n">tsg_dict</span> <span class="ow">in</span> <span class="n">tsg_list</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">tsg</span> <span class="ow">in</span> <span class="n">tsgs</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tsg</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">colliding_atoms</span><span class="p">(</span><span class="n">tsg</span><span class="o">.</span><span class="n">initial_xyz</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">tsg</span><span class="o">.</span><span class="n">index</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">tsg</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tsg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster_tsgs</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="ARCSpecies.mol_from_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.mol_from_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">mol_from_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                      <span class="n">xyz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1701,7 +1751,9 @@
                 <span class="k">for</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">energy</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">xyzs</span><span class="p">,</span> <span class="n">energies</span><span class="p">):</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">TSGuess</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;user guess </span><span class="si">{</span><span class="n">tsg_index</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">,</span>
                                                    <span class="n">xyz</span><span class="o">=</span><span class="n">remove_dummies</span><span class="p">(</span><span class="n">xyz</span><span class="p">),</span>
-                                                   <span class="n">energy</span><span class="o">=</span><span class="n">energy</span><span class="p">))</span>
+                                                   <span class="n">energy</span><span class="o">=</span><span class="n">energy</span><span class="p">,</span>
+                                                   <span class="n">success</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                                                   <span class="p">))</span>
                     <span class="c1"># user guesses are always successful in generating a *guess*:</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">ts_guesses</span><span class="p">[</span><span class="n">tsg_index</span><span class="p">]</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="kc">True</span>
                     <span class="n">tsg_index</span> <span class="o">+=</span> <span class="mi">1</span>
@@ -2096,6 +2148,7 @@
 <span class="sd">        successful_irc (bool): Whether the IRS run(s) identified this to be the correct TS by isomorphism of the wells.</span>
 <span class="sd">        successful_normal_mode (bool): Whether a normal mode check was successful.</span>
 <span class="sd">        errors (str): Problems experienced with this TSGuess. Used for logging.</span>
+<span class="sd">        cluster (List[int]): Indices of TSGuess object instances clustered together.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
@@ -2113,6 +2166,7 @@
                  <span class="n">arc_reaction</span><span class="p">:</span> <span class="n">Optional</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">ts_dict</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">energy</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">cluster</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="p">):</span>
 
         <span class="k">if</span> <span class="n">ts_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -2127,11 +2181,12 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">constraints</span> <span class="o">=</span> <span class="n">constraints</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">t0</span> <span class="o">=</span> <span class="n">t0</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span> <span class="o">=</span> <span class="n">execution_time</span> <span class="k">if</span> <span class="n">execution_time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">execution_time</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span> <span class="o">=</span> <span class="kc">None</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_opt_xyz</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_initial_xyz</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">process_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>  <span class="c1"># populates self.initial_xyz</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="n">success</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">energy</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span> <span class="o">=</span> <span class="n">cluster</span>
             <span class="k">if</span> <span class="s1">&#39;user guess&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                     <span class="k">raise</span> <span class="n">TSError</span><span class="p">(</span><span class="s1">&#39;If no method is specified, an xyz guess must be given&#39;</span><span class="p">)</span>
@@ -2146,13 +2201,55 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">successful_normal_mode</span> <span class="o">=</span> <span class="kc">None</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">errors</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
-<div class="viewcode-block" id="TSGuess.as_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-        <span class="sd">&quot;&quot;&quot;A helper function for dumping this object as a dictionary in a YAML file for restarting ARC&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;Return a string representation of the object&quot;&quot;&quot;</span>
+        <span class="n">str_representation</span> <span class="o">=</span> <span class="s1">&#39;TSGuess(&#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;index=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="si">}</span><span class="s1">, &#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;method=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="si">}</span><span class="s1">&quot;, &#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;method_index=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method_index</span><span class="si">}</span><span class="s1">, &#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;method_direction=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">method_direction</span><span class="si">}</span><span class="s1">&quot;, &#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;cluster=&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">cluster</span><span class="si">}</span><span class="s1">&quot;, &#39;</span>
+        <span class="n">str_representation</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;success=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">success</span><span class="si">}</span><span class="s1">)&#39;</span>
+        <span class="k">return</span> <span class="n">str_representation</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">initial_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The initial coordinate guess&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_initial_xyz</span>
+
+    <span class="nd">@initial_xyz</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">initial_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allow setting the initial coordinate guess&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_initial_xyz</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">opt_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The optimized coordinates&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opt_xyz</span>
+
+    <span class="nd">@opt_xyz</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">opt_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Allow setting the initial coordinate guess&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_opt_xyz</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TSGuess.as_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">for_report</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A helper function for dumping this object as a dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            for_report (bool, optional): Whether to generate a concise dictionary representation</span>
+<span class="sd">                                         for the final_ts_guess_report.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: The dictionary representation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ts_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
-        <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;method_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_index</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;method_direction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">method_direction</span>
+        <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;execution_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">)</span> \
+            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">success</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">energy</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">index</span>
@@ -2160,22 +2257,24 @@
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;conformer_index&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conformer_index</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;successful_irc&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">successful_irc</span>
         <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;successful_normal_mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">successful_normal_mode</span>
-        <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;execution_time&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">)</span> \
-            <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="ow">or</span> <span class="n">for_report</span><span class="p">:</span>
             <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;initial_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span> <span class="ow">or</span> <span class="n">for_report</span><span class="p">:</span>
             <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;opt_xyz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">rxn_string</span> <span class="o">=</span> <span class="s1">&#39; &lt;=&gt; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">spc</span><span class="o">.</span><span class="n">molecule</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">()</span>
-                                                   <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">reactants</span><span class="p">]),</span>
-                                       <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">spc</span><span class="o">.</span><span class="n">molecule</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">()</span>
-                                                   <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">products</span><span class="p">])])</span>
-            <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;rmg_reaction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rxn_string</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
-            <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">for_report</span><span class="p">:</span>
+            <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;t0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="o">.</span><span class="n">isoformat</span><span class="p">())</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">t0</span><span class="p">,</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">)</span> <span class="k">else</span> <span class="bp">self</span><span class="o">.</span><span class="n">t0</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;cluster&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;family&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">rxn_string</span> <span class="o">=</span> <span class="s1">&#39; &lt;=&gt; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">spc</span><span class="o">.</span><span class="n">molecule</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">()</span>
+                                                       <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">reactants</span><span class="p">]),</span>
+                                           <span class="s1">&#39; + &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">spc</span><span class="o">.</span><span class="n">molecule</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">()</span>
+                                                       <span class="k">for</span> <span class="n">spc</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">rmg_reaction</span><span class="o">.</span><span class="n">products</span><span class="p">])])</span>
+                <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;rmg_reaction&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">rxn_string</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span><span class="p">:</span>
+                <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;errors&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">errors</span>
         <span class="k">return</span> <span class="n">ts_dict</span></div>
 
 <div class="viewcode-block" id="TSGuess.from_dict"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.from_dict">[docs]</a>    <span class="k">def</span> <span class="nf">from_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ts_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
@@ -2190,6 +2289,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;opt_xyz&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;opt_xyz&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;success&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;success&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;energy&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;energy&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cluster</span> <span class="o">=</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;cluster&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;cluster&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">execution_time</span> <span class="o">=</span> <span class="n">timedelta_from_str</span><span class="p">(</span><span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;execution_time&#39;</span><span class="p">])</span> <span class="k">if</span> <span class="s1">&#39;execution_time&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> \
             <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;execution_time&#39;</span><span class="p">],</span> <span class="nb">str</span><span class="p">)</span> \
             <span class="k">else</span> <span class="n">ts_dict</span><span class="p">[</span><span class="s1">&#39;execution_time&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="s1">&#39;execution_time&#39;</span> <span class="ow">in</span> <span class="n">ts_dict</span> <span class="k">else</span> <span class="kc">None</span>
@@ -2254,6 +2354,48 @@
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">xyz</span> <span class="o">=</span> <span class="n">parse_xyz_from_file</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span> <span class="k">else</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TSGuess.get_xyz"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.get_xyz">[docs]</a>    <span class="k">def</span> <span class="nf">get_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">return_format</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;dict&#39;</span><span class="p">,</span>
+                <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the highest quality xyz the TSGuess has.</span>
+<span class="sd">        Returns ``None`` if no xyz can be retrieved.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            return_format (str, optional): Whether to output a &#39;dict&#39; or a &#39;str&#39; representation of the respective xyz.</span>
+
+<span class="sd">        Return:</span>
+<span class="sd">             Optional[Union[dict, str]]: The xyz coordinates in the requested representation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">xyz</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opt_xyz</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">initial_xyz</span>
+        <span class="k">if</span> <span class="n">return_format</span> <span class="o">==</span> <span class="s1">&#39;str&#39;</span><span class="p">:</span>
+            <span class="n">xyz</span> <span class="o">=</span> <span class="n">xyz_to_str</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">xyz</span></div>
+
+<div class="viewcode-block" id="TSGuess.almost_equal_tsgs"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.almost_equal_tsgs">[docs]</a>    <span class="k">def</span> <span class="nf">almost_equal_tsgs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="s1">&#39;TSGuess&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine whether two TSGuess object instances represent the same geometry.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (TSGuess): The other TSGuess object instance to compare to.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Whether the two TSGuess object instances represent the same geometry.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">success</span> <span class="o">!=</span> <span class="n">other</span><span class="o">.</span><span class="n">success</span> <span class="ow">or</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">energy</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                 <span class="ow">and</span> <span class="ow">not</span> <span class="n">isclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">energy</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">))</span> <span class="ow">or</span> \
+                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imaginary_freqs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">other</span><span class="o">.</span><span class="n">imaginary_freqs</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+                 <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imaginary_freqs</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">imaginary_freqs</span><span class="p">)</span>
+                      <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imaginary_freqs</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">other</span><span class="o">.</span><span class="n">imaginary_freqs</span><span class="p">)</span>
+                      <span class="ow">and</span> <span class="nb">any</span><span class="p">([</span><span class="ow">not</span> <span class="n">isclose</span><span class="p">(</span><span class="n">freq_1</span><span class="p">,</span> <span class="n">freq_2</span><span class="p">,</span> <span class="n">abs_tol</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+                               <span class="k">for</span> <span class="n">freq_1</span><span class="p">,</span> <span class="n">freq_2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imaginary_freqs</span><span class="p">,</span> <span class="n">other</span><span class="o">.</span><span class="n">imaginary_freqs</span><span class="p">)]))):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">almost_equal_coords</span><span class="p">(</span><span class="n">xyz1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(),</span> <span class="n">xyz2</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">())</span> \
+                <span class="ow">or</span> <span class="n">compare_confs</span><span class="p">(</span><span class="n">xyz1</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(),</span> <span class="n">xyz2</span><span class="o">=</span><span class="n">other</span><span class="o">.</span><span class="n">get_xyz</span><span class="p">(),</span> <span class="n">rmsd_score</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
 
 <div class="viewcode-block" id="TSGuess.tic"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.TSGuess.tic">[docs]</a>    <span class="k">def</span> <span class="nf">tic</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>

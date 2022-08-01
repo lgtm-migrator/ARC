@@ -2047,8 +2047,8 @@
 
 <div class="viewcode-block" id="compare_confs"><a class="viewcode-back" href="../../../api/converter.html#arc.species.converter.compare_confs">[docs]</a><span class="k">def</span> <span class="nf">compare_confs</span><span class="p">(</span><span class="n">xyz1</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
                   <span class="n">xyz2</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
-                  <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
-                  <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-5</span><span class="p">,</span>
+                  <span class="n">rtol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">,</span>
+                  <span class="n">atol</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
                   <span class="n">rmsd_score</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -2073,7 +2073,7 @@
     <span class="n">xyz1</span><span class="p">,</span> <span class="n">xyz2</span> <span class="o">=</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz1</span><span class="p">),</span> <span class="n">check_xyz_dict</span><span class="p">(</span><span class="n">xyz2</span><span class="p">)</span>
     <span class="n">dmat1</span><span class="p">,</span> <span class="n">dmat2</span> <span class="o">=</span> <span class="n">xyz_to_dmat</span><span class="p">(</span><span class="n">xyz1</span><span class="p">),</span> <span class="n">xyz_to_dmat</span><span class="p">(</span><span class="n">xyz2</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">rmsd_score</span><span class="p">:</span>
-        <span class="c1"># distance matrix is symmetric, only need the upper triangular part to compute rmsd</span>
+        <span class="c1"># Distance matrix is symmetric, only need the upper triangular part to compute rmsd.</span>
         <span class="n">rmsd</span> <span class="o">=</span> <span class="n">calc_rmsd</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">dmat1</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">triu</span><span class="p">(</span><span class="n">dmat2</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">rmsd</span>
     <span class="k">else</span><span class="p">:</span>

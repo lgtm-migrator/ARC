@@ -1270,6 +1270,10 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sp_level</span> <span class="o">=</span> <span class="n">sp</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">opt_level</span> <span class="o">=</span> <span class="n">opt</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">irc_level</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;irc&#39;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">irc_level</span> <span class="o">=</span> <span class="n">opt</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">scan_level</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">job_types</span><span class="p">[</span><span class="s1">&#39;rotors&#39;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">scan_level</span> <span class="o">=</span> <span class="n">opt</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">level_of_theory</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>  <span class="c1"># Reset the level_of_theory argument to avoid conflicts upon restarting ARC.</span></div>
 
