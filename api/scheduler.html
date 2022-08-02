@@ -788,15 +788,12 @@ stable species, and that exactly one imaginary frequency was assigned for a TS.<
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="arc.scheduler.Scheduler.check_irc_job">
-<span class="sig-name descname"><span class="pre">check_irc_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">JobAdapter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_irc_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_irc_job" title="Permalink to this definition">¶</a></dt>
-<dd><p>Check an IRC job and perform post-job tasks.</p>
+<dt class="sig sig-object py" id="arc.scheduler.Scheduler.check_irc_species">
+<span class="sig-name descname"><span class="pre">check_irc_species</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.check_irc_species"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.Scheduler.check_irc_species" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check that the optimized geometry of the two species created from a TS IRC runs makes sense</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
-<li><p><strong>job</strong> (<em>JobAdapter</em>) – The single point job object.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>label</strong> (<em>str</em>) – The label of one of the optimized IRC-resulting species.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1296,6 +1293,20 @@ The differentiation between <code class="docutils literal notranslate"><span cla
 <li><p><strong>InputError</strong> – If the species directed scan type has an unexpected value,
     or if <code class="docutils literal notranslate"><span class="pre">xyz</span></code> wasn’t given for a cont_opt job.</p></li>
 <li><p><strong>SchedulerError</strong> – If the rotor scan resolution as defined in settings.py is illegal.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="arc.scheduler.Scheduler.spawn_post_irc_jobs">
+<span class="sig-name descname"><span class="pre">spawn_post_irc_jobs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">job</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">JobAdapter</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/arc/scheduler.html#Scheduler.spawn_post_irc_jobs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.scheduler.Scheduler.spawn_post_irc_jobs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Spawn additional jobs after IRC has converged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>label</strong> (<em>str</em>) – The species label.</p></li>
+<li><p><strong>job</strong> (<em>JobAdapter</em>) – The single point job object.</p></li>
 </ul>
 </dd>
 </dl>

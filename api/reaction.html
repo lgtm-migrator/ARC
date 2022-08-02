@@ -597,9 +597,24 @@ A wrapper for the rmgdb determine_reaction_family() function.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="arc.reaction.ARCReaction.get_bonds">
+<span class="sig-name descname"><span class="pre">get_bonds</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.get_bonds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.reaction.ARCReaction.get_bonds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the connectivity of the reactants and products.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A length-2 tuple is which entries represent reactants and product information, respectively.
+Each entry is a list of tuples, each represents a bond and contains sorted atom indices.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[List[Tuple[int, int]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="arc.reaction.ARCReaction.get_element_mass">
 <span class="sig-name descname"><span class="pre">get_element_mass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/reaction.html#ARCReaction.get_element_mass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.reaction.ARCReaction.get_element_mass" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the mass of all elements of a reaction. Uses the ato order of the reactants.</p>
+<dd><p>Get the mass of all elements of a reaction. Uses the atom order of the reactants.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The RMS of the normal mode displacements.</p>
