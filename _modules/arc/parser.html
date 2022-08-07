@@ -173,40 +173,50 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">qcelemental</span> <span class="k">as</span> <span class="nn">qcel</span>
 
+<span class="kn">from</span> <span class="nn">rmgpy.exceptions</span> <span class="kn">import</span> <span class="n">InputError</span> <span class="k">as</span> <span class="n">RMGInputError</span>
 <span class="kn">from</span> <span class="nn">arkane.exceptions</span> <span class="kn">import</span> <span class="n">LogError</span>
 <span class="kn">from</span> <span class="nn">arkane.ess</span> <span class="kn">import</span> <span class="n">ess_factory</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">,</span> <span class="n">MolproLog</span><span class="p">,</span> <span class="n">OrcaLog</span><span class="p">,</span> <span class="n">QChemLog</span><span class="p">,</span> <span class="n">TeraChemLog</span>
 
-<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">determine_ess</span><span class="p">,</span> <span class="n">get_close_tuple</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">is_same_pivot</span>
+<span class="kn">from</span> <span class="nn">arc.common</span> <span class="kn">import</span> <span class="n">determine_ess</span><span class="p">,</span> <span class="n">get_close_tuple</span><span class="p">,</span> <span class="n">get_logger</span><span class="p">,</span> <span class="n">is_same_pivot</span><span class="p">,</span> <span class="n">read_yaml_file</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">ParserError</span>
-<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">xyz_from_data</span>
+<span class="kn">from</span> <span class="nn">arc.species.converter</span> <span class="kn">import</span> <span class="n">hartree_to_si</span><span class="p">,</span> <span class="n">str_to_xyz</span><span class="p">,</span> <span class="n">xyz_from_data</span>
 
 
 <span class="n">logger</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="parse_frequencies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_frequencies">[docs]</a><span class="k">def</span> <span class="nf">parse_frequencies</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-                      <span class="n">software</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                      <span class="n">software</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                       <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse the frequencies from a freq job output file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): The log file path.</span>
-<span class="sd">        software (str): The ESS.</span>
+<span class="sd">        software (str, optional): The ESS.</span>
 
 <span class="sd">    Returns: np.ndarray</span>
 <span class="sd">        The parsed frequencies (in cm^-1).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.yml&#39;</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;freqs&#39;</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">content</span><span class="p">[</span><span class="s1">&#39;freqs&#39;</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">software</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">identify_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([],</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;qchem&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">freqs</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;qchem&#39;</span><span class="p">:</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
             <span class="k">if</span> <span class="s1">&#39; Frequency:&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="n">items</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">items</span><span class="p">):</span>
                     <span class="k">if</span> <span class="n">i</span><span class="p">:</span>
                         <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[(</span><span class="nb">float</span><span class="p">(</span><span class="n">item</span><span class="p">))])</span>
-    <span class="k">elif</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="k">while</span> <span class="n">line</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
@@ -216,7 +226,7 @@
                 <span class="k">if</span> <span class="s1">&#39;Frequencies --&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                     <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">frq</span><span class="p">)</span> <span class="k">for</span> <span class="n">frq</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">:]])</span>
                 <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;molpro&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;molpro&#39;</span><span class="p">:</span>
         <span class="n">read</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
             <span class="k">if</span> <span class="s1">&#39;Nr&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s1">&#39;[1/cm]&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
@@ -228,7 +238,7 @@
                 <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">])])</span>
             <span class="k">if</span> <span class="s1">&#39;Low&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s1">&#39;Vibration&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="s1">&#39;Wavenumber&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="n">read</span> <span class="o">=</span> <span class="kc">True</span>
-    <span class="k">elif</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;orca&#39;</span><span class="p">:</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
             <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
             <span class="n">read</span> <span class="o">=</span> <span class="kc">True</span>
@@ -248,7 +258,7 @@
                     <span class="k">break</span>
                 <span class="k">else</span><span class="p">:</span>
                     <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;terachem&#39;</span><span class="p">:</span>
+    <span class="k">elif</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;terachem&#39;</span><span class="p">:</span>
         <span class="n">read_output</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
             <span class="k">if</span> <span class="s1">&#39;=== Mode&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
@@ -266,9 +276,23 @@
                 <span class="c1"># &#39;Mode  Eigenvalue(AU)  Frequency(cm-1)  Intensity(km/mol)   Vib.Temp(K)      ZPE(AU) ...&#39;</span>
                 <span class="c1"># &#39;  1     0.0331810528   170.5666870932      52.2294230772  245.3982965841   0.0003885795 ...&#39;</span>
                 <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="p">[</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">2</span><span class="p">])])</span>
+    <span class="k">elif</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;xtb&#39;</span><span class="p">:</span>
+        <span class="n">read_output</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">read_output</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;eigval :&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">:]:</span>
+                        <span class="n">freq</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+                        <span class="k">if</span> <span class="n">freq</span><span class="p">:</span>
+                            <span class="n">freqs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">freqs</span><span class="p">,</span> <span class="n">freq</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">break</span>
+            <span class="k">if</span> <span class="s1">&#39;vibrational frequencies&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">read_output</span> <span class="o">=</span> <span class="kc">True</span>
 
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_frequencies() can currently only parse Gaussian, Molpro, Orca, QChem and TeraChem &#39;</span>
+        <span class="k">raise</span> <span class="n">ParserError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;parse_frequencies() can currently only parse Gaussian, Molpro, Orca, QChem, TeraChem and xTB &#39;</span>
                           <span class="sa">f</span><span class="s1">&#39;files, got </span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Using parser.parse_frequencies(). Determined frequencies are: </span><span class="si">{</span><span class="n">freqs</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">freqs</span></div>
@@ -292,14 +316,24 @@
 <span class="sd">    Returns: Tuple[np.ndarray, np.ndarray]</span>
 <span class="sd">        The frequencies (in cm^-1) and the normal mode displacements.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">software</span> <span class="o">=</span> <span class="n">software</span> <span class="ow">or</span> <span class="n">determine_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.yml&#39;</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;freqs&#39;</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span> <span class="ow">and</span> <span class="s1">&#39;modes&#39;</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">content</span><span class="p">[</span><span class="s1">&#39;freqs&#39;</span><span class="p">],</span> <span class="n">content</span><span class="p">[</span><span class="s1">&#39;modes&#39;</span><span class="p">]</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">if</span> <span class="n">software</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">identify_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span> <span class="ow">or</span> <span class="n">determine_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">freqs</span><span class="p">,</span> <span class="n">normal_mode_disp</span><span class="p">,</span> <span class="n">normal_mode_disp_entries</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">(),</span> <span class="nb">list</span><span class="p">()</span>
-    <span class="n">num_of_freqs_per_line</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;xtb&#39;</span><span class="p">:</span>
+        <span class="n">g98_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="s1">&#39;g98.out&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">g98_path</span><span class="p">):</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">g98_path</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;gaussian&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> <span class="s1">&#39;xtb&#39;</span><span class="p">]:</span>
+        <span class="n">num_of_freqs_per_line</span> <span class="o">=</span> <span class="mi">3</span>
         <span class="n">parse</span><span class="p">,</span> <span class="n">parse_normal_mode_disp</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span> <span class="o">+</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="s1">&#39;Harmonic frequencies (cm**-1)&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="c1"># e.g.:  Harmonic frequencies (cm**-1), IR intensities (KM/Mole), Raman scattering</span>
                 <span class="n">parse</span> <span class="o">=</span> <span class="kc">True</span>
@@ -323,7 +357,7 @@
                     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">normal_mode_disp_entries</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
                         <span class="n">normal_mode_disp_entries</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">list</span><span class="p">())</span>
                     <span class="n">normal_mode_disp_entries</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">3</span> <span class="o">*</span> <span class="n">i</span><span class="p">:</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">3</span><span class="p">])</span>
-            <span class="k">elif</span> <span class="n">parse</span> <span class="ow">and</span> <span class="s1">&#39;Atom  AN      X      Y      Z&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+            <span class="k">elif</span> <span class="n">parse</span> <span class="ow">and</span> <span class="s1">&#39;Atom  AN      X      Y      Z&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s1">&#39;Atom AN      X      Y      Z&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="n">parse_normal_mode_disp</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">elif</span> <span class="n">parse</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">line</span> <span class="ow">or</span> <span class="s1">&#39;-------------------&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
                 <span class="n">parse</span> <span class="o">=</span> <span class="kc">False</span>
@@ -344,15 +378,41 @@
 <span class="sd">    Returns: Optional[Dict[str, tuple]]</span>
 <span class="sd">        The cartesian geometry.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.yml&#39;</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;xyz&#39;</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">content</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">identify_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;xtb&#39;</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="n">final_structure</span><span class="p">,</span> <span class="n">coord</span><span class="p">,</span> <span class="n">first_line</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="kc">True</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;$&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s1">&#39;END&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">:</span>
+                <span class="n">coord</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">coord</span><span class="p">:</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="n">xyz_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_E</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="k">if</span> <span class="n">final_structure</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;$coord&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">15</span><span class="p">):</span>
+                <span class="n">coord</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">15</span> <span class="ow">and</span> <span class="n">first_line</span><span class="p">:</span>
+                    <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                    <span class="n">xyz_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_E</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                    <span class="n">first_line</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="s1">&#39;final structure:&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">final_structure</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">)</span>
+
     <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">check_for_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">coords</span><span class="p">,</span> <span class="n">number</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_geometry</span><span class="p">()</span>
     <span class="k">except</span> <span class="n">LogError</span><span class="p">:</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not parse xyz from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
-        <span class="c1"># try parsing Gaussian standard orientation instead of the input orientation parsed by Arkane</span>
+        <span class="c1"># Try parsing Gaussian standard orientation instead of the input orientation parsed by Arkane.</span>
         <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
-        <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">lines</span><span class="p">)):</span>
             <span class="k">if</span> <span class="s1">&#39;Standard orientation:&#39;</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
                 <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
@@ -367,7 +427,6 @@
 
         <span class="k">if</span> <span class="n">xyz_str</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">xyz_from_data</span><span class="p">(</span><span class="n">coords</span><span class="o">=</span><span class="n">coords</span><span class="p">,</span> <span class="n">numbers</span><span class="o">=</span><span class="n">number</span><span class="p">)</span></div>
@@ -396,6 +455,7 @@
 
 <div class="viewcode-block" id="parse_e_elect"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_e_elect">[docs]</a><span class="k">def</span> <span class="nf">parse_e_elect</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                   <span class="n">zpe_scale_factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.</span><span class="p">,</span>
+                  <span class="n">software</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                   <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse the electronic energy from an sp job output file.</span>
@@ -403,19 +463,53 @@
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): The ESS log file to parse from.</span>
 <span class="sd">        zpe_scale_factor (float): The ZPE scaling factor, used only for composite methods in Gaussian via Arkane.</span>
+<span class="sd">        software (str, optional): The ESS.</span>
 
 <span class="sd">    Returns: Optional[float]</span>
 <span class="sd">        The electronic energy in kJ/mol.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.yml&#39;</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;sp&#39;</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">content</span><span class="p">[</span><span class="s1">&#39;sp&#39;</span><span class="p">]</span>
+    <span class="n">e_elect</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">software</span> <span class="ow">or</span> <span class="n">identify_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">software</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;xtb&#39;</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;TOTAL ENERGY&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">e_elect</span> <span class="o">=</span> <span class="n">hartree_to_si</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">e_elect</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">check_for_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">e_elect</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_energy</span><span class="p">(</span><span class="n">zpe_scale_factor</span><span class="p">)</span> <span class="o">*</span> <span class="mf">0.001</span>  <span class="c1"># convert to kJ/mol</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">LogError</span><span class="p">,</span> <span class="ne">NotImplementedError</span><span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read e_elect from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">e_elect</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">e_elect</span></div>
+
+
+<div class="viewcode-block" id="identify_ess"><a class="viewcode-back" href="../../api/parser.html#arc.parser.identify_ess">[docs]</a><span class="k">def</span> <span class="nf">identify_ess</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Identify the software that generated a specific output file.</span>
+<span class="sd">    This function supports ESS not identified by Arkane.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The ESS log file to parse from.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Optional[str]: The ESS.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">):</span>
+            <span class="n">line</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span>
+            <span class="k">if</span> <span class="s1">&#39;x T B&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;xtb&#39;</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">software</span></div>
 
 
 <div class="viewcode-block" id="parse_zpe"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_zpe">[docs]</a><span class="k">def</span> <span class="nf">parse_zpe</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
@@ -430,21 +524,30 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">identify_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;xtb&#39;</span><span class="p">:</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;total energy&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">hartree_to_si</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">3</span><span class="p">]))</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">check_for_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">zpe</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_zero_point_energy</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.001</span>  <span class="c1"># convert to kJ/mol</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">LogError</span><span class="p">,</span> <span class="ne">NotImplementedError</span><span class="p">):</span>
-        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Could not read zpe from </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read zpe from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="n">zpe</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">zpe</span></div>
 
 
-<div class="viewcode-block" id="parse_1d_scan_energies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_1d_scan_energies">[docs]</a><span class="k">def</span> <span class="nf">parse_1d_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]:</span>
+<div class="viewcode-block" id="parse_1d_scan_energies"><a class="viewcode-back" href="../../api/parser.html#arc.parser.parse_1d_scan_energies">[docs]</a><span class="k">def</span> <span class="nf">parse_1d_scan_energies</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                           <span class="n">initial_angle</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">,</span>
+                           <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]],</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">float</span><span class="p">]]]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Parse the 1D torsion scan energies from an ESS log file.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): The ESS log file to parse from.</span>
+<span class="sd">        initial_angle (float, optional): The initial dihedral angle.</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        InputError: If ``path`` is invalid.</span>
@@ -454,6 +557,22 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
         <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">identify_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;xtb&#39;</span><span class="p">:</span>
+        <span class="n">scan_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="s1">&#39;xtbscan.log&#39;</span><span class="p">)</span>
+        <span class="n">energies</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">scan_path</span><span class="p">):</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">scan_path</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;energy:&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="n">energies</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hartree_to_si</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">])))</span>
+            <span class="n">min_e</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+            <span class="n">energies</span> <span class="o">=</span> <span class="p">[</span><span class="n">e</span> <span class="o">-</span> <span class="n">min_e</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">energies</span><span class="p">]</span>
+            <span class="n">resolution</span> <span class="o">=</span> <span class="mf">360.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span>
+            <span class="n">angles</span> <span class="o">=</span> <span class="p">[</span><span class="n">initial_angle</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">resolution</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">energies</span><span class="p">))]</span>
+        <span class="k">return</span> <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span>
+
     <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">check_for_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="n">log</span><span class="o">.</span><span class="n">load_scan_energies</span><span class="p">()</span>
@@ -461,7 +580,6 @@
         <span class="n">angles</span> <span class="o">*=</span> <span class="mi">180</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span>  <span class="c1"># convert to degrees</span>
     <span class="k">except</span> <span class="p">(</span><span class="n">LogError</span><span class="p">,</span> <span class="ne">NotImplementedError</span><span class="p">,</span> <span class="ne">ZeroDivisionError</span><span class="p">):</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not read energies from </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
     <span class="k">return</span> <span class="n">energies</span><span class="p">,</span> <span class="n">angles</span></div>
 
 
@@ -472,14 +590,36 @@
 <span class="sd">    Args:</span>
 <span class="sd">        path (str): The ESS log file to parse from.</span>
 
-<span class="sd">    Returns: list</span>
-<span class="sd">        The Cartesian coordinates.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        List[Dict[str, tuple]]: The Cartesian coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">software</span> <span class="o">=</span> <span class="n">identify_ess</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">traj</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;xtb&#39;</span><span class="p">:</span>
+        <span class="n">scan_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="p">),</span> <span class="s1">&#39;xtbscan.log&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">scan_path</span><span class="p">):</span>
+            <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">scan_path</span><span class="p">)</span>
+            <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+            <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
+                <span class="n">splits</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">xyz_str</span><span class="p">:</span>
+                        <span class="n">traj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">))</span>
+                        <span class="n">xyz_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+                    <span class="k">continue</span>
+                <span class="k">if</span> <span class="s1">&#39;energy:&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">xyz_str</span> <span class="o">+=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">qcel</span><span class="o">.</span><span class="n">periodictable</span><span class="o">.</span><span class="n">to_E</span><span class="p">(</span><span class="n">splits</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="si">}</span><span class="s1">  </span><span class="si">{</span><span class="n">splits</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="n">traj</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">str_to_xyz</span><span class="p">(</span><span class="n">xyz_str</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">traj</span>
+
     <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">check_for_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Currently parse_1d_scan_coords only supports Gaussian files, got </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">log</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-    <span class="n">traj</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
     <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
@@ -700,6 +840,13 @@
 <span class="sd">    Returns: Optional[Dict[str, tuple]]</span>
 <span class="sd">        The parsed cartesian coordinates.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">InputError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not find file </span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s1">&#39;.yml&#39;</span><span class="p">):</span>
+        <span class="n">content</span> <span class="o">=</span> <span class="n">read_yaml_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span> <span class="ow">and</span> <span class="s1">&#39;xyz&#39;</span> <span class="ow">in</span> <span class="n">content</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">content</span><span class="p">[</span><span class="s1">&#39;xyz&#39;</span><span class="p">]</span>
+
     <span class="n">lines</span> <span class="o">=</span> <span class="n">_get_lines_from_file</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">path</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
@@ -768,7 +915,7 @@
         <span class="k">try</span><span class="p">:</span>
             <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">path</span><span class="p">,</span> <span class="n">check_for_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
             <span class="n">ess_file</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">except</span> <span class="n">InputError</span><span class="p">:</span>
+        <span class="k">except</span> <span class="p">(</span><span class="n">InputError</span><span class="p">,</span> <span class="n">RMGInputError</span><span class="p">):</span>
             <span class="n">ess_file</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">if</span> <span class="n">ess_file</span><span class="p">:</span>
@@ -1215,7 +1362,10 @@
 <span class="sd">        pd.DataFrame: a list of conformers containing the all the internal</span>
 <span class="sd">                       coordinates information in pd.DataFrame</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">check_for_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">log</span> <span class="o">=</span> <span class="n">ess_factory</span><span class="p">(</span><span class="n">fullpath</span><span class="o">=</span><span class="n">file_path</span><span class="p">,</span> <span class="n">check_for_errors</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">RMGInputError</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
     <span class="n">scan_args</span> <span class="o">=</span> <span class="n">parse_scan_args</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
     <span class="n">scan_ic_info</span> <span class="o">=</span> <span class="n">parse_ic_info</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">log</span><span class="p">,</span> <span class="n">GaussianLog</span><span class="p">):</span>

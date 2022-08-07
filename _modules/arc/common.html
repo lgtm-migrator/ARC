@@ -341,9 +341,8 @@
     <span class="c1"># run checks:</span>
     <span class="k">for</span> <span class="n">ess</span><span class="p">,</span> <span class="n">server_list</span> <span class="ow">in</span> <span class="n">settings_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">ess</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;gaussian&#39;</span><span class="p">,</span> <span class="s1">&#39;qchem&#39;</span><span class="p">,</span> <span class="s1">&#39;molpro&#39;</span><span class="p">,</span> <span class="s1">&#39;orca&#39;</span><span class="p">,</span> <span class="s1">&#39;terachem&#39;</span><span class="p">,</span> <span class="s1">&#39;onedmin&#39;</span><span class="p">,</span> <span class="s1">&#39;psi4&#39;</span><span class="p">,</span>
-                               <span class="s1">&#39;gcn&#39;</span><span class="p">,</span> <span class="s1">&#39;heuristics&#39;</span><span class="p">,</span> <span class="s1">&#39;autotst&#39;</span><span class="p">,</span> <span class="s1">&#39;kinbot&#39;</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ESS software are Gaussian, QChem, Molpro, Orca, TeraChem, Psi4, &#39;</span>
-                                <span class="sa">f</span><span class="s1">&#39;or OneDMin. Got: </span><span class="si">{</span><span class="n">ess</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+                               <span class="s1">&#39;gcn&#39;</span><span class="p">,</span> <span class="s1">&#39;heuristics&#39;</span><span class="p">,</span> <span class="s1">&#39;autotst&#39;</span><span class="p">,</span> <span class="s1">&#39;kinbot&#39;</span><span class="p">,</span> <span class="s1">&#39;xtb&#39;</span><span class="p">,</span> <span class="s1">&#39;xtb_gsm&#39;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">SettingsError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got an unrecognized software in ESS settings: </span><span class="si">{</span><span class="n">ess</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">server</span> <span class="ow">in</span> <span class="n">server_list</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span> <span class="ow">and</span> <span class="n">server</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">s</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">servers</span><span class="o">.</span><span class="n">keys</span><span class="p">()]:</span>
                 <span class="n">server_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">servers</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
@@ -1100,7 +1099,8 @@
             <span class="k">if</span> <span class="ow">not</span> <span class="n">almost_equal_lists</span><span class="p">(</span><span class="n">iter1</span><span class="o">=</span><span class="n">entry1</span><span class="p">,</span> <span class="n">iter2</span><span class="o">=</span><span class="n">entry2</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">):</span>
                 <span class="k">return</span> <span class="kc">False</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry1</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry2</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry1</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">))</span> \
+                    <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">entry2</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)):</span>
                 <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">([</span><span class="n">entry1</span><span class="p">],</span> <span class="p">[</span><span class="n">entry2</span><span class="p">],</span> <span class="n">rtol</span><span class="o">=</span><span class="n">rtol</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">atol</span><span class="p">):</span>
                     <span class="k">return</span> <span class="kc">False</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1752,6 +1752,33 @@
             <span class="nb">print</span><span class="p">(</span><span class="n">rmg_p_symbols</span><span class="p">)</span>
             <span class="n">result</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="k">return</span> <span class="n">result</span>
+
+
+<div class="viewcode-block" id="safe_copy_file"><a class="viewcode-back" href="../../api/common.html#arc.common.safe_copy_file">[docs]</a><span class="k">def</span> <span class="nf">safe_copy_file</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+                   <span class="n">wait</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+                   <span class="n">max_cycles</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                   <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copy a file safely.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        source (str): The full path to the file to be copied.</span>
+<span class="sd">        destination (str): The full path to the file destination.</span>
+<span class="sd">        wait (int, optional): The number of seconds to wait between cycles.</span>
+<span class="sd">        max_cycles (int, optional): The number of cycles.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_cycles</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">destination</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait</span><span class="p">)</span>
+        <span class="k">except</span> <span class="n">shutil</span><span class="o">.</span><span class="n">SameFileError</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">max_cycles</span><span class="p">:</span>
+            <span class="k">break</span></div>
 </pre></div>
 
            </div>

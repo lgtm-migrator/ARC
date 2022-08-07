@@ -942,7 +942,7 @@
     <span class="n">trsh_keyword</span><span class="p">,</span> <span class="n">shift</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span>
     <span class="n">memory</span> <span class="o">=</span> <span class="n">memory_gb</span>
 
-    <span class="k">if</span> <span class="s1">&#39;memory&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">[</span><span class="n">server</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="n">server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="s1">&#39;memory&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">servers</span><span class="p">[</span><span class="n">server</span><span class="p">]:</span>
         <span class="n">servers</span><span class="p">[</span><span class="n">server</span><span class="p">][</span><span class="s1">&#39;memory&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">64</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;A &quot;memory&quot; key (relating to the *maximum* physical node memory) was not defined &#39;</span>
                        <span class="sa">f</span><span class="s1">&#39;for server </span><span class="si">{</span><span class="n">server</span><span class="si">}</span><span class="s1">. Setting it to 64 GB (as a guess). This will affect job troubleshooting &#39;</span>
@@ -1011,7 +1011,7 @@
             <span class="n">ess_trsh_methods</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;cbs-qb3&#39;</span><span class="p">)</span>
             <span class="n">level_of_theory</span> <span class="o">=</span> <span class="n">Level</span><span class="p">(</span><span class="n">method</span><span class="o">=</span><span class="s1">&#39;cbs-qb3&#39;</span><span class="p">)</span>
             <span class="n">job_type</span> <span class="o">=</span> <span class="s1">&#39;composite&#39;</span>
-        <span class="k">elif</span> <span class="s1">&#39;Memory&#39;</span> <span class="ow">in</span> <span class="n">job_status</span><span class="p">[</span><span class="s1">&#39;keywords&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="s1">&#39;memory&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ess_trsh_methods</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="s1">&#39;Memory&#39;</span> <span class="ow">in</span> <span class="n">job_status</span><span class="p">[</span><span class="s1">&#39;keywords&#39;</span><span class="p">]</span> <span class="ow">and</span> <span class="s1">&#39;memory&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ess_trsh_methods</span> <span class="ow">and</span> <span class="n">server</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Increase memory allocation</span>
             <span class="n">max_mem</span> <span class="o">=</span> <span class="n">servers</span><span class="p">[</span><span class="n">server</span><span class="p">]</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;memory&#39;</span><span class="p">,</span> <span class="mi">128</span><span class="p">)</span>  <span class="c1"># Node memory in GB, defaults to 128 if not specified</span>
             <span class="n">memory</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">memory_gb</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="n">max_mem</span> <span class="o">*</span> <span class="mf">0.9</span><span class="p">)</span>
@@ -1230,7 +1230,7 @@
 
 <div class="viewcode-block" id="trsh_conformer_isomorphism"><a class="viewcode-back" href="../../../api/trsh.html#arc.job.trsh.trsh_conformer_isomorphism">[docs]</a><span class="k">def</span> <span class="nf">trsh_conformer_isomorphism</span><span class="p">(</span><span class="n">software</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                                <span class="n">ess_trsh_methods</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-                               <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+                               <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Troubleshoot conformer optimization for a species that failed isomorphic test in</span>
 <span class="sd">    `determine_most_stable_conformer` by specifying a &quot;good&quot; level of theory.</span>
@@ -1242,7 +1242,7 @@
 <span class="sd">    Raises:</span>
 <span class="sd">        TrshError: If the requested ``ess_trsh_methods`` is not supported.</span>
 
-<span class="sd">    Returns: str</span>
+<span class="sd">    Returns: Optional[str]</span>
 <span class="sd">        The level of theory to troubleshoot at.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">ess_trsh_methods</span> <span class="o">=</span> <span class="n">ess_trsh_methods</span> <span class="k">if</span> <span class="n">ess_trsh_methods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">list</span><span class="p">()</span>
@@ -1255,7 +1255,8 @@
     <span class="k">elif</span> <span class="n">software</span> <span class="o">==</span> <span class="s1">&#39;terachem&#39;</span><span class="p">:</span>
         <span class="n">conformer_trsh_methods</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;wb97xd3/def2-TZVP&#39;</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="n">TrshError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The troubleshoot_conformer_isomorphism() method is not implemented for </span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;The troubleshoot_conformer_isomorphism() method is not implemented for </span><span class="si">{</span><span class="n">software</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="kc">None</span>
 
     <span class="n">level_of_theory</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">for</span> <span class="n">method</span> <span class="ow">in</span> <span class="n">conformer_trsh_methods</span><span class="p">:</span>
@@ -1567,7 +1568,7 @@
                 <span class="n">invalidate</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="n">invalidation_reason</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Two consecutive points are inconsistent by more than &#39;</span> \
                                       <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">inconsistency_ab</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> kJ/mol&#39;</span>
-                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Rotor scan of </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> between pivots </span><span class="si">{</span><span class="n">pivots</span><span class="si">}</span><span class="s1"> is inconsistent by&#39;</span> \
+                <span class="n">message</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;Rotor scan of </span><span class="si">{</span><span class="n">label</span><span class="si">}</span><span class="s1"> between pivots </span><span class="si">{</span><span class="n">pivots</span><span class="si">}</span><span class="s1"> is inconsistent by &#39;</span> \
                           <span class="sa">f</span><span class="s1">&#39;more than </span><span class="si">{</span><span class="n">inconsistency_ab</span> <span class="o">*</span> <span class="nb">max</span><span class="p">(</span><span class="n">energies</span><span class="p">)</span><span class="si">:</span><span class="s1">.2f</span><span class="si">}</span><span class="s1"> kJ/mol between &#39;</span> \
                           <span class="sa">f</span><span class="s1">&#39;two consecutive points. ARC will attempt to troubleshoot this rotor scan.&#39;</span>
                 <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="n">message</span><span class="p">)</span>

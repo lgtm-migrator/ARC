@@ -274,6 +274,17 @@
             <span class="c1"># it wasn&#39;t set by the user, try determining it</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">deduce_software</span><span class="p">()</span>
 
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="n">Level</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine equality between Level object instances.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">Level</span><span class="p">):</span>
+            <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">LevelOfTheory</span><span class="p">):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">method</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">basis</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">basis</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return a humane-readable string representation of the object.</span>
@@ -448,10 +459,11 @@
             <span class="n">args</span><span class="p">[</span><span class="n">key1</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
                 <span class="k">for</span> <span class="n">key2</span><span class="p">,</span> <span class="n">val2</span> <span class="ow">in</span> <span class="n">val1</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val2</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;All entries in the args argument must be strings.</span><span class="se">\n</span><span class="s1">&#39;</span>
-                                         <span class="sa">f</span><span class="s1">&#39;Got </span><span class="si">{</span><span class="n">val2</span><span class="si">}</span><span class="s1"> which is a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">val2</span><span class="p">)</span><span class="si">}</span><span class="s1"> in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
-                    <span class="n">args</span><span class="p">[</span><span class="n">key1</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="n">key2</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">val2</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+                    <span class="n">new_val2</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">val2</span><span class="p">)</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val2</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="k">else</span> <span class="n">val2</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_val2</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;All entries in the args argument must be str, int, or float types.</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                         <span class="sa">f</span><span class="s1">&#39;Got </span><span class="si">{</span><span class="n">new_val2</span><span class="si">}</span><span class="s1"> which is a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">new_val2</span><span class="p">)</span><span class="si">}</span><span class="s1"> in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
+                    <span class="n">args</span><span class="p">[</span><span class="n">key1</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="n">key2</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">new_val2</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
                 <span class="n">args</span><span class="p">[</span><span class="n">key1</span><span class="o">.</span><span class="n">lower</span><span class="p">()][</span><span class="s1">&#39;general&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">val1</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
             <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val1</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
@@ -487,8 +499,11 @@
 <span class="sd">            warn (bool, optional): Whether to output a warning if an AEC variant could not be found.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            LevelOfTheory: The respective Arkane ``LevelOfTheory`` object</span>
+<span class="sd">            Optional[LevelOfTheory]: The respective Arkane ``LevelOfTheory`` object</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">level_aec</span> <span class="o">=</span> <span class="n">read_yaml_file</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ARC_PATH</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="s1">&#39;AEC.yml&#39;</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="n">level_aec</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">return</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="n">variant</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">comprehensive</span><span class="p">:</span>
                 <span class="c1"># only add basis and software if needed</span>
@@ -540,7 +555,10 @@
             <span class="n">var_2</span> <span class="o">=</span> <span class="n">LevelOfTheory</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;software&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span>  <span class="c1"># add or overwrite software</span>
             <span class="c1"># start w/ the software argument (var_1) in case there are several entries that only vary by software</span>
-            <span class="n">var_1</span> <span class="o">=</span> <span class="n">LevelOfTheory</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">var_1</span> <span class="o">=</span> <span class="n">LevelOfTheory</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+                <span class="n">var_1</span> <span class="o">=</span> <span class="kc">None</span>
 
             <span class="k">if</span> <span class="n">variant</span> <span class="o">==</span> <span class="s1">&#39;freq&#39;</span><span class="p">:</span>
                 <span class="c1"># if not found, the factor is set to exactly 1</span>
@@ -651,6 +669,14 @@
                                  <span class="sa">f</span><span class="s1">&#39;levels_ess is:</span><span class="se">\n</span><span class="si">{</span><span class="n">levels_ess</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;gaussian&#39;</span>
 
+        <span class="c1"># TorchANI</span>
+        <span class="k">if</span> <span class="s1">&#39;torchani&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;torchani&#39;</span>
+
+        <span class="c1"># xTB</span>
+        <span class="k">if</span> <span class="s1">&#39;xtb&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">or</span> <span class="s1">&#39;gfn&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="o">=</span> <span class="s1">&#39;xtb&#39;</span>
+
         <span class="c1"># User phrases from settings (levels_ess)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">software</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">ess</span><span class="p">,</span> <span class="n">phrase_list</span> <span class="ow">in</span> <span class="n">levels_ess</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -695,6 +721,28 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">compatible_ess</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;terachem&#39;</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">method</span> <span class="ow">in</span> <span class="n">ess_methods</span><span class="p">[</span><span class="s1">&#39;molpro&#39;</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">compatible_ess</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;molpro&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="get_params_from_arkane_level_of_theory_as_str"><a class="viewcode-back" href="../../api/level.html#arc.level.get_params_from_arkane_level_of_theory_as_str">[docs]</a><span class="k">def</span> <span class="nf">get_params_from_arkane_level_of_theory_as_str</span><span class="p">(</span><span class="n">arkane_level</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the method, basis set, and software (if any) of an str representation of an Arkane LevelOfTheory object instance.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        arkane_level (str): The Arkane level.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Dict[str, str]: Keys are &#39;method&#39;, &#39;basis&#39;, &#39;software&#39;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># LevelOfTheory(method=&#39;b3lyp&#39;,basis=&#39;6311+g(3df,2p)&#39;,software=&#39;gaussian&#39;)</span>
+    <span class="n">level_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;software&#39;</span><span class="p">:</span> <span class="s1">&#39;&#39;</span><span class="p">,</span>
+                  <span class="p">}</span>
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">level_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">arkane_level</span><span class="p">:</span>
+            <span class="n">splits</span> <span class="o">=</span> <span class="n">arkane_level</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">=&#39;&quot;</span><span class="p">)</span>
+            <span class="n">level_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">splits</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">level_dict</span></div>
 </pre></div>
 
            </div>

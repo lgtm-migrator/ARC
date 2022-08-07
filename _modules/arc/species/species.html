@@ -244,6 +244,8 @@
 <span class="sd">                              &#39;times_dihedral_set&#39;: ``int``,</span>
 <span class="sd">                              &#39;scan_path&#39;: &lt;path to scan output file&gt;,</span>
 <span class="sd">                              &#39;max_e&#39;: ``float``,  # relative to the minimum energy, in kJ/mol,</span>
+<span class="sd">                              &#39;trsh_counter&#39;: ``int``,</span>
+<span class="sd">                              &#39;trsh_methods&#39;: ``List[str]``,</span>
 <span class="sd">                              &#39;symmetry&#39;: ``int``,</span>
 <span class="sd">                              &#39;dimensions&#39;: ``int``,</span>
 <span class="sd">                              &#39;original_dihedrals&#39;: ``list``,</span>
@@ -974,6 +976,11 @@
             <span class="k">elif</span> <span class="n">inchi</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">rmg_mol_from_inchi</span><span class="p">(</span><span class="n">inchi</span><span class="p">)</span>
             <span class="k">elif</span> <span class="n">smiles</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Got a list value type for SMILES of species </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                       <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">smiles</span><span class="si">}</span><span class="s1">, type: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                       <span class="sa">f</span><span class="s1">&#39;Did you mean to enter this as a string? Consider adding quotation marks &#39;</span>
+                                       <span class="sa">f</span><span class="s1">&#39;before and after the SMILES value if entering through a YAML file.&#39;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">smiles</span><span class="o">=</span><span class="n">smiles</span><span class="p">)</span>
         <span class="c1"># Perceive molecule from xyz coordinates. This also populates the .mol attribute of the Species.</span>
         <span class="c1"># It overrides self.mol generated from adjlist or smiles so xyz and mol will have the same atom order.</span>

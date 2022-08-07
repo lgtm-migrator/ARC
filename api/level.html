@@ -315,11 +315,28 @@ for BAC.</p></li>
 <dd class="field-even"><p>The respective Arkane <code class="docutils literal notranslate"><span class="pre">LevelOfTheory</span></code> object</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>LevelOfTheory</p>
+<dd class="field-odd"><p>Optional[LevelOfTheory]</p>
 </dd>
 </dl>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="arc.level.get_params_from_arkane_level_of_theory_as_str">
+<span class="sig-prename descclassname"><span class="pre">arc.level.</span></span><span class="sig-name descname"><span class="pre">get_params_from_arkane_level_of_theory_as_str</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">arkane_level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/level.html#get_params_from_arkane_level_of_theory_as_str"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.level.get_params_from_arkane_level_of_theory_as_str" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the method, basis set, and software (if any) of an str representation of an Arkane LevelOfTheory object instance.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>arkane_level</strong> (<em>str</em>) – The Arkane level.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Keys are ‘method’, ‘basis’, ‘software’.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Dict[str, str]</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
