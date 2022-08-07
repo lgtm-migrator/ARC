@@ -34,6 +34,9 @@ install-sella:
 install-xtb:
 	bash devtools/install_xtb.sh
 
+install-torchani:
+	bash devtools/install_torchani.sh
+
 clean:
 	find -type d -name __pycache__ -exec rm -rf {} +
 	rm -rf testing
