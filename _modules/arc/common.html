@@ -1757,7 +1757,7 @@
 <div class="viewcode-block" id="safe_copy_file"><a class="viewcode-back" href="../../api/common.html#arc.common.safe_copy_file">[docs]</a><span class="k">def</span> <span class="nf">safe_copy_file</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                    <span class="n">destination</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
                    <span class="n">wait</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
-                   <span class="n">max_cycles</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span>
+                   <span class="n">max_cycles</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">15</span><span class="p">,</span>
                    <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Copy a file safely.</span>
@@ -1766,15 +1766,15 @@
 <span class="sd">        source (str): The full path to the file to be copied.</span>
 <span class="sd">        destination (str): The full path to the file destination.</span>
 <span class="sd">        wait (int, optional): The number of seconds to wait between cycles.</span>
-<span class="sd">        max_cycles (int, optional): The number of cycles.</span>
+<span class="sd">        max_cycles (int, optional): The maximum number of cycles to try.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">max_cycles</span><span class="p">):</span>
         <span class="k">try</span><span class="p">:</span>
             <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">source</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">destination</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
-            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">shutil</span><span class="o">.</span><span class="n">SameFileError</span><span class="p">:</span>
             <span class="k">break</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">wait</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">break</span>
         <span class="k">if</span> <span class="n">i</span> <span class="o">&gt;=</span> <span class="n">max_cycles</span><span class="p">:</span>
