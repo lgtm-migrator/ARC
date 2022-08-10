@@ -1230,6 +1230,17 @@ class TestCommon(unittest.TestCase):
         self.assertTrue(common.almost_equal_coords(ch4_a, ch4_c))
         self.assertFalse(common.almost_equal_coords(ch4_a, ch4_d))
 
+    def test_fill_in_the_blanks(self):
+        """Test the fill_in_the_blanks() function"""
+        ex1 = "michalkfir"
+        ex2 = "michal kfir"
+        ex3 = "mich al kfir"
+        ex4 = "michal  kfir"
+        self.assertTrue(common.fill_in_the_blanks(ex1), "michalkfir")
+        self.assertTrue(common.fill_in_the_blanks(ex2), "michal\\ kfir")
+        self.assertTrue(common.fill_in_the_blanks(ex3), "mich\\ al\\ kfir")
+        self.assertTrue(common.fill_in_the_blanks(ex4), "michal\\ \\ kfir")
+
     @classmethod
     def tearDownClass(cls):
         """
