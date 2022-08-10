@@ -37,12 +37,10 @@ from rmgpy.qm.symmetry import PointGroupCalculator
 from arc.exceptions import InputError, SettingsError
 from arc.imports import home, settings
 
-
 if TYPE_CHECKING:
     from rmgpy.reaction import Reaction
     from rmgpy.species import Species
     from arc.reaction import ARCReaction
-
 
 logger = logging.getLogger('arc')
 logging.getLogger('matplotlib.font_manager').disabled = True
@@ -55,7 +53,6 @@ RMG_PATH = os.path.abspath(os.path.dirname(os.path.dirname(rmgpy.__file__)))
 RMG_DATABASE_PATH = os.path.abspath(os.path.dirname(rmgpy.settings['database.directory']))
 
 VERSION = '1.1.0'
-
 
 default_job_types, servers = settings['default_job_types'], settings['servers']
 
@@ -638,7 +635,8 @@ def get_bonds_from_dmat(dmat: np.ndarray,
             A list of tuple entries, each represents a bond and contains sorted atom indices.
     """
     if len(elements) != dmat.shape[0] or len(elements) != dmat.shape[1] or len(dmat.shape) != 2:
-        raise ValueError(f'The dimensions of the DMat {dmat.shape} must be equal to the number of elements {len(elements)}')
+        raise ValueError(
+            f'The dimensions of the DMat {dmat.shape} must be equal to the number of elements {len(elements)}')
     bonds, bonded_hydrogens = list(), list()
     charges = charges or [0] * len(elements)
     # Heavy atoms
@@ -684,7 +682,8 @@ def determine_symmetry(xyz: dict) -> Tuple[int, int]:
     # Coords is an N x 3 numpy.ndarray of atomic coordinates in the same order as `atom_numbers`.
     coords = np.array(xyz['coords'], np.float64)
     unique_id = '0'  # Just some name that the SYMMETRY code gives to one of its jobs.
-    scr_dir = os.path.join(home, 'tmp', 'symmetry_scratch')  # Scratch directory that the SYMMETRY code writes its files in.
+    scr_dir = os.path.join(home, 'tmp',
+                           'symmetry_scratch')  # Scratch directory that the SYMMETRY code writes its files in.
     if not os.path.exists(scr_dir):
         os.makedirs(scr_dir)
     symmetry = optical_isomers = 1
@@ -1154,7 +1153,7 @@ def check_torsion_change(torsions: pd.DataFrame,
         # a -180 / 180 flip causes different sign
         if torsions.loc[label, index_1] * torsions.loc[label, index_2] < 0:
             if torsions.loc[label, index_1] < 0 \
-              and abs(torsions.loc[label, index_1] + 360 - torsions.loc[label, index_2] - delta) < threshold:
+                    and abs(torsions.loc[label, index_1] + 360 - torsions.loc[label, index_2] - delta) < threshold:
                 change[label] = False
             elif torsions.loc[label, index_2] < 0 \
                     and abs(torsions.loc[label, index_1] - 360 - torsions.loc[label, index_2] - delta) < threshold:
@@ -1333,7 +1332,8 @@ def get_close_tuple(key_1: Tuple[Union[float, str], ...],
     elif not raise_error:
         # couldn't find a close key
         return None
-    raise ValueError(f'Could not locate a key close to {key_1} within the tolerance {tolerance} in the given keys list.')
+    raise ValueError(
+        f'Could not locate a key close to {key_1} within the tolerance {tolerance} in the given keys list.')
 
 
 def timedelta_from_str(time_str: str):
@@ -1565,8 +1565,10 @@ def _check_r_n_p_symbols_between_rmg_and_arc_rxns(arc_reaction: 'ARCReaction',
     """
     result = True
     num_rs, num_ps = len(arc_reaction.r_species), len(arc_reaction.p_species)
-    arc_r_symbols = [atom.element.symbol for atom in chain(*tuple(arc_reaction.r_species[i].mol.atoms for i in range(num_rs)))]
-    arc_p_symbols = [atom.element.symbol for atom in chain(*tuple(arc_reaction.p_species[i].mol.atoms for i in range(num_ps)))]
+    arc_r_symbols = [atom.element.symbol for atom in
+                     chain(*tuple(arc_reaction.r_species[i].mol.atoms for i in range(num_rs)))]
+    arc_p_symbols = [atom.element.symbol for atom in
+                     chain(*tuple(arc_reaction.p_species[i].mol.atoms for i in range(num_ps)))]
     for rmg_reaction in rmg_reactions:
         rmg_r_symbols = [atom.element.symbol
                          for atom in chain(*tuple(rmg_reaction.reactants[i].atoms
@@ -1616,3 +1618,22 @@ def safe_copy_file(source: str,
             break
         if i >= max_cycles:
             break
+
+
+def fill_in_the_blanks(folder_name: str):
+    """
+    Adding backslash before a spaces in the folder name.
+
+    Args:
+        folder_name (str): The string directory we want to modify.
+
+    Returns:
+        new_folder_name (str): modified folder name.
+
+    """
+    folder_name.split(" ")
+    new_folder_name = ""
+    for i in folder_name.split(" "):
+        new_folder_name += i + "\ "
+    new_folder_name = new_folder_name[:-2]
+    return new_folder_name
