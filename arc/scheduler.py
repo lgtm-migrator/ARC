@@ -796,6 +796,8 @@ class Scheduler(object):
                           xyz=xyz,
                           )
         label = label or reactions[0].ts_species.label
+        if label not in self.job_dict.keys():
+            self.job_dict[label] = dict()
         if conformer is None and tsg is None:
             # this is NOT a conformer DFT job nor a TS guess job
             self.running_jobs[label] = list() if label not in self.running_jobs else self.running_jobs[label]
@@ -2543,20 +2545,23 @@ class Scheduler(object):
                                             irc_r_path=self.output[label]['paths']['irc'][1],
                                             out_path=os.path.join(self.project_directory, 'output',
                                                                   'rxns', label, 'irc_traj.gjf'))
-        irc_label = f'IRC_{index}_{label}'
+        irc_label = self.add_label_to_unique_species_labels(label=f'IRC_{index}_{label}')
         irc_spc = ARCSpecies(label=irc_label,
                              xyz=parser.parse_xyz_from_file(job.local_path_to_output_file),
                              irc_label=label,
                              )
         if self.species_dict[label].irc_label is None:
-            self.species_dict[label].irc_label = irc_label
+            self.species_dict[label].irc_label = irc_spc.label
         else:
-            self.species_dict[label].irc_label += f' {irc_label}'
-
+            self.species_dict[label].irc_label += f' {irc_spc.label}'
         self.species_dict[irc_spc.label] = irc_spc
-        self.job_dict[label] = dict()
-        self.initialize_output_dict(label=irc_label)
-        self.run_opt_job(label)
+        self.initialize_output_dict(label=irc_spc.label)
+        self.run_job(label=irc_spc.label,
+                     xyz=self.species_dict[irc_spc.label].get_xyz(),
+                     level_of_theory=self.opt_level,
+                     job_type='opt',
+                     fine=False,
+                     )
 
     def add_label_to_unique_species_labels(self, label: str) -> str:
         """
