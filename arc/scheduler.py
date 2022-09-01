@@ -2591,12 +2591,13 @@ class Scheduler(object):
             label (str): The label of one of the optimized IRC-resulting species.
         """
         ts_label = self.species_dict[label].irc_label
-        irc_species_labels = self.species_dict[ts_label].irc_label.split()
-        if all(self.output[irc_label]['paths']['geo'] for irc_label in irc_species_labels):
-            check_irc_species_and_rxn(xyz_1=self.output[irc_species_labels[0]]['paths']['geo'],
-                                      xyz_2=self.output[irc_species_labels[1]]['paths']['geo'],
-                                      rxn=self.rxn_dict.get([self.species_dict[ts_label].rxn_index], None),
-                                      )
+        if len(self.output[ts_label]['paths']['irc']) == 2:
+            irc_species_labels = self.species_dict[ts_label].irc_label.split()
+            if all(self.output[irc_label]['paths']['geo'] for irc_label in irc_species_labels):
+                check_irc_species_and_rxn(xyz_1=self.output[irc_species_labels[0]]['paths']['geo'],
+                                          xyz_2=self.output[irc_species_labels[1]]['paths']['geo'],
+                                          rxn=self.rxn_dict.get([self.species_dict[ts_label].rxn_index], None),
+                                          )
 
     def check_scan_job(self,
                        label: str,
