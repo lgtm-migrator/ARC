@@ -653,6 +653,19 @@ H      -1.82570782    0.42754384   -0.56130718"""
             species_output_dict = {'paths': {property_: True, 'composite': True}}
             self.assertTrue(species_has_property((species_output_dict)))
 
+    def test_add_label_to_unique_species_labels(self):
+        """Test the add_label_to_unique_species_labels() method."""
+        self.assertEqual(self.sched1.unique_species_labels, ['methylamine', 'C2H6', 'CtripCO'])
+        unique_label = self.sched1.add_label_to_unique_species_labels(label='new_species_15')
+        self.assertEqual(unique_label, 'new_species_15')
+        self.assertEqual(self.sched1.unique_species_labels, ['methylamine', 'C2H6', 'CtripCO', 'new_species_15'])
+        unique_label = self.sched1.add_label_to_unique_species_labels(label='new_species_15')
+        self.assertEqual(unique_label, 'new_species_15_0')
+        self.assertEqual(self.sched1.unique_species_labels, ['methylamine', 'C2H6', 'CtripCO', 'new_species_15', 'new_species_15_0'])
+        unique_label = self.sched1.add_label_to_unique_species_labels(label='new_species_15')
+        self.assertEqual(unique_label, 'new_species_15_1')
+        self.assertEqual(self.sched1.unique_species_labels, ['methylamine', 'C2H6', 'CtripCO', 'new_species_15', 'new_species_15_0', 'new_species_15_1'])
+
     @classmethod
     def tearDownClass(cls):
         """
