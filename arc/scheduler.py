@@ -2545,15 +2545,17 @@ class Scheduler(object):
                                             irc_r_path=self.output[label]['paths']['irc'][1],
                                             out_path=os.path.join(self.project_directory, 'output',
                                                                   'rxns', label, 'irc_traj.gjf'))
-        irc_label = self.add_label_to_unique_species_labels(label=f'IRC_{index}_{label}')
+        irc_label = self.add_label_to_unique_species_labels(label=f'IRC_{label}_{index}')
         irc_spc = ARCSpecies(label=irc_label,
                              xyz=parser.parse_xyz_from_file(job.local_path_to_output_file),
                              irc_label=label,
+                             compute_thermo=False,
                              )
         if self.species_dict[label].irc_label is None:
             self.species_dict[label].irc_label = irc_spc.label
         else:
             self.species_dict[label].irc_label += f' {irc_spc.label}'
+        self.species_list.append(irc_spc)
         self.species_dict[irc_spc.label] = irc_spc
         self.initialize_output_dict(label=irc_spc.label)
         self.run_job(label=irc_spc.label,
@@ -3505,7 +3507,7 @@ class Scheduler(object):
         """
         if label is not None or not self._does_output_dict_contain_info():
             for species in self.species_list:
-                if label is None or (label is not None and species.label == label):
+                if label is None or species.label == label:
                     if species.label not in self.output:
                         self.output[species.label] = dict()
                     if 'paths' not in self.output[species.label]:
