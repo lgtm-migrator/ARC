@@ -2596,7 +2596,7 @@ class Scheduler(object):
             if all(self.output[irc_label]['paths']['geo'] for irc_label in irc_species_labels):
                 check_irc_species_and_rxn(xyz_1=self.output[irc_species_labels[0]]['paths']['geo'],
                                           xyz_2=self.output[irc_species_labels[1]]['paths']['geo'],
-                                          rxn=self.rxn_dict.get([self.species_dict[ts_label].rxn_index], None),
+                                          rxn=self.rxn_dict.get(self.species_dict[ts_label].rxn_index, None),
                                           )
 
     def check_scan_job(self,
