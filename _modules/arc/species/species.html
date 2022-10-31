@@ -24,6 +24,7 @@
         <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
         <script src="../../../_static/jquery.js"></script>
         <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../../../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
@@ -195,6 +196,7 @@
                         <span class="n">rmg_mol_from_dict_repr</span><span class="p">,</span>
                         <span class="n">rmg_mol_to_dict_repr</span><span class="p">,</span>
                         <span class="n">timedelta_from_str</span><span class="p">,</span>
+                        <span class="n">sort_atoms_in_decending_label_order</span><span class="p">,</span>
                         <span class="p">)</span>
 <span class="kn">from</span> <span class="nn">arc.exceptions</span> <span class="kn">import</span> <span class="n">InputError</span><span class="p">,</span> <span class="n">RotorError</span><span class="p">,</span> <span class="n">SpeciesError</span><span class="p">,</span> <span class="n">TSError</span>
 <span class="kn">from</span> <span class="nn">arc.imports</span> <span class="kn">import</span> <span class="n">settings</span>
@@ -411,6 +413,7 @@
 <span class="sd">        rxn_index (int): The reaction index which is the respective key to the Scheduler rxn_dict.</span>
 <span class="sd">        arkane_file (str): Path to the Arkane Species file generated in processor.</span>
 <span class="sd">        yml_path (str): Path to an Arkane YAML file representing a species (for loading the object).</span>
+<span class="sd">        keep_mol (bool): Label to prevent the generation of a new Molecule object.</span>
 <span class="sd">        checkfile (str): The local path to the latest checkfile by Gaussian for the species.</span>
 <span class="sd">        external_symmetry (int): The external symmetry of the species (not including rotor symmetries).</span>
 <span class="sd">        optical_isomers (int): Whether (=2) or not (=1) the species has chiral center/s.</span>
@@ -480,6 +483,7 @@
                  <span class="n">ts_number</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">xyz</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="nb">dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
                  <span class="n">yml_path</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+                 <span class="n">keep_mol</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
                  <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">t1</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ts_number</span> <span class="o">=</span> <span class="n">ts_number</span>
@@ -510,6 +514,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">checkfile</span> <span class="o">=</span> <span class="n">checkfile</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">transport_data</span> <span class="o">=</span> <span class="n">TransportData</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">yml_path</span> <span class="o">=</span> <span class="n">yml_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">keep_mol</span> <span class="o">=</span> <span class="n">keep_mol</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fragments</span> <span class="o">=</span> <span class="n">fragments</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">original_label</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">chosen_ts</span> <span class="o">=</span> <span class="kc">None</span>
@@ -1706,7 +1711,8 @@
                                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_smiles</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s1">&#39;</span>
                                    <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">deep</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">to_adjacency_list</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
                     <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;XYZ and the 2D graph representation for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1"> are not compliant.&#39;</span><span class="p">)</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">perceived_mol</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">keep_mol</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">mol</span> <span class="o">=</span> <span class="n">perceived_mol</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">mol_s</span><span class="p">,</span> <span class="n">mol_b</span> <span class="o">=</span> <span class="n">molecules_from_xyz</span><span class="p">(</span><span class="n">xyz</span><span class="p">,</span> <span class="n">multiplicity</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span> <span class="n">charge</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">charge</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">mol_b</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_b</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">number_of_atoms</span><span class="p">:</span>
@@ -1927,13 +1933,26 @@
                     <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Allowing nonisomorphic 2D&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">isomorphic</span></div>
 
-<div class="viewcode-block" id="ARCSpecies.scissors"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.scissors">[docs]</a>    <span class="k">def</span> <span class="nf">scissors</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<div class="viewcode-block" id="ARCSpecies.label_atoms"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.label_atoms">[docs]</a>    <span class="k">def</span> <span class="nf">label_atoms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Labels atoms in order.</span>
+<span class="sd">        The label is stored in the atom.label property.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">atom</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mol</span><span class="o">.</span><span class="n">atoms</span><span class="p">):</span>
+            <span class="n">atom</span><span class="o">.</span><span class="n">label</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ARCSpecies.scissors"><a class="viewcode-back" href="../../../api/species.html#arc.species.species.ARCSpecies.scissors">[docs]</a>    <span class="k">def</span> <span class="nf">scissors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">sort_atom_labels</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Cut chemical bonds to create new species from the original one according to the .bdes attribute,</span>
 <span class="sd">        preserving the 3D geometry other than the scissioned bond.</span>
 <span class="sd">        If one of the scission-resulting species is a hydrogen atom, it will be returned last, labeled as &#39;H&#39;.</span>
 <span class="sd">        Other species labels will be &lt;original species label&gt;_BDE_index1_index2_X, where &quot;X&quot; is either &quot;A&quot; or &quot;B&quot;,</span>
 <span class="sd">        and the indices are 1-indexed.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            sort_atom_labels (bool, optional): Boolean flag, dettermines whether or not sorting is required.</span>
 
 <span class="sd">        Returns: list</span>
 <span class="sd">            The scission-resulting species.</span>
@@ -1957,21 +1976,26 @@
                             <span class="n">atom_indices_reverse</span> <span class="o">=</span> <span class="p">(</span><span class="n">atom_indices</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">atom_indices</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
                             <span class="k">if</span> <span class="n">atom_indices</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span> <span class="ow">and</span> <span class="n">atom_indices_reverse</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">:</span>
                                 <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">atom_indices</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">sort_atom_labels</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_atoms</span><span class="p">()</span>
         <span class="n">resulting_species</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">index_tuple</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bdes</span><span class="p">:</span>
-            <span class="n">new_species_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scissors</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="n">index_tuple</span><span class="p">)</span>
+            <span class="n">new_species_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_scissors</span><span class="p">(</span><span class="n">indices</span><span class="o">=</span><span class="n">index_tuple</span><span class="p">,</span> <span class="n">sort_atom_labels</span><span class="o">=</span><span class="n">sort_atom_labels</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">new_species</span> <span class="ow">in</span> <span class="n">new_species_list</span><span class="p">:</span>
                 <span class="k">if</span> <span class="n">new_species</span><span class="o">.</span><span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="n">existing_species</span><span class="o">.</span><span class="n">label</span> <span class="k">for</span> <span class="n">existing_species</span> <span class="ow">in</span> <span class="n">resulting_species</span><span class="p">]:</span>
                     <span class="c1"># Mainly checks that the H species doesn&#39;t already exist.</span>
                     <span class="n">resulting_species</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_species</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">resulting_species</span></div>
 
-    <span class="k">def</span> <span class="nf">_scissors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">indices</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">_scissors</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                  <span class="n">indices</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span>
+                  <span class="n">sort_atom_labels</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Cut a chemical bond to create two new species from the original one, preserving the 3D geometry.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            indices (tuple): The atom indices between which to cut (1-indexed, atoms must be bonded).</span>
+<span class="sd">            sort_atom_labels (bool, optional): Boolean flag, dettermines whether or not sorting is required.</span>
 
 <span class="sd">        Returns: list</span>
 <span class="sd">            The scission-resulting species, a list of either one or two species, if the scissored location is linear,</span>
@@ -2023,6 +2047,10 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Scissors were requested to remove a non-single bond in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">.&#39;</span><span class="p">)</span>
         <span class="n">mol_copy</span><span class="o">.</span><span class="n">remove_bond</span><span class="p">(</span><span class="n">bond</span><span class="p">)</span>
         <span class="n">mol_splits</span> <span class="o">=</span> <span class="n">mol_copy</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">sort_atom_labels</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">split</span> <span class="ow">in</span> <span class="n">mol_splits</span><span class="p">:</span>
+                <span class="n">sort_atoms_in_decending_label_order</span><span class="p">(</span><span class="n">split</span><span class="p">)</span>
+
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol_splits</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># If cutting leads to only one split, then the split is cyclic.</span>
             <span class="n">spc1</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span> <span class="o">+</span> <span class="s1">&#39;_BDE_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">indices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;_cyclic&#39;</span><span class="p">,</span>
                               <span class="n">mol</span><span class="o">=</span><span class="n">mol_splits</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -2065,8 +2093,8 @@
                     <span class="k">else</span><span class="p">:</span>
                         <span class="k">raise</span> <span class="n">SpeciesError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Could not figure out which atom should gain a radical &#39;</span>
                                            <span class="sa">f</span><span class="s1">&#39;due to scission in </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">label</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">mol1</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-        <span class="n">mol2</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">mol1</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">log_species</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_atoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">mol2</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">log_species</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">raise_atomtype_exception</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sort_atoms</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="c1"># match xyz to mol:</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol1</span><span class="o">.</span><span class="n">atoms</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">mol2</span><span class="o">.</span><span class="n">atoms</span><span class="p">):</span>
@@ -2097,7 +2125,8 @@
                           <span class="n">multiplicity</span><span class="o">=</span><span class="n">mol1</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span>
                           <span class="n">charge</span><span class="o">=</span><span class="n">mol1</span><span class="o">.</span><span class="n">get_net_charge</span><span class="p">(),</span>
                           <span class="n">compute_thermo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                          <span class="n">e0_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                          <span class="n">e0_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">keep_mol</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">spc1</span><span class="o">.</span><span class="n">generate_conformers</span><span class="p">()</span>
         <span class="n">spc1</span><span class="o">.</span><span class="n">rotors_dict</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">spc2</span> <span class="o">=</span> <span class="n">ARCSpecies</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="n">label2</span><span class="p">,</span>
@@ -2106,7 +2135,8 @@
                           <span class="n">multiplicity</span><span class="o">=</span><span class="n">mol2</span><span class="o">.</span><span class="n">multiplicity</span><span class="p">,</span>
                           <span class="n">charge</span><span class="o">=</span><span class="n">mol2</span><span class="o">.</span><span class="n">get_net_charge</span><span class="p">(),</span>
                           <span class="n">compute_thermo</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                          <span class="n">e0_only</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                          <span class="n">e0_only</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                          <span class="n">keep_mol</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">spc2</span><span class="o">.</span><span class="n">generate_conformers</span><span class="p">()</span>
         <span class="n">spc2</span><span class="o">.</span><span class="n">rotors_dict</span> <span class="o">=</span> <span class="kc">None</span>
 

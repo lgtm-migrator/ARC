@@ -5,7 +5,7 @@
 <!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
@@ -25,6 +25,7 @@
         <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
         <script src="../_static/jquery.js"></script>
         <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="../_static/doctools.js"></script>
     
     <script type="text/javascript" src="../_static/js/theme.js"></script>
@@ -189,7 +190,7 @@
            <div itemprop="articleBody">
             
   <section id="module-arc.job.local">
-<span id="arc-job-local"></span><span id="local"></span><h1>arc.job.local<a class="headerlink" href="#module-arc.job.local" title="Permalink to this headline">¶</a></h1>
+<span id="arc-job-local"></span><span id="local"></span><h1>arc.job.local<a class="headerlink" href="#module-arc.job.local" title="Permalink to this heading">¶</a></h1>
 <p>A module for running jobs on the local machine.
 When transitioning to Python 3, use
 <a class="reference external" href="https://docs.python.org/3/library/subprocess.html#subprocess.run">subprocess.run()</a></p>
@@ -198,7 +199,7 @@ When transitioning to Python 3, use
 <span class="sig-prename descclassname"><span class="pre">arc.job.local.</span></span><span class="sig-name descname"><span class="pre">change_mode</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/arc/job/local.html#change_mode"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.job.local.change_mode" title="Permalink to this definition">¶</a></dt>
 <dd><p>Change the mode of a file or a directory.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>mode</strong> (<em>str</em>) – The mode change to be applied, can be either octal or symbolic.</p></li>
 <li><p><strong>file_name</strong> (<em>str</em>) – The path to the file or the directory to be changed.</p></li>
@@ -248,10 +249,10 @@ Status line formats:</p>
 <span class="sig-prename descclassname"><span class="pre">arc.job.local.</span></span><span class="sig-name descname"><span class="pre">check_running_jobs_ids</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/job/local.html#check_running_jobs_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.job.local.check_running_jobs_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check which jobs are still running on the server for this user.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List of job IDs.</p>
 </dd>
-<dt class="field-even">Return type</dt>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>List[str]</p>
 </dd>
 </dl>
@@ -264,7 +265,7 @@ Status line formats:</p>
 Make sure you know what you’re doing, so unrelated jobs won’t be deleted…
 Useful when terminating ARC while some (ghost) jobs are still running.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>jobs</strong> (<em>List</em><em>[</em><em>Union</em><em>[</em><em>str</em><em>, </em><em>int</em><em>]</em><em>]</em><em>, </em><em>optional</em>) – Specific ARC job IDs to delete.</p>
 </dd>
 </dl>
@@ -284,7 +285,7 @@ Useful when terminating ARC while some (ghost) jobs are still running.</p>
 <p>If <code class="docutils literal notranslate"><span class="pre">no_fail</span></code> is <code class="docutils literal notranslate"><span class="pre">True</span></code>, then a warning is logged and <code class="docutils literal notranslate"><span class="pre">False</span></code> is returned
 so that the calling function can debug the situation.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>command</strong> (<em>Union</em><em>[</em><em>str</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) – An array of string commands to send.</p></li>
 <li><p><strong>shell</strong> (<em>bool</em><em>, </em><em>optional</em>) – Specifies whether the command should be executed using bash instead of Python.</p></li>
@@ -305,11 +306,11 @@ Default shell of the subprocess command is ‘/bin/sh’.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="arc.job.local.get_last_modified_time">
-<span class="sig-prename descclassname"><span class="pre">arc.job.local.</span></span><span class="sig-name descname"><span class="pre">get_last_modified_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/job/local.html#get_last_modified_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.job.local.get_last_modified_time" title="Permalink to this definition">¶</a></dt>
+<span class="sig-prename descclassname"><span class="pre">arc.job.local.</span></span><span class="sig-name descname"><span class="pre">get_last_modified_time</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path_2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">datetime</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/job/local.html#get_last_modified_time"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.job.local.get_last_modified_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the last modified time of <code class="docutils literal notranslate"><span class="pre">file_path_1</span></code> if the file exists,
 else returns the last modified time of <code class="docutils literal notranslate"><span class="pre">file_path_2</span></code> if the file exists.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_path_1</strong> (<em>str</em>) – The path to file 1.</p></li>
 <li><p><strong>file_path_2</strong> (<em>str</em><em>, </em><em>optional</em>) – The path to file 2.</p></li>
@@ -323,16 +324,16 @@ else returns the last modified time of <code class="docutils literal notranslate
 <span class="sig-prename descclassname"><span class="pre">arc.job.local.</span></span><span class="sig-name descname"><span class="pre">parse_running_jobs_ids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stdout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_soft</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/job/local.html#parse_running_jobs_ids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.job.local.parse_running_jobs_ids" title="Permalink to this definition">¶</a></dt>
 <dd><p>A helper function for parsing job IDs from the stdout of a job status command.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>stdout</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – The stdout of a job status command.</p></li>
 <li><p><strong>cluster_soft</strong> (<em>Optional</em><em>[</em><em>str</em><em>]</em>) – The cluster software.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>List of job IDs.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>List(str)</p>
 </dd>
 </dl>
@@ -343,7 +344,7 @@ else returns the last modified time of <code class="docutils literal notranslate
 <span class="sig-prename descclassname"><span class="pre">arc.job.local.</span></span><span class="sig-name descname"><span class="pre">rename_output</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">local_file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">software</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/arc/job/local.html#rename_output"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.job.local.rename_output" title="Permalink to this definition">¶</a></dt>
 <dd><p>Rename the output file to “output.out” for consistency between software.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>local_file_path</strong> (<em>str</em>) – The full path to the output.out file.</p></li>
 <li><p><strong>software</strong> (<em>str</em>) – The software used for the job by which the original output file name was determined.</p></li>
@@ -357,13 +358,13 @@ else returns the last modified time of <code class="docutils literal notranslate
 <span class="sig-prename descclassname"><span class="pre">arc.job.local.</span></span><span class="sig-name descname"><span class="pre">submit_job</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/arc/job/local.html#submit_job"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.job.local.submit_job" title="Permalink to this definition">¶</a></dt>
 <dd><p>Submit a job.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The job’s folder path, where the submit script is located (just the folder path, w/o the filename).</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>job_status, job_id</p>
 </dd>
-<dt class="field-odd">Return type</dt>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Tuple[Optional[str], Optional[str]]</p>
 </dd>
 </dl>
@@ -374,7 +375,7 @@ else returns the last modified time of <code class="docutils literal notranslate
 <span class="sig-prename descclassname"><span class="pre">arc.job.local.</span></span><span class="sig-name descname"><span class="pre">write_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/arc/job/local.html#write_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#arc.job.local.write_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write <code class="docutils literal notranslate"><span class="pre">file_string</span></code> as the file’s content in <code class="docutils literal notranslate"><span class="pre">file_path</span></code>.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>file_path</strong> (<em>str</em>) – The file path.</p></li>
 <li><p><strong>file_string</strong> (<em>str</em>) – The content to be written into the file.</p></li>
